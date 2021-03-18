@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        https://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+<!--    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>-->
+<!--    <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>-->
+<!--    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+<!--        <property name="prefix" value="/WEB-INF/"/>-->
+<!--        <property name="suffix" value=".html"/>-->
+<!--    </bean>-->
+    <mvc:annotation-driven>
+
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                  <constructor-arg value="UTF-8"/>
+            </bean>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
+                        <property name="failOnEmptyBeans" value="false"/>
+                    </bean>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <context:component-scan base-package="com.frame.controller"></context:component-scan>
+    <mvc:default-servlet-handler></mvc:default-servlet-handler>
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxInMemorySize" value="1024"/>
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <!--    1073741824    1GB-->
+        <property name="maxUploadSize" value="1073741824" />
+        <property name="resolveLazily" value="true"/>
+    </bean>
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--
+                /**的意思是所有文件夹及里面的子文件夹
+                /*是所有文件夹，不含子文件夹
+                /是web项目的根目录
+              -->
+            <mvc:mapping path="/**" />
+            <!-- 需排除拦截的地址 -->
+            <mvc:exclude-mapping path="/session/**"/>
+            <mvc:exclude-mapping path="/user/**"/>
+            <mvc:exclude-mapping path="/artworks/home/*"/>
+            <bean id="commonInterceptor" class="com.frame.intercepter.LoginIntercepter"></bean> <!--这个类就是我们自定义的Interceptor -->
+        </mvc:interceptor>
+        <!-- 当设置多个拦截器时，先按顺序调用preHandle方法，然后逆序调用每个拦截器的postHandle和afterCompletion方法  -->
+    </mvc:interceptors>
+</beans>

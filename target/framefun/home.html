@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <title>home</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="js/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" type="text/css" href="css/my1.css">
+    <script src="js/httpVueLoader.js"></script>
+<!--    <script src="https://unpkg.com/vue/dist/vue.js"></script>-->
+<!--    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>-->
+    <script src="js/vue.js"></script>
+    <script src="js/vue-router.js"></script>
+</head>
+<body>
+<div id="bg"></div>
+<div id="app" :style="'min-height:' + (screenHeight) + 'px'">
+    <el-row>
+        <el-col :span="24">
+            <my-navi></my-navi>
+        </el-col>
+    </el-row>
+    <el-row class="user-area" :style="'height:' + (screenHeight-84) + 'px'">
+        <el-col :span="24-colSpan" class="aside-area">
+
+            <router-view name="aside"></router-view>
+        </el-col>
+        <el-col :span="colSpan" class="main-area" v-loading="loadingMain">
+            <transition name="el-zoom-in-center">
+                <router-view name="home"></router-view>
+            </transition>
+        </el-col>
+    </el-row>
+</div>
+
+
+</body>
+<!--<script src="js/vue-router.js"></script>-->
+<!--<script src="js/vue.js"></script>-->
+<!-- import JavaScript -->
+<script src="js/element-ui/lib/index.js"></script>
+<script src="js/axios.min.js"></script>
+
+<script type="module">
+    import {router} from './js/index.js'
+    const app = new Vue({
+        router,
+        components: { 'my-navi': httpVueLoader('./vue/navigation.vue?'+Math.random()) },
+        data(){
+            return {
+                loadingMain:false,
+                hasAside:true,
+                screenHeight:window.innerHeight,
+                colSpan:24,
+            }
+        },
+        methods:{
+          getScreenHeight(){
+              return this.screenHeight+window.pageYOffset;
+          }
+        },
+        watch:{
+            loadingMain(val){
+                console.log("okoko")
+            }
+        }
+    }).$mount('#app')
+</script>
+</html>

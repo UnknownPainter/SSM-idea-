@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frame.dao.CollectionMapper">
+    <select id="getCollectionCount" resultType="Integer">
+        select count(collection_id) from collection where user_id=#{0};
+    </select>
+    <insert id="createCollection">
+        INSERT INTO collection(collection.artwork_id,collection.user_id)
+        VALUES (#{0},#{1})
+    </insert>
+    <delete id="deleteCollection">
+        DELETE FROM collection where user_id=#{1} and artwork_id=#{0}
+    </delete>
+    <select id="getUserCollection" resultType="Integer">
+        SELECT artwork_id from collection where user_id=#{0}
+    </select>
+    <select id="getCollectionByPage" resultType="com.frame.po.Artwork">
+        SELECT
+               artwork.artwork_id,
+               artwork.artwork_location,
+               artwork.artwork_name,
+               artwork.artwork_collectCount,
+               artwork.artwork_comment,
+               artwork.artwork_praiseCount,
+               artwork.artwork_artistId
+        from
+             artwork,
+             (
+                 SELECT collection_id,artwork_id from collection where collection_id >=
+                    (
+                        SELECT collection_id from collection where user_id=#{0} limit #{1},1
+                    )
+                 limit 24
+             ) B
+        where artwork.artwork_id = B.artwork_id
+        order by B.collection_id
+    </select>
+
+</mapper>
