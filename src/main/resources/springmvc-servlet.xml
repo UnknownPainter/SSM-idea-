@@ -52,7 +52,8 @@
             <mvc:mapping path="/**" />
             <!-- 需排除拦截的地址 -->
             <mvc:exclude-mapping path="/session/**"/>
-            <mvc:exclude-mapping path="/user/**"/>
+            <mvc:exclude-mapping path="/user/*"/>
+            <mvc:exclude-mapping path="/user"/>
             <mvc:exclude-mapping path="/artworks/home/*"/>
             <bean id="commonInterceptor" class="com.frame.intercepter.LoginIntercepter"></bean> <!--这个类就是我们自定义的Interceptor -->
         </mvc:interceptor>

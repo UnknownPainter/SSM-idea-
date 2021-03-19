@@ -36,11 +36,11 @@ public class LoginServiceImpl implements LoginService{
     }
 
     @Override
-    public boolean register(String username, String password) {
+    public User register(String username, String password) {
         User user = new User();
         user.setUser_name(username);
         user.setUser_password(password);
         userMapper.creatUser(user);
-        return true;
+        return user;
     }
 }

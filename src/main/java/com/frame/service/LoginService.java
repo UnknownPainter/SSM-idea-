@@ -7,6 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public interface LoginService {
 
     User login(String username, String password);
-    boolean register(String username,String password);
+    User register(String username,String password);
     boolean getName(String username);
 }

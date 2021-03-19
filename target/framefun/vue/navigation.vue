@@ -43,7 +43,7 @@
             <i class="el-icon-collection-tag"></i>
             <span slot="title">我的收藏</span>
           </el-menu-item>
-          <el-menu-item index="4">
+          <el-menu-item index="4" @click="goToMyworks">
             <i class="el-icon-cloudy"></i>
             <span slot="title">我的作品</span>
           </el-menu-item>
@@ -86,6 +86,10 @@ module.exports = {
     goToCollection(){
       this.$router.push({path:'/collections/0'});
     },
+    goToMyworks(){
+      this.$router.push({path:'/myworks/0'});
+    }
+    ,
     isScrolling: function (){
       let t = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;   // 目前监听的是整个body的滚动条距离
       if(t>0){

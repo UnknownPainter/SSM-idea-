@@ -20,12 +20,18 @@ import java.util.List;
 public class ArtworkServiceImpl implements ArtworkService{
 
     private static final String PATH = "E:\\Artworks";
-    private static final String MAP_PATH="/frame-artworks";
+    private static final String MAP_PATH = "/frame-artworks";
+    private static final int PAGE_COUNT = 24;
 
     @Autowired
     private ArtworkMapper artworkMapper;
     @Autowired
     private CollectionMapper collectionMapper;
+
+    @Override
+    public int getUserArtworkCount(int userId) {
+        return artworkMapper.getUserArtworkCount(userId);
+    }
 
     @Override
     public boolean createArtwork(HttpServletRequest request) throws Exception{
@@ -105,6 +111,11 @@ public class ArtworkServiceImpl implements ArtworkService{
         }
 
         return list;
+    }
+
+    @Override
+    public List<Artwork> getUserArtwork(int page, int userId) {
+        return artworkMapper.getUserArtwork(userId,page*PAGE_COUNT);
     }
 
     @Override

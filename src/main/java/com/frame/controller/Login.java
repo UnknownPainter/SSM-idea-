@@ -66,8 +66,18 @@ public class Login {
     }
 
     @RequestMapping(value = "/user",method = RequestMethod.POST)
-    public boolean registerUser(String name,String password,HttpServletRequest request)throws Exception{
-        return loginService.register(name,password);
+    public boolean registerUser(String name,String password,HttpServletRequest request,HttpServletResponse response)throws Exception{
+        User user = loginService.register(name,password);
+        request.getSession().setAttribute("userId",user.getUser_id());
+        Cookie cookie = new Cookie("username",user.getUser_name());
+        cookie.setMaxAge(60*60*24*14);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        cookie = new Cookie("password",user.getUser_password());
+        cookie.setMaxAge(60*60*24*14);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return true;
     }
 
     @RequestMapping(value = "/user/{name}",method = RequestMethod.GET)

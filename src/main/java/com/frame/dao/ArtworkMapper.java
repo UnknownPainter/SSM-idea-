@@ -13,4 +13,5 @@ public interface ArtworkMapper {
     public void creatArtwork(Artwork artwork);
     public void deleteArtwork(int id,int userId);
     public List<Artwork> getUserArtwork(int userId,int page);
+    public int getUserArtworkCount(int userId);
 }

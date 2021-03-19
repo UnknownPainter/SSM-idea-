@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -51,5 +52,13 @@ public class ArtworkController {
             return artworkService.getHomeArtwork(-1,page);
         }
 
+    }
+    @RequestMapping(value = "/user/artworks/{page}",method = RequestMethod.GET)
+    public List<Artwork> getUserArtwork(@PathVariable("page") int page, HttpSession session){
+        return artworkService.getUserArtwork(page,(int)session.getAttribute("userId"));
+    }
+    @RequestMapping(value = "/user/artworks/count",method = RequestMethod.GET)
+    public int getUserArtworkCount(HttpSession session){
+        return artworkService.getUserArtworkCount((int)session.getAttribute("userId"));
     }
 }

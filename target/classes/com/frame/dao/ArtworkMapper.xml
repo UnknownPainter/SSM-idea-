@@ -22,4 +22,7 @@
     <select id="getUserArtwork" resultType="com.frame.po.Artwork">
         SELECT * from artwork where artwork_artistId=#{0} order by artwork_id limit #{1},24
     </select>
+    <select id="getUserArtworkCount" resultType="Integer">
+        select count(artwork_id) from artwork where artwork_artistId=#{0};
+    </select>
 </mapper>

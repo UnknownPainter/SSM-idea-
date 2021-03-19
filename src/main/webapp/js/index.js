@@ -40,6 +40,12 @@ const routes =[
         components: {
             home:httpVueLoader('./vue/collection.vue?'+Math.random())
         }
+    },
+    {
+        path:'/myworks/:page',
+        components: {
+            home:httpVueLoader('./vue/myworks.vue?'+Math.random())
+        }
     }
 ];
 const router = new VueRouter({
