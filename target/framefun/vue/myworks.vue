@@ -1,18 +1,46 @@
 <template>
-  <div class="collection-block">
-    <div style="height: 50px;text-align: left">我的作品<el-tag style="margin-left: 5px"><i class="el-icon-star-on"></i>{{count}}</el-tag></div>
-    <div class="collection-area" ref="collectionArea">
-      <el-image
-          @click="handleClick"
+  <div class="mywork-block">
+    <div style="height: 50px;text-align: left;">
+      <div style="float: left">
+        <span style="font: 14px Base">我的作品</span><el-tag style="margin-left: 5px"><i class="el-icon-star-on"></i>{{count}}</el-tag>
+      </div>
+      <div style="float: left;position: absolute;right: 128px;font-size: 20px">
+        <i class="el-icon-delete"></i>
+        <el-switch
+            v-model="isManage"
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+        </el-switch>
+      </div>
+    </div>
+    <div class="mywork-area" ref="myworkArea" :style="{
+      'grid-template-columns': `repeat(1,1fr)`}" style="text-align: center">
+      <transition-group class="mywork-area" :style="{
+      'grid-template-columns': `repeat(${col},1fr)`}" style="text-align: center">
+      <el-popconfirm
           v-for="(Artwork,index) in artworks" :key="index"
-          :src="Artwork.artwork_location"
-          :data-artworkid="Artwork.artwork_id"
-          style="margin-top: 24px;border-radius: 15px"
-          :style="`height:${collectionWidth}px;width:${collectionWidth}px`"
-          fit="cover"
+          title="确定要删除此作品吗？"
+          confirm-button-text='确定'
+          cancel-button-text='取消'
+          @confirm="deleteAWork(index)"
+          icon="el-icon-warning"
+          icon-color="red"
+          :disabled="!isManage"
       >
+        <el-image
+            slot="reference"
+            @click="handleClick"
+            :class="{'work-image':isManage}"
+            :src="Artwork.artwork_location"
+            :data-artworkid="Artwork.artwork_id"
+            style="margin:auto;margin-top: 24px;border-radius: 15px;"
+            :style="`height:${workWidth}px;width:${workWidth}px`"
+            fit="cover"
+        >
 
-      </el-image>
+        </el-image>
+      </el-popconfirm>
+      </transition-group>
     </div>
     <el-pagination
         v-if="show"
@@ -33,17 +61,26 @@ module.exports ={
   data(){
     return{
       artworks:[],
-      collectionWidth:'',
+      workWidth:'',
       pageCount:0,
       currentPage:0,
       show:false,
-      count:''
+      count:'',
+      col:'6',
+      isManage:false
     }
   },
   methods:{
+    deleteAWork(e){
+      console.log(e)
+      this.artworks.splice(e,1);
+      alert("ok")
+    },
     handleClick(e){
-      var id = e.currentTarget.dataset.artworkid;
-      this.$router.push({path:`/artworks/${id}`});
+      if(!this.isManage){
+        var id = e.currentTarget.dataset.artworkid;
+        this.$router.push({path:`/artworks/${id}`});
+      }
     },
     pageChange(e){
       var _this = this;
@@ -92,13 +129,13 @@ module.exports ={
     });
   },
   mounted(){
-    this.collectionWidth = (this.$refs.collectionArea.clientWidth-6*24)/6;
+    this.workWidth = (this.$refs.myworkArea.clientWidth*0.9)/this.col;
   }
 }
 </script>
 
 <style scoped>
-.collection-block{
+.mywork-block{
   padding-top: 30px;
   margin-right: 80px;
   margin-left: 80px;
@@ -109,17 +146,18 @@ module.exports ={
   background-color: #FFFFFF;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   margin-bottom: 50px;
+  border-radius: 15px;
 }
-.collection-area{
+.mywork-area{
   width: 100%;
   height: auto;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
 }
 .page{
   width: 100%;
   margin-top: 100px;
+}
+.work-image{
+  box-shadow: 1px 2px 24px rgba(18,18,18,.6);
 }
 </style>

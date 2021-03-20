@@ -121,7 +121,7 @@ module.exports={
   background: #FFFFFF;
   text-align: center;
   box-shadow: 0 1px 3px rgba(18,18,18,.1);
-  border-radius: 8px 8px 0px 0px;
+  border-radius: 15px;
 }
 .a-el-upload{
   top: 20px;

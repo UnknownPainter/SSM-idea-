@@ -1,7 +1,8 @@
 <template>
 <div class="collection-block">
   <div style="height: 50px;text-align: left">我的收藏<el-tag style="margin-left: 5px"><i class="el-icon-star-on"></i>{{count}}</el-tag></div>
-  <div class="collection-area" ref="collectionArea">
+  <div class="collection-area" ref="collectionArea" :style="{
+      'grid-template-columns': `repeat(${col},1fr)`}">
     <el-image
       @click="handleClick"
       v-for="(Artwork,index) in artworks" :key="index"
@@ -37,7 +38,8 @@ module.exports ={
       pageCount:0,
       currentPage:0,
       show:false,
-      count:''
+      count:'',
+      col:'6'
     }
   },
   methods:{
@@ -73,7 +75,7 @@ module.exports ={
       url: '/collections/count'
     }).then(function (response) {
       var data = response.data;
-      _this.count = data;
+      _this.count = parseInt(data);
       _this.pageCount = Math.floor(parseInt(data)/24+1);
 
       axios({
@@ -84,6 +86,7 @@ module.exports ={
         for (var i in data) {
           _this.artworks.push(data[i]);
         }
+
         _this.show= false;
         _this.$nextTick(()=>{
           _this.show=true;
@@ -92,7 +95,7 @@ module.exports ={
     });
   },
   mounted(){
-    this.collectionWidth = (this.$refs.collectionArea.clientWidth-6*24)/6;
+    this.collectionWidth = (this.$refs.collectionArea.clientWidth*0.9)/this.col;
   }
 }
 </script>
@@ -109,14 +112,13 @@ module.exports ={
   background-color: #FFFFFF;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   margin-bottom: 50px;
+  border-radius: 15px;
 }
 .collection-area{
   width: 100%;
   height: auto;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+
 }
 .page{
   width: 100%;
