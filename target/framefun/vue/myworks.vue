@@ -15,10 +15,10 @@
     </div>
     <div class="mywork-area" ref="myworkArea" :style="{
       'grid-template-columns': `repeat(1,1fr)`}" style="text-align: center">
-      <transition-group class="mywork-area" :style="{
-      'grid-template-columns': `repeat(${col},1fr)`}" style="text-align: center">
+      <transition-group tag="p" name="mylist" class="mywork-area" :style="{
+      'grid-template-columns': `repea t(${col},1fr)`}" style="text-align: center">
       <el-popconfirm
-          v-for="(Artwork,index) in artworks" :key="index"
+          v-for="(Artwork,index) in artworks" :key="Artwork.artwork_id"
           title="确定要删除此作品吗？"
           confirm-button-text='确定'
           cancel-button-text='取消'
@@ -26,6 +26,7 @@
           icon="el-icon-warning"
           icon-color="red"
           :disabled="!isManage"
+          style="transition: all 1s;"
       >
         <el-image
             slot="reference"
@@ -72,9 +73,15 @@ module.exports ={
   },
   methods:{
     deleteAWork(e){
-      console.log(e)
-      this.artworks.splice(e,1);
-      alert("ok")
+      var _this = this;
+      axios({
+        method:'delete',
+        url:'/artworks/'+this.artworks[e].artwork_id,
+      }).then(function (response) {
+        var data = response.data;
+        if(data==true)
+        _this.artworks.splice(e,1);
+      });
     },
     handleClick(e){
       if(!this.isManage){
@@ -159,5 +166,17 @@ module.exports ={
 }
 .work-image{
   box-shadow: 1px 2px 24px rgba(18,18,18,.6);
+}
+.mylist-leave-active {
+  position: absolute;
+}
+.mylist-leave-to
+  /* .list-leave-active for below version 2.1.8 */ {
+  opacity: 0;
+  transform: scale(0.2,0.2);
+  transform: translateY(-30px);
+}
+.mylist-move{
+  transition: transform 1s;
 }
 </style>

@@ -121,8 +121,16 @@ public class ArtworkServiceImpl implements ArtworkService{
     @Override
     public boolean deleteArtwork(int id, int userId) {
         Artwork artwork = artworkMapper.getArtworkById(id);
-        String location = artwork.getArtwork_location();
-        artworkMapper.deleteArtwork(id,userId);
+        String location = artwork.getArtwork_location().replace(MAP_PATH,PATH);
+        location = location.replace("/","\\");
+        System.out.println(location);
+        if(artwork.getArtwork_artistId()==userId){
+            File file = new File(location);
+            if(file.exists()){
+                file.delete();
+                artworkMapper.deleteArtwork(id,userId);
+            }
+        }
         return true;
     }
 }
