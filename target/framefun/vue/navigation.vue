@@ -47,9 +47,9 @@
             <i class="el-icon-cloudy"></i>
             <span slot="title">我的作品</span>
           </el-menu-item>
-          <el-menu-item index="5">
+          <el-menu-item index="5" @click="goToUser">
             <i class="el-icon-setting"></i>
-            <span slot="title">导航四</span>
+            <span slot="title">我的资料</span>
           </el-menu-item>
         </el-menu>
 
@@ -88,8 +88,10 @@ module.exports = {
     },
     goToMyworks(){
       this.$router.push({path:'/myworks/0'});
-    }
-    ,
+    },
+    goToUser(){
+      this.$router.push({path:'/user'});
+    },
     isScrolling: function (){
       let t = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;   // 目前监听的是整个body的滚动条距离
       if(t>0){

@@ -16,7 +16,7 @@
     <div class="mywork-area" ref="myworkArea" :style="{
       'grid-template-columns': `repeat(1,1fr)`}" style="text-align: center">
       <transition-group tag="p" name="mylist" class="mywork-area" :style="{
-      'grid-template-columns': `repea t(${col},1fr)`}" style="text-align: center">
+      'grid-template-columns': `repeat(${col},1fr)`}" style="text-align: center">
       <el-popconfirm
           v-for="(Artwork,index) in artworks" :key="Artwork.artwork_id"
           title="确定要删除此作品吗？"

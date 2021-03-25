@@ -46,6 +46,12 @@ const routes =[
         components: {
             home:httpVueLoader('./vue/myworks.vue?'+Math.random())
         }
+    },
+    {
+        path:'/user',
+        components: {
+            home:httpVueLoader('./vue/user.vue?'+Math.random())
+        }
     }
 ];
 const router = new VueRouter({

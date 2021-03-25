@@ -3,12 +3,15 @@
     <div class="artwork-block" >
       <el-image
           v-if="artwork"
-          style="width: 800px"
+          style="width: 100%"
           :src="artwork.artwork_location"
           fit="contain"
           :preview-src-list="imageList"
       ></el-image>
-      <div style="font-size: 20px;line-height: 1.7">{{artwork.artwork_name}}</div>
+    </div>
+    <div class="info-block">
+      <div style="font-size: 20px;line-height: 1.7;">{{artwork.artwork_name}}</div>
+      <div style="color: #8c939d;font-size: 14px;line-height: 1.7;margin-top: 8px">{{artwork.artwork_comment==""?"上传者没有留下评论":artwork.artwork_comment}}</div>
     </div>
     <div class="comment-block">
       <el-form :model="form" class="form-block">
@@ -56,7 +59,6 @@ module.exports={
 
 <style scoped>
 .artwork-block{
-  padding: 20px;
   margin: 30px;
   height: auto;
   background: #FFFFFF;
@@ -73,6 +75,16 @@ module.exports={
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   margin-bottom: 50px;
+  margin-top: 0;
+}
+.info-block{
+  padding: 10px 30px 10px 30px;
+  margin: 30px;
+  height: auto;
+  background: #FFFFFF;
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  margin-bottom: 18px;
   margin-top: 0;
 }
 .form-block{
