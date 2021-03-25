@@ -18,7 +18,7 @@
     </select>
     <select id="getCollectionByPage" resultType="com.frame.po.Artwork">
         SELECT
-               artwork.artwork_id,
+               B.artwork_id,
                artwork.artwork_location,
                artwork.artwork_name,
                artwork.artwork_collectCount,
@@ -26,16 +26,15 @@
                artwork.artwork_praiseCount,
                artwork.artwork_artistId
         from
-             artwork,
+             artwork right join
              (
-                 SELECT collection_id,artwork_id from collection where collection_id >=
+                 SELECT collection_id,artwork_id from collection where user_id=#{0} and collection_id &lt;=
                     (
-                        SELECT collection_id from collection where user_id=#{0} limit #{1},1
+                        SELECT collection_id from collection where user_id=#{0} order by collection_id desc limit #{1},1
                     )
-                 limit 24
+                 order by collection_id desc limit 24
              ) B
-        where artwork.artwork_id = B.artwork_id
-        order by B.collection_id
+        on artwork.artwork_id = B.artwork_id
     </select>
 
 </mapper>

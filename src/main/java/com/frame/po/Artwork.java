@@ -1,6 +1,9 @@
 package com.frame.po;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class Artwork implements Serializable {
     private int artwork_id;
@@ -12,8 +15,17 @@ public class Artwork implements Serializable {
     private int artwork_collectCount;
     private int artwork_width;
     private int artwork_height;
+    private Date artwork_createTime;
 
     public  Artwork(){}
+    public Date getArtwork_createTime() {
+        return artwork_createTime;
+    }
+
+    public void setArtwork_createTime(Date artwork_createTime) {
+        this.artwork_createTime = artwork_createTime;
+    }
+
 
     public int getArtwork_width() {
         return artwork_width;

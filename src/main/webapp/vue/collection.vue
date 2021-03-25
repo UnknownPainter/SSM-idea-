@@ -16,6 +16,10 @@
           :style="`height:${collectionWidth}px;width:${collectionWidth}px`"
           fit="cover"
       >
+
+        <div slot="error"  class="el-image__error">
+          {{Artwork.error}}
+        </div>
       </el-image>
       <div @click="collectHandler" :data-artworkindex="index" class="a-love-div">
         <svg viewBox="0 0 32 32" width="32" height="32" :class={'love-svg':Artwork.isDeleted,'love-svg-a':!Artwork.isDeleted}>
@@ -129,6 +133,7 @@ module.exports ={
         var data = response.data;
         for (var i in data) {
           data[i].isDeleted = false;
+          data[i].error=data[i].artwork_location==null?"作品已被删除":"加载失败";
           _this.artworks.push(data[i]);
         }
 
