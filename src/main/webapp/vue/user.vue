@@ -1,18 +1,62 @@
 <template>
   <div class="user-block">
-    fsdg
+    <div class="avatar-block">
+      <el-avatar :size="100" style="font-size:50px;float: left" @mouseover.native="avatarover" @mouseout.native="avatarout">
+        <i class="el-icon-user-solid" v-show="!hover"></i>
+        <div v-show="hover" style="font-size: 18px;">
+          <el-upload
+              style="font-size: 32px"
+              class="avatar-uploader"
+              :show-file-list="false"
+          >
+            <i class="el-icon-plus avatar-uploader-icon" style="font-size: 32px;"></i>
+          </el-upload>
+        </div>
+      </el-avatar>
+      <div style="font-size: 24px;float: left;margin-left: 50px;padding-top: 20px">
+        <div>{{user.user_name}}</div>
+        <div style="color: #8c939d;font-size: 16px;margin-top: 8px">id:{{user.user_id}}</div>
+      </div>
+    </div>
+    <el-button type="danger" style="margin-top: 100px" @click="logout">退出登录</el-button>
   </div>
 </template>
 
 <script>
 module.exports= {
+  data(){
+    return {
+      user:'',
+      hover:true
+    }
+  },
+  methods:{
+    logout(){
 
+    },
+    avatarover(){
+      this.hover=true;
+    },
+    avatarout(){
+      this.hover=false;
+    }
+  },
+  mounted(){
+    var _this = this;
+    axios({
+      method:'get',
+      url:'/session'
+    }).then(function (response) {
+      var data = response.data;
+      _this.user = data;
+    });
+  }
 }
 </script>
 
 <style scoped>
 .user-block{
-  padding-top: 30px;
+  padding: 30px;
   margin-right: 80px;
   margin-left: 80px;
   height: auto;
@@ -24,4 +68,10 @@ module.exports= {
   margin-bottom: 50px;
   border-radius: 15px;
 }
+.avatar-block{
+  width: 100%;
+  display: inline-block;
+  text-align: left;
+}
+
 </style>

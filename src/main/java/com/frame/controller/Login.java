@@ -84,4 +84,9 @@ public class Login {
     public boolean nameIsOk(@PathVariable("name") String name){
         return loginService.getName(name);
     }
+
+    @RequestMapping(value = "/user/info/avatar",method = RequestMethod.PUT)
+    public String updateAvatar(HttpServletRequest request){
+        return loginService.updateAvatar(request);
+    }
 }
