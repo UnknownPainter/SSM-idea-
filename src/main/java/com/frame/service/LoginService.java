@@ -11,5 +11,5 @@ public interface LoginService {
     User login(String username, String password);
     User register(String username,String password);
     boolean getName(String username);
-    String updateAvatar(HttpServletRequest request);
+    String updateAvatar(HttpServletRequest request) throws Exception;
 }

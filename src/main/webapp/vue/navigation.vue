@@ -30,8 +30,11 @@
     >
       <div class="drawer-table">
         <el-menu>
-          <el-menu-item class="noStyle">
-            <i class="el-icon-user-solid"></i>
+          <el-menu-item class="noStyle" style="height: 84px;padding: 10px">
+            <i class="el-icon-user-solid" v-show="!user.user_avatar"></i>
+            <el-avatar :size="64" v-show="user.user_avatar">
+              <el-image :src="user.user_avatar" fit="cover" style="height: 100%"></el-image>
+            </el-avatar>
             <span slot="title">{{user.user_name}}</span>
           </el-menu-item>
           <el-divider></el-divider>

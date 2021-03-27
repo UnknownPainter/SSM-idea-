@@ -85,8 +85,8 @@ public class Login {
         return loginService.getName(name);
     }
 
-    @RequestMapping(value = "/user/info/avatar",method = RequestMethod.PUT)
-    public String updateAvatar(HttpServletRequest request){
+    @RequestMapping(value = "/user/info/avatar",method = RequestMethod.POST)
+    public String updateAvatar(HttpServletRequest request) throws Exception{
         return loginService.updateAvatar(request);
     }
 }

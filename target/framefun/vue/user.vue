@@ -2,12 +2,16 @@
   <div class="user-block">
     <div class="avatar-block">
       <el-avatar :size="100" style="font-size:50px;float: left" @mouseover.native="avatarover" @mouseout.native="avatarout">
-        <i class="el-icon-user-solid" v-show="!hover"></i>
+        <i class="el-icon-user-solid" v-show="!hover&&!url"></i>
+        <el-image v-show="!hover&&url" :src="url" fit="cover" style="height: 100%"></el-image>
         <div v-show="hover" style="font-size: 18px;">
           <el-upload
+              :multiple="false"
               style="font-size: 32px"
               class="avatar-uploader"
+              action="/user/info/avatar"
               :show-file-list="false"
+              :on-success="successHandler"
           >
             <i class="el-icon-plus avatar-uploader-icon" style="font-size: 32px;"></i>
           </el-upload>
@@ -27,12 +31,16 @@ module.exports= {
   data(){
     return {
       user:'',
-      hover:true
+      hover:false,
+      url:''
     }
   },
   methods:{
     logout(){
 
+    },
+    successHandler(res){
+      this.url = res;
     },
     avatarover(){
       this.hover=true;
@@ -49,6 +57,7 @@ module.exports= {
     }).then(function (response) {
       var data = response.data;
       _this.user = data;
+      _this.url = data.user_avatar;
     });
   }
 }
