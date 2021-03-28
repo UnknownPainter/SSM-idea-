@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 
-public interface LoginService {
+public interface UserService {
 
     User login(String username, String password);
     User register(String username,String password);
     boolean getName(String username);
     String updateAvatar(HttpServletRequest request) throws Exception;
+    User getUserByArtworkId(int artworkId);
 }

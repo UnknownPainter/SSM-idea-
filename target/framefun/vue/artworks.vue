@@ -39,7 +39,7 @@ module.exports={
     }
   },
   mounted(){
-    this.$router.app.colSpan=20;
+    this.$router.app.colSpan=18;
     var _this = this;
     axios({
       method:'get',
@@ -59,12 +59,13 @@ module.exports={
 
 <style scoped>
 .artwork-block{
-  margin: 30px;
   height: auto;
   background: #FFFFFF;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  margin-right: 30px;
   margin-bottom: 18px;
+  margin-left: 30px;
   margin-top: 0;
 }
 .comment-block{

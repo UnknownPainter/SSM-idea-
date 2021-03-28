@@ -25,7 +25,9 @@
     <el-row class="user-area" :style="'height:' + (screenHeight-84) + 'px'">
         <el-col :span="24-colSpan" class="aside-area">
 
-            <router-view name="aside"></router-view>
+            <transition name="el-zoom-in-center">
+                <router-view name="aside"></router-view>
+            </transition>
         </el-col>
         <el-col :span="colSpan" class="main-area" v-loading="loadingMain">
             <transition name="el-zoom-in-center">

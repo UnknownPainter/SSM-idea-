@@ -32,7 +32,8 @@ const routes =[
     {
         path:'/artworks/:id',
         components: {
-            home:httpVueLoader('./vue/artworks.vue?'+Math.random())
+            home:httpVueLoader('./vue/artworks.vue?'+Math.random()),
+            aside:httpVueLoader('./vue/artwork_user.vue?'+Math.random())
         }
     },
     {
@@ -50,7 +51,7 @@ const routes =[
     {
         path:'/user',
         components: {
-            home:httpVueLoader('./vue/user.vue?'+Math.random())
+            home:httpVueLoader('./vue/user.vue?'+Math.random()),
         }
     }
 ];

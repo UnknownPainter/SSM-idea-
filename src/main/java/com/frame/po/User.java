@@ -1,5 +1,7 @@
 package com.frame.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 public class User implements Serializable {
@@ -36,6 +38,7 @@ public class User implements Serializable {
         this.user_followers = user_followers;
     }
 
+    @JsonIgnore
     public String getUser_password() {
         return user_password;
     }

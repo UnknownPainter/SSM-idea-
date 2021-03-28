@@ -1,19 +1,18 @@
 package com.frame.intercepter;
 
 import com.frame.po.User;
-import com.frame.service.LoginService;
+import com.frame.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 public class LoginIntercepter implements HandlerInterceptor {
 
     @Autowired
-    private LoginService loginService;
+    private UserService userService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -37,7 +36,7 @@ public class LoginIntercepter implements HandlerInterceptor {
                 response.getWriter().print("noSession");
                 return false;
             }
-            User user = loginService.login(username,password);
+            User user = userService.login(username,password);
             if(user!=null){
                 request.getSession().setAttribute("userId",user.getUser_id());
                 return true;

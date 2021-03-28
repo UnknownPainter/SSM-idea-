@@ -1,21 +1,17 @@
 package com.frame.service;
 
 import com.frame.dao.UserMapper;
-import com.frame.po.Artwork;
 import com.frame.po.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
-import java.awt.image.BufferedImage;
 import java.io.File;
 
 @Service
-public class LoginServiceImpl implements LoginService{
+public class UserServiceImpl implements UserService {
 
     private static final String PATH = "E:\\Artworks";
     private static final String MAP_PATH = "/frame-artworks";
@@ -81,5 +77,10 @@ public class LoginServiceImpl implements LoginService{
         user.setUser_password(password);
         userMapper.creatUser(user);
         return user;
+    }
+
+    @Override
+    public User getUserByArtworkId(int artworkId) {
+        return userMapper.getUserByArtworkId(artworkId);
     }
 }

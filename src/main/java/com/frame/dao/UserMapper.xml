@@ -13,4 +13,9 @@
     <update id="updateAvatar">
         UPDATE user SET user_avatar=#{1} WHERE user_id=#{0}
     </update>
+    <select id="getUserByArtworkId" resultType="com.frame.po.User">
+        SELECT * FROM user WHERE user_id=(
+                SELECT artwork_artistId from artwork where artwork_id=#{0}
+            )
+    </select>
 </mapper>
