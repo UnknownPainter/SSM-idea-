@@ -53,7 +53,18 @@ module.exports={
   },
   methods:{
     uploadComment(){
-      this.user = 1;
+      var _this = this;
+      axios({
+        headers:{
+          'Content-Type':'application/x-www-form-urlencoded'
+        },
+        method:'post',
+        url:'/comment/'+this.artworkId,
+        data:"content="+this.$data.form.comment
+
+      }).then(response=>{
+        console.log(response)
+      });
     }
   },
   mounted(){

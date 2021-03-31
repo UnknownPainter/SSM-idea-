@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setUser_name(username);
         user.setUser_password(password);
-        userMapper.creatUser(user);
+        userMapper.createUser(user);
         return user;
     }
 

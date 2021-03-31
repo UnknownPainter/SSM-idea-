@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frame.dao.CommentMapper">
+    <select id="getCommentByTimeOrder">
+        SELECT * from comment WHERE
+            comment_id &lt;= (SELECT comment_id from comment where comment_artworkId=#{0} order by comment_id desc limit #{1},1)
+        and comment_artworkId=#{0} order by comment_id desc limit #{1},20
+    </select>
+    <insert id="createComment" parameterType="com.frame.po.Comment" useGeneratedKeys="true" keyProperty="comment_id">
+        INSERT INTO comment(comment_artworkId, comment_content,comment_userId) VALUES
+            (#{comment_artworkId},#{comment_content},#{comment_userId})
+    </insert>
+</mapper>
