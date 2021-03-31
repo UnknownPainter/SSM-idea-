@@ -55,12 +55,24 @@
                 loadingMain:false,
                 screenHeight:window.innerHeight,
                 colSpan:24,
+                user:''
             }
         },
         methods:{
           getScreenHeight(){
               return this.screenHeight+window.pageYOffset;
           }
+        },
+        mounted(){
+            var _this = this;
+            axios({
+                method:'get',
+                url:'/session'
+            }).then(function (response) {
+                var data = response.data;
+                _this.user = data;
+                _this.$root.$emit('user',data);
+            });
         },
         watch:{
             loadingMain(val){

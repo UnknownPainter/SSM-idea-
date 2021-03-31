@@ -35,7 +35,7 @@
             <el-avatar :size="64" v-show="user.user_avatar">
               <el-image :src="user.user_avatar" fit="cover" style="height: 100%"></el-image>
             </el-avatar>
-            <span slot="title">{{user.user_name}}</span>
+            <span slot="title">{{user.user_name?user.user_name:username}}</span>
           </el-menu-item>
           <el-divider></el-divider>
           <el-menu-item index="2" @click="goToUpload">
@@ -111,13 +111,10 @@ module.exports = {
   mounted () {
     window.addEventListener('scroll', this.isScrolling);
     this.$parent.loadingMain=false;
+    this.user = this.$router.app.user;
     var _this = this;
-    axios({
-      method:'get',
-      url:'/session'
-    }).then(function (response) {
-      var data = response.data;
-      _this.user = data;
+    this.$root.$on('user',(a)=>{
+      _this.user = a;
     });
   },
   beforeRouteEnter(to,from,next){
