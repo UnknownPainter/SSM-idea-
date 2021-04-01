@@ -31,9 +31,23 @@
             </el-col>
           </el-row>
         </el-form-item>
-
       </el-form>
-      <el-divider></el-divider>
+      <div style="display: inline-block;width: 100%">
+        <div v-for="(comment,index) in comments" :key="comment.comment_id" class="a-comment">
+          <div class="my-divider"></div>
+          <el-col :span="2">
+            <el-avatar :size="48">
+              <el-image :src="user.user_avatar" fit="cover" style="height: 100%" v-show="comment.user_avatar"></el-image>
+              <i class="el-icon-user-solid" v-show="!comment.user_avatar"></i>
+            </el-avatar>
+          </el-col>
+          <el-col :span="22">
+            <div style="vertical-align: center">
+              {{comment.user_name}}：{{comment.comment_content}}
+            </div>
+          </el-col>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -48,7 +62,9 @@ module.exports={
       form:{
         comment:''
       },
-      user:''
+      user:'',
+      page:0,
+      comments:[]
     }
   },
   methods:{
@@ -77,6 +93,13 @@ module.exports={
       var data = response.data;
       _this.artwork = data;
       _this.imageList.push(data.artwork_location)
+    });
+    axios({
+      method:'get',
+      url:'/comment/'+this.artworkId+'/timeorder/'+this.page,
+    }).then(function (response) {
+      var data = response.data;
+      _this.comments = data;
     });
     this.user = this.$router.app.user;
     console.log(this.user)
@@ -126,5 +149,15 @@ module.exports={
 }
 .form-block{
   width: 100%;
+}
+.a-comment{
+  text-align: left;
+  display: inline-block;
+  width: 100%;
+}
+.my-divider{
+  border-bottom: 1px solid #ddd;
+  height: 1px;
+  margin: 12px 0px 12px 0px;
 }
 </style>

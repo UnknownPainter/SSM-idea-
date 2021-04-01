@@ -15,6 +15,8 @@ public class CommentServiceImpl implements CommentService{
     @Autowired
     private CommentMapper commentMapper;
 
+    private static final int PAGE_COUNT = 20;
+
     @Override
     public void createComment(int artworkId, String content, int userId,CallbackForController callback) {
         Runnable r = ()->{
@@ -31,7 +33,7 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public void getCommentByTimeOrder(int artworkId, int page, CallbackForController callback) {
         Runnable r = ()->{
-            callback.callback(commentMapper.getCommentByTimeOrder(artworkId,page));
+            callback.callback(commentMapper.getCommentByTimeOrder(artworkId,page*PAGE_COUNT));
         };
         threadPool.execute(r);
     }

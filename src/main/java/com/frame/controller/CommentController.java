@@ -1,5 +1,6 @@
 package com.frame.controller;
 
+import com.frame.po.Comment;
 import com.frame.service.CommentService;
 import com.frame.utils.CallbackForController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @ResponseBody
@@ -39,6 +41,14 @@ public class CommentController {
             }
         });
         System.out.println("完成");
+        return deferredResult;
+    }
+    @RequestMapping(value = "/comment/{artworkId}/timeorder/{page}",method = RequestMethod.GET)
+    public DeferredResult<List<Comment>> getCommentByTimeOrder(@PathVariable("artworkId")int artworkId,@PathVariable("page")int page){
+        final DeferredResult<List<Comment>> deferredResult = new DeferredResult<>();
+        commentService.getCommentByTimeOrder(artworkId,page,(result -> {
+            deferredResult.setResult((List<Comment>)result);
+        }));
         return deferredResult;
     }
 }

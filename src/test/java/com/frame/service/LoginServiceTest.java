@@ -2,9 +2,11 @@ package com.frame.service;
 
 import com.frame.dao.ArtworkMapper;
 import com.frame.dao.CollectionMapper;
+import com.frame.dao.CommentMapper;
 import com.frame.dao.UserMapper;
 import com.frame.po.Artwork;
 import com.frame.po.ArtworkForUser;
+import com.frame.po.Comment;
 import com.frame.po.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,13 +30,17 @@ public class LoginServiceTest {
     private CollectionMapper collectionMapper;
     @Autowired
     private ArtworkMapper artworkMapper;
+    @Autowired
+    private CommentMapper commentMapper;
     @Test
     public void login() {
-        ArtworkForUser artworkForUser =artworkMapper.getArtworkById(22);
-        Date date = artworkForUser.getArtwork_createTime();
-        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd HH:mm:ss");
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));
-        System.out.println(format.format(date));
+        Comment comment = new Comment();
+        comment.setComment_userId(5);
+        comment.setComment_artworkId(46);
+       for(int i=1;i<30;i++){
+           comment.setComment_content("评论"+i);
+           commentMapper.createComment(comment);
+       }
     }
 
     @Test
