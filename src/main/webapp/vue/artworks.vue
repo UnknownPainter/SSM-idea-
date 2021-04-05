@@ -16,11 +16,11 @@
     <div class="comment-block">
       <el-form :model="form" class="form-block">
         <el-form-item>
-          <el-row>
-            <el-col :span="2" style="padding-top: 2px;height: 64.8px">
-              <el-avatar :size="48">
-                <el-image :src="user.user_avatar" fit="cover" style="height: 100%" v-show="user"></el-image>
-                <i class="el-icon-user-solid" v-show="!user.user_avatar"></i>
+          <el-row style="text-align: left;">
+            <el-col :span="2" style="height: 64.8px">
+              <el-avatar :size="64.8">
+                <el-image :src="user.user_avatar" fit="cover" style="height: 100%" v-if="user"></el-image>
+                <i class="el-icon-user-solid" v-if="!user.user_avatar"></i>
               </el-avatar>
             </el-col>
             <el-col :span="20" style="padding-right: 20px">
@@ -33,20 +33,29 @@
         </el-form-item>
       </el-form>
       <div style="display: inline-block;width: 100%">
-        <div v-for="(comment,index) in comments" :key="comment.comment_id" class="a-comment">
-          <div class="my-divider"></div>
-          <el-col :span="2">
-            <el-avatar :size="48">
-              <el-image :src="user.user_avatar" fit="cover" style="height: 100%" v-show="comment.user_avatar"></el-image>
-              <i class="el-icon-user-solid" v-show="!comment.user_avatar"></i>
-            </el-avatar>
-          </el-col>
-          <el-col :span="22">
-            <div style="vertical-align: center">
-              {{comment.user_name}}：{{comment.comment_content}}
-            </div>
-          </el-col>
+        <div style="text-align: center;color: #6d757a;" v-if="comments.length==0">
+          <el-divider></el-divider>
+          <div style="padding: 50px;font-size: 18px">
+            还没有人发表过评论
+          </div>
         </div>
+        <transition-group tag="span" name="comment-list">
+          <div v-for="(comment,index) in comments" :key="comment.comment_id" class="a-comment">
+            <div class="my-divider"></div>
+            <el-col :span="2">
+              <el-avatar :size="64.8">
+                <el-image :src="user.user_avatar" fit="cover" style="height: 100%" v-show="comment.user_avatar"></el-image>
+                <i class="el-icon-user-solid" v-show="!comment.user_avatar"></i>
+              </el-avatar>
+            </el-col>
+            <el-col :span="22">
+              <div style="vertical-align: center">
+                <div style="color: #6d757a;font-size: 12px;"><b>{{comment.user_name}}</b></div>
+                <div style="padding-top: 8px">{{comment.comment_content}}</div>
+              </div>
+            </el-col>
+          </div>
+        </transition-group>
       </div>
     </div>
   </div>
@@ -79,8 +88,15 @@ module.exports={
         data:"content="+this.$data.form.comment
 
       }).then(response=>{
-        console.log(response)
+        if(response.data!="noSession"){
+          var comm = response.data;
+          comm.user_avatar = _this.user.user_avatar;
+          comm.user_id = _this.user.user_id;
+          comm.user_name = _this.user.user_name;
+          _this.comments.unshift(comm);
+        }
       });
+
     }
   },
   mounted(){
@@ -106,7 +122,8 @@ module.exports={
     this.$root.$on('user',(a)=>{
       _this.user = '';
       _this.user = a;
-      console.log("ddfdfs"+_this.user)
+      console.log("dfdf")
+      console.log(_this.user);
     });
   },
   destroyed(){
@@ -159,5 +176,17 @@ module.exports={
   border-bottom: 1px solid #ddd;
   height: 1px;
   margin: 12px 0px 12px 0px;
+}
+.comment-list-enter-active .comment-list-leave-active{
+  position: absolute;
+}
+.comment-list-enter .comment-list-leave-to
+  /* .list-leave-active for below version 2.1.8 */ {
+  opacity: 0;
+  transform: scale(0.2,0.2);
+  transform: translateY(-30px);
+}
+.comment-list-move{
+  transition: transform 1s;
 }
 </style>

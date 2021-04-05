@@ -10,4 +10,6 @@ public interface CommentMapper {
     public List<CommentWithUserInfo> getCommentByTimeOrder(int artworkId,int page);
     public List<CommentWithUserInfo> getTwoChildComment(int commentId);
     public void createComment(Comment comment);
+    public void createReplyOfComment(Comment comment);
+    public void updateCommentReplyCount(int commentId,int count);
 }

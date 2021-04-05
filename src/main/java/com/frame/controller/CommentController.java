@@ -22,11 +22,11 @@ public class CommentController {
     private CommentService commentService;
 
     @RequestMapping(value = "/comment/{artworkId}",method = RequestMethod.POST)
-    public DeferredResult<Boolean> createComment(@PathVariable("artworkId")int artworkId, String content, HttpSession session){
-        final DeferredResult<Boolean> deferredResult = new DeferredResult<>();
+    public DeferredResult<Comment> createComment(@PathVariable("artworkId")int artworkId, String content, HttpSession session){
+        final DeferredResult<Comment> deferredResult = new DeferredResult<>();
         commentService.createComment(artworkId,content,(int)session.getAttribute("userId"),(
                 result -> {
-                    deferredResult.setResult((Boolean)result);
+                    deferredResult.setResult((Comment)result);
                 }
         ));
         return deferredResult;

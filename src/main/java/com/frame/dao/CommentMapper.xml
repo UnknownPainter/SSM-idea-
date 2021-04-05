@@ -20,4 +20,24 @@
         INSERT INTO comment(comment_artworkId, comment_content,comment_userId) VALUES
             (#{comment_artworkId},#{comment_content},#{comment_userId})
     </insert>
+    <insert id="createReplyOfComment" parameterType="com.frame.po.Comment" useGeneratedKeys="true" keyProperty="comment_id">
+        INSERT INTO comment_child(comment_artworkId, comment_content,comment_userId,comment_toId) VALUES
+            (#{comment_artworkId},#{comment_content},#{comment_userId},#{comment_toId})
+    </insert>
+    <update id="updateCommentReplyCount">
+        UPDATE comment SET comment_replyCount=comment_replyCount+#{1} where comment_id=#{0}
+    </update>
+    <select id="getTwoChildComment" resultType="com.frame.po.CommentWithUserInfo">
+        SELECT
+            B.*,
+            user_id,
+            user_name,
+            user_avatar
+        from
+            user right join
+            (SELECT * from comment_child WHERE
+                    comment_id &lt;= (SELECT comment_id from comment_child where comment_toId=#{0} order by comment_id desc limit 0,1)
+                                     and comment_toId=#{0} order by comment_id desc limit 0,2) B
+            on user_id = B.comment_userId
+    </select>
 </mapper>

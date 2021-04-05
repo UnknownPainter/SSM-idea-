@@ -14,11 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -37,13 +36,25 @@ public class LoginServiceTest {
         Comment comment = new Comment();
         comment.setComment_userId(5);
         comment.setComment_artworkId(46);
+        comment.setComment_toId(44);
        for(int i=1;i<30;i++){
-           comment.setComment_content("评论"+i);
-           commentMapper.createComment(comment);
+           comment.setComment_content("回复评论"+i);
+           commentMapper.createReplyOfComment(comment);
+
        }
     }
 
     @Test
-    public void register() {
+    @Transactional
+    public void register() throws NullPointerException
+    {
+        Comment comment = new Comment();
+        comment.setComment_content("gfh");
+        comment.setComment_artworkId(46);
+        comment.setComment_userId(5);
+        comment.setComment_toId(2);
+        commentMapper.createComment(comment);
+        commentMapper=null;
+        commentMapper.updateCommentReplyCount(2,1);
     }
 }
