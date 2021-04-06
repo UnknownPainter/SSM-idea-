@@ -16,9 +16,9 @@
     <div class="comment-block">
       <el-form :model="form" class="form-block">
         <el-form-item>
-          <el-row style="text-align: left;">
-            <el-col :span="2" style="height: 64.8px">
-              <el-avatar :size="64.8">
+          <div style="text-align: left;">
+            <el-col :span="2" style="display: inline-block;height: 64.8px">
+              <el-avatar :size="48">
                 <el-image :src="user.user_avatar" fit="cover" style="height: 100%" v-if="user"></el-image>
                 <i class="el-icon-user-solid" v-if="!user.user_avatar"></i>
               </el-avatar>
@@ -29,7 +29,7 @@
             <el-col :span="2" style="text-align: right;">
               <el-button type="primary" @click="uploadComment" style="height:64.8px;">发送！</el-button>
             </el-col>
-          </el-row>
+          </div>
         </el-form-item>
       </el-form>
       <div style="display: inline-block;width: 100%">
@@ -43,7 +43,7 @@
           <div v-for="(comment,index) in comments" :key="comment.comment_id" class="a-comment">
             <div class="my-divider"></div>
             <el-col :span="2">
-              <el-avatar :size="64.8">
+              <el-avatar :size="48">
                 <el-image :src="user.user_avatar" fit="cover" style="height: 100%" v-show="comment.user_avatar"></el-image>
                 <i class="el-icon-user-solid" v-show="!comment.user_avatar"></i>
               </el-avatar>
@@ -52,6 +52,10 @@
               <div style="vertical-align: center">
                 <div style="color: #6d757a;font-size: 12px;"><b>{{comment.user_name}}</b></div>
                 <div style="padding-top: 8px">{{comment.comment_content}}</div>
+              </div>
+              <div style="text-align: left;padding-top: 8px">
+                <div class="comment-other" style="cursor: text">{{comment.comment_createTime}}</div>
+                <div class="comment-other" @click="reply(index)">回复</div>
               </div>
             </el-col>
           </div>
@@ -77,6 +81,10 @@ module.exports={
     }
   },
   methods:{
+    reply(index){
+      var id = this.comments[index].comment_id;
+      alert(id)
+    },
     uploadComment(){
       var _this = this;
       axios({
@@ -175,7 +183,7 @@ module.exports={
 .my-divider{
   border-bottom: 1px solid #ddd;
   height: 1px;
-  margin: 12px 0px 12px 0px;
+  margin: 0px 0px 12px 0px;
 }
 .comment-list-enter-active .comment-list-leave-active{
   position: absolute;
@@ -188,5 +196,9 @@ module.exports={
 }
 .comment-list-move{
   transition: transform 1s;
+}
+.comment-other{
+  display:inline-block;font-size: 12px;color: #909399;cursor: pointer;text-align: center;
+  margin-right: 8px;
 }
 </style>
