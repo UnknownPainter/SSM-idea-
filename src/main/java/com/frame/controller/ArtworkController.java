@@ -1,14 +1,13 @@
 package com.frame.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.frame.po.Artwork;
 import com.frame.po.ArtworkForUser;
 import com.frame.service.ArtworkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -27,8 +26,10 @@ public class ArtworkController {
     private ArtworkService artworkService;
 
     @RequestMapping(value = "/artworks",method = RequestMethod.POST)
-    public void uploadArtwork(HttpServletRequest request) throws Exception{
-        artworkService.createArtwork(request);
+    public boolean uploadArtwork(@RequestParam("labels")String labels, HttpServletRequest request) throws Exception{
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<String> labelList = objectMapper.readValue(labels, new TypeReference<List<String>>() {});
+        return artworkService.createArtwork(labelList,request);
     }
 
     @RequestMapping(value = "/artworks/{artworkId}",method = RequestMethod.GET)

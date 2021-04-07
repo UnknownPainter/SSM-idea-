@@ -118,7 +118,8 @@ module.exports ={
     }).then(function (response) {
       var data = response.data;
       _this.count = data;
-      _this.pageCount = Math.floor(parseInt(data)/24+1);
+      _this.pageCount = Math.floor((parseInt(data)+23)/24);
+      if(_this.pageCount==0)_this.pageCount=1;
 
       axios({
         method: 'get',

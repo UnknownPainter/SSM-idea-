@@ -2,10 +2,12 @@ package com.frame.service;
 
 import com.frame.dao.ArtworkMapper;
 import com.frame.dao.CollectionMapper;
+import com.frame.dao.TagMapper;
 import com.frame.po.Artwork;
 import com.frame.po.ArtworkForUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -28,14 +30,17 @@ public class ArtworkServiceImpl implements ArtworkService{
     private ArtworkMapper artworkMapper;
     @Autowired
     private CollectionMapper collectionMapper;
+    @Autowired
+    private TagMapper tagMapper;
 
     @Override
     public int getUserArtworkCount(int userId) {
         return artworkMapper.getUserArtworkCount(userId);
     }
 
+    @Transactional
     @Override
-    public boolean createArtwork(HttpServletRequest request) throws Exception{
+    public boolean createArtwork(List<String> labels,HttpServletRequest request) throws Exception{
         Artwork artwork = new Artwork();
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile file = multipartRequest.getFile("file");
@@ -62,6 +67,9 @@ public class ArtworkServiceImpl implements ArtworkService{
         file.transferTo(new File(path+File.separator+artwork.getArtwork_id()+fileType));
 
         artworkMapper.updateArtworkLocationById(MAP_PATH+"/"+artwork.getArtwork_artistId()+"/"+artwork.getArtwork_id()+fileType,artwork.getArtwork_id());
+        for(String label:labels){
+            tagMapper.createTag(artwork.getArtwork_id(),label);
+        }
 
         return true;
     }
