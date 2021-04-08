@@ -5,6 +5,7 @@ import com.frame.dao.CollectionMapper;
 import com.frame.dao.TagMapper;
 import com.frame.po.Artwork;
 import com.frame.po.ArtworkForUser;
+import com.frame.po.ArtworkWithLabel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,23 +76,20 @@ public class ArtworkServiceImpl implements ArtworkService{
     }
 
     @Override
-    public ArtworkForUser getArtwork(int artworkId,int userId) {
-        ArtworkForUser artworkForUser = artworkMapper.getArtworkById(artworkId);
-        artworkForUser.setHasCollect(false);
-        artworkForUser.setHasPraise(false);
+    public ArtworkWithLabel getArtwork(int artworkId, int userId) {
+        ArtworkWithLabel artworkWithLabel = artworkMapper.getArtworkById(artworkId);
+        artworkWithLabel.setHasCollect(false);
+        artworkWithLabel.setHasPraise(false);
         if(userId==-1){
-            artworkForUser.setHasCollect(false);
+            artworkWithLabel.setHasCollect(false);
         }
         else{
-            List<Integer> li = collectionMapper.getUserCollection(userId);
-            for(int id:li){
-                if(artworkForUser.getArtwork_id()==id){
-                    artworkForUser.setHasCollect(true);
-                    break;
-                }
+            if(collectionMapper.requestIfHasCollected(userId,artworkId)!=0){
+                artworkWithLabel.setHasCollect(true);
             }
         }
-        return artworkForUser;
+        artworkWithLabel.setLabel(tagMapper.getTagOfArtwork(artworkId));
+        return artworkWithLabel;
     }
 
     @Override

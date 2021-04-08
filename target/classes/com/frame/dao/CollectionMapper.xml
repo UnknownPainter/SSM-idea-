@@ -36,5 +36,8 @@
              ) B
         on artwork.artwork_id = B.artwork_id
     </select>
+    <select id="requestIfHasCollected" resultType="Integer">
+        SELECT IFNULL(max(collection_id),0) as collection_id from collection where artwork_id=#{1} and user_id=#{0}
+    </select>
 
 </mapper>

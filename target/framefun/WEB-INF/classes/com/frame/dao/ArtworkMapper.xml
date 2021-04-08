@@ -13,7 +13,7 @@
     <select id="getDefaultArtwork" resultType="com.frame.po.ArtworkForUser">
         SELECT * FROM artwork order by artwork_id desc limit #{0},15;
     </select>
-    <select id="getArtworkById" resultType="com.frame.po.ArtworkForUser">
+    <select id="getArtworkById" resultType="com.frame.po.ArtworkWithLabel">
         SELECT * FROM artwork where artwork_id=#{artworkId}
     </select>
     <delete id="deleteArtwork">

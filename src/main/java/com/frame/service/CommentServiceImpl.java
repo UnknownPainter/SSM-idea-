@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -45,6 +46,7 @@ public class CommentServiceImpl implements CommentService{
             comment.setComment_content(content);
             comment.setComment_artworkId(artworkId);
             comment.setComment_userId(userId);
+            comment.setComment_createTime(new Date());
             commentMapper.createComment(comment);
             callback.callback(comment);
         };

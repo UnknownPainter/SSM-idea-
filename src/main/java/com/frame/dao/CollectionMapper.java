@@ -10,4 +10,5 @@ public interface CollectionMapper {
     List<Integer> getUserCollection(int userId);
     List<Artwork> getCollectionByPage(int userId,int page);
     int getCollectionCount(int userId);
+    int requestIfHasCollected(int userId,int artworkId);
 }

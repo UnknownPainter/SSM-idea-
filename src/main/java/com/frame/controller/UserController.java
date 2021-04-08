@@ -44,6 +44,7 @@ public class UserController {
     @RequestMapping(value = "/session",method = RequestMethod.GET)
     public User isOk(HttpServletRequest request){
         Cookie cookies[] = request.getCookies();
+        if(cookies==null)return null;
         String username="";String password="";
         for(Cookie cookie:cookies){
             if("username".equals(cookie.getName())){

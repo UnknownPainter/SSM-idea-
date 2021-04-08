@@ -48,13 +48,6 @@ public class LoginServiceTest {
     @Transactional
     public void register() throws NullPointerException
     {
-        Comment comment = new Comment();
-        comment.setComment_content("gfh");
-        comment.setComment_artworkId(46);
-        comment.setComment_userId(5);
-        comment.setComment_toId(2);
-        commentMapper.createComment(comment);
-        commentMapper=null;
-        commentMapper.updateCommentReplyCount(2,1);
+        System.out.println(collectionMapper.requestIfHasCollected(5,28));
     }
 }

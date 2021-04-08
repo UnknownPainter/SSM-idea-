@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.frame.po.Artwork;
 import com.frame.po.ArtworkForUser;
+import com.frame.po.ArtworkWithLabel;
 import com.frame.service.ArtworkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,7 @@ public class ArtworkController {
     }
 
     @RequestMapping(value = "/artworks/{artworkId}",method = RequestMethod.GET)
-    public ArtworkForUser getArtwork(@PathVariable("artworkId") int artworkId,HttpServletRequest request){
+    public ArtworkWithLabel getArtwork(@PathVariable("artworkId") int artworkId, HttpServletRequest request){
         Object userId = request.getSession().getAttribute("userId");
         if(userId!=null){
             return artworkService.getArtwork(artworkId,(int)userId);
