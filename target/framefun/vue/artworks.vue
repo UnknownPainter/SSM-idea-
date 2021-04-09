@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="text-align: left;width: 90%">
     <div class="artwork-block" >
       <el-image
           v-if="artwork"
@@ -11,7 +11,19 @@
     </div>
     <div class="info-block">
       <div style="font-size: 20px;line-height: 1.7;">{{artwork.artwork_name}}</div>
+      <div style="color: #8c939d;font-size: 12px;margin-top:8px">
+        <div style="display: inline-block">{{artwork.artwork_createTime}}</div>
+      </div>
       <div style="color: #8c939d;font-size: 14px;line-height: 1.7;margin-top: 8px">{{artwork.artwork_comment==""?"上传者没有留下评论":artwork.artwork_comment}}</div>
+      <div>
+        <el-tag
+            style="margin: 8px 8px 0 0"
+            v-for="tag in tags"
+            :key="tag"
+            :type="tagType[Math.round(Math.random()*4)]">
+          {{tag}}
+        </el-tag>
+      </div>
     </div>
     <div class="comment-block">
       <el-form :model="form" class="form-block">
@@ -77,7 +89,9 @@ module.exports={
       },
       user:'',
       page:0,
-      comments:[]
+      comments:[],
+      tagType:['' ,'success'  ,'info', 'warning' ,'danger' ],
+      tags:[]
     }
   },
   methods:{
@@ -116,6 +130,7 @@ module.exports={
     }).then(function (response) {
       var data = response.data;
       _this.artwork = data;
+      _this.tags = data.label;
       _this.imageList.push(data.artwork_location)
     });
     axios({
@@ -166,9 +181,10 @@ module.exports={
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   margin-bottom: 50px;
   margin-top: 0;
+  border-radius: 15px;
 }
 .info-block{
-  padding: 10px 30px 10px 30px;
+  padding: 12px 30px 12px 30px;
   margin: 30px;
   height: auto;
   background: #FFFFFF;
@@ -176,6 +192,7 @@ module.exports={
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
   margin-bottom: 18px;
   margin-top: 0;
+  border-radius: 15px;
 }
 .form-block{
   width: 100%;

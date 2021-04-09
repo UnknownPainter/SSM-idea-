@@ -1,20 +1,16 @@
 package com.frame.service;
 
-import com.frame.dao.ArtworkMapper;
-import com.frame.dao.CollectionMapper;
-import com.frame.dao.CommentMapper;
-import com.frame.dao.UserMapper;
-import com.frame.po.Artwork;
-import com.frame.po.ArtworkForUser;
-import com.frame.po.Comment;
-import com.frame.po.User;
+import com.frame.dao.*;
+import com.frame.po.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import sun.nio.ch.ThreadPool;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -31,6 +27,10 @@ public class LoginServiceTest {
     private ArtworkMapper artworkMapper;
     @Autowired
     private CommentMapper commentMapper;
+    @Autowired
+    private ThreadPoolTaskExecutor threadPool;
+    @Autowired
+    TagMapper tagMapper;
     @Test
     public void login() {
         Comment comment = new Comment();
@@ -40,7 +40,6 @@ public class LoginServiceTest {
        for(int i=1;i<30;i++){
            comment.setComment_content("回复评论"+i);
            commentMapper.createReplyOfComment(comment);
-
        }
     }
 
@@ -48,6 +47,14 @@ public class LoginServiceTest {
     @Transactional
     public void register() throws NullPointerException
     {
-        System.out.println(collectionMapper.requestIfHasCollected(5,28));
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                tagMapper.createTag(1,"f");
+                System.out.println("????");
+            }
+        };
+        tagMapper.createTag(1,"fg");
+        threadPool.execute(r);
     }
 }
