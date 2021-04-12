@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface ArtworkService {
-    public boolean createArtwork(List<String> labels,HttpServletRequest request)throws Exception;
+    public void createArtwork(List<String> labels,HttpServletRequest request);
     public ArtworkWithLabel getArtwork(int artworkId, int userId);
     public List<ArtworkForUser> getHomeArtwork(int userId,int page);
     public boolean deleteArtwork(int id,int userId);

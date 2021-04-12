@@ -1,5 +1,6 @@
 package com.frame.service;
 
+import com.frame.component.ArtworkAsyncTask;
 import com.frame.dao.*;
 import com.frame.po.*;
 import org.junit.Test;
@@ -31,6 +32,8 @@ public class LoginServiceTest {
     private ThreadPoolTaskExecutor threadPool;
     @Autowired
     TagMapper tagMapper;
+    @Autowired
+    private ArtworkAsyncTask artworkAsyncTask;
     @Test
     public void login() {
         Comment comment = new Comment();
@@ -45,16 +48,17 @@ public class LoginServiceTest {
 
     @Test
     @Transactional
-    public void register() throws NullPointerException
+    public void register() throws Exception
     {
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                tagMapper.createTag(1,"f");
-                System.out.println("????");
+                artworkAsyncTask.createArtwork(null,null);
+                System.out.println("???");
             }
         };
-        tagMapper.createTag(1,"fg");
         threadPool.execute(r);
+        Thread.sleep(3000);
+
     }
 }

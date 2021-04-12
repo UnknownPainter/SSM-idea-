@@ -5,10 +5,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.frame.po.Artwork;
 import com.frame.po.ArtworkForUser;
 import com.frame.po.ArtworkWithLabel;
+import com.frame.po.Comment;
 import com.frame.service.ArtworkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -25,12 +28,19 @@ public class ArtworkController {
 
     @Autowired
     private ArtworkService artworkService;
+    @Autowired
+    private ThreadPoolTaskExecutor threadPool;
 
     @RequestMapping(value = "/artworks",method = RequestMethod.POST)
-    public boolean uploadArtwork(@RequestParam("labels")String labels, HttpServletRequest request) throws Exception{
+    public DeferredResult<Boolean> uploadArtwork(@RequestParam("labels")String labels, HttpServletRequest request) throws Exception{
+        final DeferredResult<Boolean> deferredResult = new DeferredResult<>();
         ObjectMapper objectMapper = new ObjectMapper();
         List<String> labelList = objectMapper.readValue(labels, new TypeReference<List<String>>() {});
-        return artworkService.createArtwork(labelList,request);
+        threadPool.execute(()->{
+            artworkService.createArtwork(labelList,request);
+            deferredResult.setResult(true);
+        });
+        return deferredResult;
     }
 
     @RequestMapping(value = "/artworks/{artworkId}",method = RequestMethod.GET)

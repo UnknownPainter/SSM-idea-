@@ -1,13 +1,13 @@
 package com.frame.service;
 
 import com.frame.po.Comment;
+import com.frame.po.CommentWithUserInfo;
 import com.frame.utils.CallbackForController;
 
 import java.util.List;
 
 public interface CommentService {
-    int test(CallbackForController callback);
-    void getCommentByTimeOrder(int artworkId,int page,CallbackForController callback);
-    void createComment(int artworkId,String content,int userId,CallbackForController callback);
-    void createReplyOfComment(int commentId, int artworkId,String content,int userId,CallbackForController callback);
+    List<CommentWithUserInfo> getCommentByTimeOrder(int artworkId, int page);
+    Comment createComment(int artworkId,String content,int userId);
+    Comment createReplyOfComment(int commentId, int artworkId, String content, int userId);
 }

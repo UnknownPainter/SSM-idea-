@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,11 +42,16 @@ public class ArtworkServiceImpl implements ArtworkService{
 
     @Transactional
     @Override
-    public boolean createArtwork(List<String> labels,HttpServletRequest request) throws Exception{
+    public void createArtwork(List<String> labels,HttpServletRequest request){
         Artwork artwork = new Artwork();
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile file = multipartRequest.getFile("file");
-        BufferedImage image = ImageIO.read(file.getInputStream());
+        BufferedImage image = null;
+        try {
+            image = ImageIO.read(file.getInputStream());
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
 
         String originalFilename = file.getOriginalFilename();
         String fileType = originalFilename.substring(originalFilename.lastIndexOf('.'));
@@ -65,14 +71,17 @@ public class ArtworkServiceImpl implements ArtworkService{
         if(!mkfile.exists()){
             mkfile.mkdirs();
         }
-        file.transferTo(new File(path+File.separator+artwork.getArtwork_id()+fileType));
+        try {
+            file.transferTo(new File(path+File.separator+artwork.getArtwork_id()+fileType));
+        } catch (IOException e) {
+            throw new RuntimeException();
+        }
 
         artworkMapper.updateArtworkLocationById(MAP_PATH+"/"+artwork.getArtwork_artistId()+"/"+artwork.getArtwork_id()+fileType,artwork.getArtwork_id());
         for(String label:labels){
             tagMapper.createTag(artwork.getArtwork_id(),label);
         }
 
-        return true;
     }
 
     @Override
