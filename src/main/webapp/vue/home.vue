@@ -128,13 +128,19 @@ module.exports={
     this.artworkWidth=(this.$refs.home.clientWidth-40-this.colNum*16+16)/this.colNum;
     axios({
       method:'get',
-      url:'/artworks/home/0'
+      url:'/session'
     }).then(function (response) {
-      var data = response.data;
-      for(var i in data){
-        _this.setArtwork(data[i]);
-      }
+      axios({
+        method:'get',
+        url:'/artworks/home/0'
+      }).then(function (response) {
+        var data = response.data;
+        for(var i in data){
+          _this.setArtwork(data[i]);
+        }
+      });
     });
+
   },
   destroyed(){
     window.onscroll=null;

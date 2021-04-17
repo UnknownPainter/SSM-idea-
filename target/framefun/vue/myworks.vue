@@ -137,7 +137,11 @@ module.exports ={
     });
   },
   mounted(){
-    this.workWidth = (this.$refs.myworkArea.clientWidth*0.9)/this.col;
+    this.$router.app.colSpan=24;
+    this.$nextTick(()=>{
+      this.workWidth = (this.$refs.myworkArea.clientWidth*0.9)/this.col;
+    });
+
   }
 }
 </script>

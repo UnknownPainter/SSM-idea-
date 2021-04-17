@@ -146,7 +146,10 @@ module.exports ={
     });
   },
   mounted(){
-    this.collectionWidth = (this.$refs.collectionArea.clientWidth*0.9)/this.col;
+    this.$router.app.colSpan=24;
+    this.$nextTick(()=>{
+      this.collectionWidth = (this.$refs.collectionArea.clientWidth*0.9)/this.col;
+    });
   }
 }
 </script>

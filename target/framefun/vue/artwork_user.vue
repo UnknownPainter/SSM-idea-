@@ -2,7 +2,7 @@
   <div class="artwork-user-block">
     <div class="user-avatar">
       <el-avatar :size="64" style="float: left">
-        <el-image :src="user.user_avatar" fit="cover" style="height: 100%"></el-image>
+        <el-image  v-if="user" :src="user.user_avatar" fit="cover" style="height: 100%"></el-image>
       </el-avatar>
       <div style="float: left;font-size: 20px;margin-left: 30px;padding-top: 22px">{{user.user_name}}</div>
     </div>

@@ -18,11 +18,25 @@
       <div>
         <el-tag
             style="margin: 8px 8px 0 0"
+            :closable="artwork.artwork_artistId==user.user_id"
             v-for="tag in tags"
             :key="tag"
-            :type="tagType[Math.round(Math.random()*4)]">
+            :type="tagType[Math.round(Math.random()*4)]"
+            @close="handleClose(tag)">
           {{tag}}
         </el-tag>
+        <el-input
+            maxlength="15"
+            style="width: 90px"
+            v-if="inputVisible"
+            v-model="inputValue"
+            ref="saveTagInput"
+            size="small"
+            @keyup.enter.native="handleInputConfirm"
+            @blur="handleInputConfirm"
+        >
+        </el-input>
+        <el-button v-if="(!inputVisible)&&(artwork.artwork_artistId==user.user_id)"  size="small" @click="showInput">+ 添加标签</el-button>
       </div>
     </div>
     <div class="comment-block">
@@ -31,7 +45,7 @@
           <div style="text-align: left;">
             <el-col :span="2" style="display: inline-block;height: 64.8px">
               <el-avatar :size="48">
-                <el-image :src="user.user_avatar" fit="cover" style="height: 100%" v-if="user"></el-image>
+                <el-image :src="user.user_avatar" fit="cover" style="height: 100%" v-if="user.user_avatar"></el-image>
                 <i class="el-icon-user-solid" v-if="!user.user_avatar"></i>
               </el-avatar>
             </el-col>
@@ -91,10 +105,81 @@ module.exports={
       page:0,
       comments:[],
       tagType:['' ,'success'  ,'info', 'warning' ,'danger' ],
-      tags:[]
+      tags:[],
+      inputVisible: false,
+      inputValue: ''
     }
   },
   methods:{
+    handleClose(tag) {
+      var _this = this;
+      axios({
+        headers:{
+          'Content-Type':'application/x-www-form-urlencoded'
+        },
+        method:'delete',
+        url:'/tag/'+this.artwork.artwork_id+'/'+tag
+      }).then(response=>{
+        if(response.data!="noSession"){
+          if(response.data==true){
+            _this.tags.splice(this.tags.indexOf(tag), 1);
+            _this.$message({
+              message: '标签删除成功',
+              type: 'success',
+            });
+          }
+        }
+      });
+    },
+
+    showInput() {
+      if(this.tags.length<5){
+        this.inputVisible = true;
+        this.$nextTick(_ => {
+          this.$refs.saveTagInput.$refs.input.focus();
+        });
+      }
+      else{
+        this.$message({
+          message: '最多添加5个标签',
+          type: 'warning',
+        });
+      }
+    },
+
+    handleInputConfirm() {
+      var _this = this;
+      let inputValue = this.inputValue;
+      if (inputValue) {
+        if(this.tags.findIndex((value)=>value==inputValue)==-1){
+          axios({
+            headers:{
+              'Content-Type':'application/x-www-form-urlencoded'
+            },
+            method:'post',
+            url:'/tag/'+this.artwork.artwork_id+'/'+inputValue
+          }).then(response=>{
+            if(response.data!="noSession"){
+              if(response.data==true){
+                _this.tags.push(inputValue);
+                _this.$message({
+                  message: '标签添加成功',
+                  type: 'success',
+                });
+              }
+            }
+          });
+        }
+        else {
+          this.$message({
+            message: '标签已存在',
+            type: 'warning',
+          });
+        }
+      }
+      this.inputVisible = false;
+      this.inputValue = '';
+    },
     reply(index){
       var id = this.comments[index].comment_id;
       alert(id)
@@ -146,12 +231,9 @@ module.exports={
 
     });
     this.user = this.$router.app.user;
-    console.log(this.user)
     this.$root.$on('user',(a)=>{
       _this.user = '';
       _this.user = a;
-      console.log("dfdf")
-      console.log(_this.user);
     });
   },
   destroyed(){
@@ -223,4 +305,5 @@ module.exports={
   display:inline-block;font-size: 12px;color: #909399;cursor: pointer;text-align: center;
   margin-right: 8px;
 }
+
 </style>
