@@ -3,8 +3,10 @@ package com.frame.service;
 import com.frame.component.ArtworkAsyncTask;
 import com.frame.dao.*;
 import com.frame.po.*;
+import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -63,4 +65,5 @@ public class LoginServiceTest {
         String i="4";i.compareTo("4");
 
     }
+
 }
