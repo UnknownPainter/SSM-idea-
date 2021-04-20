@@ -42,4 +42,12 @@ public class CommentController {
         });
         return deferredResult;
     }
+    @RequestMapping(value = "/comment/{artworkId}/{commentId}",method = RequestMethod.POST)
+    public DeferredResult<Comment> createReply(@PathVariable("artworkId")int artworkId, @PathVariable("commentId")int commentId,String content, HttpSession session){
+        final DeferredResult<Comment> deferredResult = new DeferredResult<>();
+        threadPool.execute(()->{
+            deferredResult.setResult(commentService.createReplyOfComment(commentId,artworkId,content,(int)session.getAttribute("userId")));
+        });
+        return deferredResult;
+    }
 }

@@ -29,7 +29,7 @@ public class CommentServiceImpl implements CommentService{
         comment.setComment_artworkId(artworkId);
         comment.setComment_userId(userId);
         comment.setComment_toId(commentId);
-        commentMapper.createComment(comment);
+        commentMapper.createReplyOfComment(comment);
         commentMapper.updateCommentReplyCount(commentId,1);
         return comment;
     }

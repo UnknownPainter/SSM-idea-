@@ -173,7 +173,6 @@ module.exports ={
   box-shadow: 1px 2px 24px rgba(18,18,18,.6);
 }
 .mylist-leave-active {
-  position: absolute;
 }
 .mylist-leave-to
   /* .list-leave-active for below version 2.1.8 */ {

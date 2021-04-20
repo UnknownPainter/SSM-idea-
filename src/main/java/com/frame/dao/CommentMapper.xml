@@ -13,7 +13,7 @@
             user right join
             (SELECT * from comment WHERE
                 comment_id &lt;= (SELECT comment_id from comment where comment_artworkId=#{0} order by comment_id desc limit #{1},1)
-            and comment_artworkId=#{0} order by comment_id desc limit #{1},20) B
+            and comment_artworkId=#{0} order by comment_id desc limit 20) B
         on user_id = B.comment_userId
     </select>
     <insert id="createComment" parameterType="com.frame.po.Comment" useGeneratedKeys="true" keyProperty="comment_id">

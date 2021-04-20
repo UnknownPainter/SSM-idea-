@@ -16,8 +16,18 @@ public class Artwork implements Serializable {
     private int artwork_width;
     private int artwork_height;
     private Date artwork_createTime;
+    private int artwork_commentCount;
 
     public  Artwork(){}
+
+    public int getArtwork_commentCount() {
+        return artwork_commentCount;
+    }
+
+    public void setArtwork_commentCount(int artwork_commentCount) {
+        this.artwork_commentCount = artwork_commentCount;
+    }
+
     public Date getArtwork_createTime() {
         return artwork_createTime;
     }
