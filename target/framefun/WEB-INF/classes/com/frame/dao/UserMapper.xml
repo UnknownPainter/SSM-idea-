@@ -18,4 +18,10 @@
                 SELECT artwork_artistId from artwork where artwork_id=#{0}
             )
     </select>
+    <update id="updateFollowingOfUser">
+        UPDATE user set user_following=user_following+#{1} where user_id=#{0}
+    </update>
+    <update id="updateFollowerOfUser">
+        UPDATE user set user_followers=user_followers+#{1} where user_id=#{0}
+    </update>
 </mapper>
