@@ -1,6 +1,7 @@
 package com.frame.service;
 
 import com.frame.dao.UserMapper;
+import com.frame.po.Artist;
 import com.frame.po.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,5 +13,5 @@ public interface UserService {
     User register(String username,String password);
     boolean getName(String username);
     String updateAvatar(HttpServletRequest request) throws Exception;
-    User getUserByArtworkId(int artworkId);
+    Artist getUserByArtworkId(int artworkId,int userId);
 }

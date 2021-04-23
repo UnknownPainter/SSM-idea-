@@ -9,6 +9,10 @@
     <el-divider></el-divider>
     <div>
       <div style="font-size: 18px">关注者：{{user.user_following}}</div>
+      <div style="padding: 12px 0 0 0" @click="follow">
+        <el-button style="width: 100%" v-if="user.hasFollow!=true" type="primary" round>+关注</el-button>
+        <el-button style="width: 100%" v-if="user.hasFollow==true" type="info" round>已关注</el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -22,7 +26,32 @@ module.exports={
     }
   },
   methods:{
-
+    follow(){
+      var _this = this;
+      if(this.user.hasFollow==null)return;
+      if(this.user.hasFollow==false){
+        axios({
+          method:'post',
+          url:'/follow/'+this.user.user_id
+        }).then(function (response) {
+          var data = response.data;
+          if(data==true){
+            _this.$set(_this.user,"hasFollow",true);
+          }
+        });
+      }
+      else{
+        axios({
+          method:'delete',
+          url:'/follow/'+this.user.user_id
+        }).then(function (response) {
+          var data = response.data;
+          if(data==true){
+            _this.$set(_this.user,"hasFollow",false);
+          }
+        });
+      }
+    }
   },
   mounted(){
     var _this = this;
@@ -31,7 +60,7 @@ module.exports={
       url:'/artist/'+this.artworkId
     }).then(function (response) {
       var data = response.data;
-      _this.user = data;
+      _this.user = Object.assign({},_this.user,data);
     });
   }
 }

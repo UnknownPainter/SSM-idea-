@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @Controller
 
@@ -91,7 +92,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "/artist/{id}",method = RequestMethod.GET)
-    public User getArtist(@PathVariable("id")int ArtworkId){
-        return userService.getUserByArtworkId(ArtworkId);
+    public User getArtist(@PathVariable("id")int ArtworkId, HttpSession session){
+        Object userId = session.getAttribute("userId");
+        if(userId!=null){
+            return userService.getUserByArtworkId(ArtworkId,(int)userId);
+        }
+        else{
+            return userService.getUserByArtworkId(ArtworkId,-1);
+        }
+
     }
 }

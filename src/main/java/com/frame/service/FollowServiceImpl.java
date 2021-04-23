@@ -3,8 +3,10 @@ package com.frame.service;
 import com.frame.dao.FollowMapper;
 import com.frame.dao.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Service
 public class FollowServiceImpl implements FollowService{
 
     @Autowired

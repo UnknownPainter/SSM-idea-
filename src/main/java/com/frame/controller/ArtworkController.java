@@ -63,7 +63,6 @@ public class ArtworkController {
         else{
             return artworkService.getHomeArtwork(-1,page);
         }
-
     }
     @RequestMapping(value = "/user/artworks/{page}",method = RequestMethod.GET)
     public List<Artwork> getUserArtwork(@PathVariable("page") int page, HttpSession session){

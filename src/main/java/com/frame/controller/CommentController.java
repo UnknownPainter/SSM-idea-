@@ -23,7 +23,7 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
     @Autowired
-    ThreadPoolTaskExecutor threadPool;
+    private ThreadPoolTaskExecutor threadPool;
 
     @RequestMapping(value = "/comment/{artworkId}",method = RequestMethod.POST)
     public DeferredResult<Comment> createComment(@PathVariable("artworkId")int artworkId, String content, HttpSession session){

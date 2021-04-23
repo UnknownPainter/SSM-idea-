@@ -1,6 +1,7 @@
 package com.frame.service;
 
 import com.frame.dao.UserMapper;
+import com.frame.po.Artist;
 import com.frame.po.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByArtworkId(int artworkId) {
-        return userMapper.getUserByArtworkId(artworkId);
+    public Artist getUserByArtworkId(int artworkId,int userId) {
+        return userMapper.getUserByArtworkId(artworkId,userId);
     }
 }

@@ -36,7 +36,11 @@ public class LoginServiceTest {
     @Autowired
     TagMapper tagMapper;
     @Autowired
+    private  UserMapper userMapper;
+    @Autowired
     private ArtworkAsyncTask artworkAsyncTask;
+    @Autowired
+    FollowMapper followMapper;
     @Test
     public void login() {
         Comment comment = new Comment();
@@ -50,19 +54,11 @@ public class LoginServiceTest {
     }
 
     @Test
-    @Transactional
     public void register() throws Exception
     {
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                artworkAsyncTask.createArtwork(null,null);
-                System.out.println("???");
-            }
-        };
-        threadPool.execute(r);
-        Thread.sleep(3000);
-        String i="4";i.compareTo("4");
+
+        Artist artist=userMapper.getUserByArtworkId(46,5);
+        System.out.println(artist.isHasFollow());
 
     }
 

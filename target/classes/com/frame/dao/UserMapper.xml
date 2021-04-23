@@ -3,6 +3,22 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.frame.dao.UserMapper">
+    <resultMap id="artistResult" type="com.frame.po.Artist">
+        <id property="user_id" column="user_id"/>
+        <result property="user_name" column="user_name"/>
+        <result property="user_avatar" column="user_avatar"/>
+        <result property="user_following" column="user_following"/>
+        <result property="user_followers" column="user_followers"/>
+        <result property="hasFollow" column="hasFollow"/>
+        <collection property="sampleArtworks" ofType="com.frame.po.Artwork">
+            <id property="artwork_id" column="artwork_id"/>
+            <result property="artwork_name" column="artwork_artistId"/>
+            <result property="artwork_location" column="artwork_location"/>
+            <result property="artwork_praiseCount" column="artwork_praiseCount"/>
+            <result property="artwork_collectCount" column="artwork_collectCount"/>
+            <result property="artwork_createTime" column="artwork_createTime"/>
+        </collection>
+    </resultMap>
     <select id="getUserByName" parameterType="java.lang.String" resultType="com.frame.po.User">
         SELECT * FROM user WHERE user_name=#{_parameter}
     </select>
@@ -13,10 +29,16 @@
     <update id="updateAvatar">
         UPDATE user SET user_avatar=#{1} WHERE user_id=#{0}
     </update>
-    <select id="getUserByArtworkId" resultType="com.frame.po.User">
-        SELECT * FROM user WHERE user_id=(
+    <select id="getUserByArtworkId" resultMap="artistResult">
+        SELECT user.*,B.*,IF(C.follow_id>0,true,false) as hasFollow
+        FROM
+            (SELECT * from artwork where artwork_artistId=(
                 SELECT artwork_artistId from artwork where artwork_id=#{0}
-            )
+                ) order by artwork.artwork_id desc limit 4) B
+            left join user
+            on user.user_id=(SELECT artwork_artistId from artwork where artwork_id=#{0})
+            left join
+            (SELECT follow_id from follow where follow_followerId=#{1} and follow_followingId=(SELECT artwork_artistId from artwork where artwork_id=#{0})) C on 1
     </select>
     <update id="updateFollowingOfUser">
         UPDATE user set user_following=user_following+#{1} where user_id=#{0}
