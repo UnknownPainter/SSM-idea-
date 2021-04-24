@@ -8,5 +8,4 @@ public interface CollectionService {
     boolean createCollection(int artworkId,int userId);
     boolean deleteCollection(int artWorkId,int userId);
     List<Artwork> getCollectionByPage(int page,int userId);
-    int getCollectionCount(int userId);
 }

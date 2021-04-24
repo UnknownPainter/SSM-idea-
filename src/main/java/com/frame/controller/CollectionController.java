@@ -35,9 +35,5 @@ public class CollectionController {
     public List<Artwork> getCollections(@PathVariable("page")int page, HttpSession session){
         return collectionService.getCollectionByPage(page,(int)session.getAttribute("userId"));
     }
-
-    @RequestMapping(value = "/collections/count",method = RequestMethod.GET)
-    public int getCollectionCount(HttpSession session){
-        return collectionService.getCollectionCount((int)session.getAttribute("userId"));
-    }
+    
 }

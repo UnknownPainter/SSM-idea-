@@ -2,6 +2,7 @@ package com.frame.service;
 
 import com.frame.dao.ArtworkMapper;
 import com.frame.dao.CollectionMapper;
+import com.frame.dao.UserMapper;
 import com.frame.po.Artwork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ public class CollectionServiceImpl implements CollectionService{
     private CollectionMapper collectionMapper;
     @Autowired
     private ArtworkMapper artworkMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     @Transactional
@@ -25,6 +28,7 @@ public class CollectionServiceImpl implements CollectionService{
 
         collectionMapper.createCollection(artworkId,userId);
         artworkMapper.updateArtworkCollectCount(artworkId,1);
+        userMapper.updateCollectionCountOfUser(userId,1);
         return true;
     }
 
@@ -33,13 +37,10 @@ public class CollectionServiceImpl implements CollectionService{
 
         collectionMapper.deleteCollection(artWorkId,userId);
         artworkMapper.updateArtworkCollectCount(artWorkId,-1);
+        userMapper.updateCollectionCountOfUser(userId,-1);
         return true;
     }
 
-    @Override
-    public int getCollectionCount(int userId) {
-        return collectionMapper.getCollectionCount(userId);
-    }
 
     @Override
     public List<Artwork> getCollectionByPage(int page,int userId) {

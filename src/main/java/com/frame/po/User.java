@@ -11,6 +11,24 @@ public class User implements Serializable {
     private String user_avatar;
     private int user_following;
     private int user_followers;
+    private int user_collectionCount;
+    private int user_artworkCount;
+
+    public int getUser_collectionCount() {
+        return user_collectionCount;
+    }
+
+    public void setUser_collectionCount(int user_collectionCount) {
+        this.user_collectionCount = user_collectionCount;
+    }
+
+    public int getUser_artworkCount() {
+        return user_artworkCount;
+    }
+
+    public void setUser_artworkCount(int user_artworkCount) {
+        this.user_artworkCount = user_artworkCount;
+    }
 
     public User(){}
 

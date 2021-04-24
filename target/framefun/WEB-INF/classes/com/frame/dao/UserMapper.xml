@@ -10,6 +10,8 @@
         <result property="user_following" column="user_following"/>
         <result property="user_followers" column="user_followers"/>
         <result property="hasFollow" column="hasFollow"/>
+        <result property="user_artworkCount" column="user_artworkCount"/>
+        <result property="user_collectionCount" column="user_collectionCount"/>
         <collection property="sampleArtworks" ofType="com.frame.po.Artwork">
             <id property="artwork_id" column="artwork_id"/>
             <result property="artwork_name" column="artwork_artistId"/>
@@ -45,5 +47,11 @@
     </update>
     <update id="updateFollowerOfUser">
         UPDATE user set user_followers=user_followers+#{1} where user_id=#{0}
+    </update>
+    <update id="updateArtworkCountOfUser">
+        UPDATE user set user_artworkCount=user_artworkCount+#{1} where user_id=#{0}
+    </update>
+    <update id="updateCollectionCountOfUser">
+        UPDATE user set user_collectionCount=user_collectionCount+#{1} where user_id=#{0}
     </update>
 </mapper>

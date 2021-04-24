@@ -10,4 +10,6 @@ public interface UserMapper {
     public void updateAvatar(int userId,String location);
     public void updateFollowingOfUser(int userId,int count);
     public void updateFollowerOfUser(int userId,int count);
+    public void updateArtworkCountOfUser(int userId,int count);
+    public void updateCollectionCountOfUser(int userId,int count);
 }
