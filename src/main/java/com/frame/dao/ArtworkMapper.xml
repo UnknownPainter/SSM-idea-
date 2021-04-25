@@ -22,9 +22,6 @@
     <select id="getUserArtwork" resultType="com.frame.po.Artwork">
         SELECT * from artwork where artwork_artistId=#{0} order by artwork_id desc limit #{1},24
     </select>
-    <select id="getUserArtworkCount" resultType="Integer">
-        select count(artwork_id) from artwork where artwork_artistId=#{0};
-    </select>
     <update id="updateArtworkCollectCount">
         UPDATE artwork set artwork_collectCount=artwork_collectCount+#{1} where artwork_id=#{0}
     </update>

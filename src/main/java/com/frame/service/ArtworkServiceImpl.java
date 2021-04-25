@@ -35,10 +35,6 @@ public class ArtworkServiceImpl implements ArtworkService{
     @Autowired
     private TagMapper tagMapper;
 
-    @Override
-    public int getUserArtworkCount(int userId) {
-        return artworkMapper.getUserArtworkCount(userId);
-    }
 
     @Transactional
     @Override

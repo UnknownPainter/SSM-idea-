@@ -68,10 +68,6 @@ public class ArtworkController {
     public List<Artwork> getUserArtwork(@PathVariable("page") int page, HttpSession session){
         return artworkService.getUserArtwork(page,(int)session.getAttribute("userId"));
     }
-    @RequestMapping(value = "/user/artworks/count",method = RequestMethod.GET)
-    public int getUserArtworkCount(HttpSession session){
-        return artworkService.getUserArtworkCount((int)session.getAttribute("userId"));
-    }
     @RequestMapping(value = "/artworks/{artworkId}",method = RequestMethod.DELETE)
     public boolean deleteArtwork(@PathVariable("artworkId")int artworkId,HttpSession session){
         artworkService.deleteArtwork(artworkId,(int)session.getAttribute("userId"));

@@ -68,7 +68,9 @@ module.exports ={
       show:false,
       count:'',
       col:'6',
-      isManage:false
+      isManage:false,
+      hasGet:false,
+      user:''
     }
   },
   methods:{
@@ -111,30 +113,57 @@ module.exports ={
   },
   created() {
     var _this = this;
-    this.currentPage = parseInt(this.$route.params.page)+1;
-    axios({
-      method: 'get',
-      url: '/user/artworks/count'
-    }).then(function (response) {
-      var data = response.data;
-      _this.count = data;
-      _this.pageCount = Math.floor((parseInt(data)+23)/24);
+    this.user = this.$router.app.user;
+    this.$root.$on('user',(a)=>{
+      _this.user = '';
+      _this.user = a;
+      if(this.user!=null&&this.user!=''&&_this.hasGet==false){
+        this.hasGet = true;
+        axios({
+          method: 'get',
+          url: '/user/artworks/'+(_this.currentPage-1)
+        }).then(function (response) {
+          var data = response.data;
+          for (var i in data) {
+            data[i].isDeleted = false;
+            data[i].error=data[i].artwork_location==null?"作品已被删除":"加载失败";
+            _this.artworks.push(data[i]);
+          }
+        });
+      }
+      _this.currentPage = parseInt(_this.$route.params.page)+1;
+      _this.count = parseInt(_this.user.user_artworkCount);
+      _this.pageCount = Math.floor((parseInt(_this.user.user_artworkCount)+23)/24);
       if(_this.pageCount==0)_this.pageCount=1;
+      _this.show= false;
+      _this.$nextTick(()=>{
+        _this.show=true;
+      })
+    });
+    this.currentPage = parseInt(this.$route.params.page)+1;
+    this.count = parseInt(this.user.user_artworkCount);
+    this.pageCount = Math.floor((parseInt(this.user.user_artworkCount)+23)/24);
+    if(this.pageCount==0)this.pageCount=1;
+    this.show= false;
+    this.$nextTick(()=>{
+      _this.show=true;
+    })
 
+    if(this.user!=null&&this.user!=''){
+      this.hasGet = true;
       axios({
         method: 'get',
         url: '/user/artworks/'+(_this.currentPage-1)
       }).then(function (response) {
         var data = response.data;
         for (var i in data) {
+          data[i].isDeleted = false;
+          data[i].error=data[i].artwork_location==null?"作品已被删除":"加载失败";
           _this.artworks.push(data[i]);
         }
-        _this.show= false;
-        _this.$nextTick(()=>{
-          _this.show=true;
-        })
       });
-    });
+    }
+
   },
   mounted(){
     this.$router.app.colSpan=24;

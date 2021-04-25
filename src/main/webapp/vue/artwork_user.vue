@@ -13,6 +13,18 @@
         <el-button style="width: 100%" v-if="user.hasFollow!=true" type="primary" round>+关注</el-button>
         <el-button style="width: 100%" v-if="user.hasFollow==true" type="info" round>已关注</el-button>
       </div>
+      <div style="display: flex;flex-wrap: wrap;justify-content: space-between;margin-top: 8px" ref="myflex" >
+        <div :style="'width: '+(blockWidth<300?'100%':'calc(50% - 8px)')+';padding: '+(blockWidth<300?'100%':'calc(50% - 8px)')+' 0 0;height: 0;position: relative;margin-top: 12px'"
+             v-for="(Artwork,index) in user.sampleArtworks" :key="Artwork.artwork_id">
+          <el-image
+              @click="handleClick"
+              :src="Artwork.artwork_location"
+              :data-artworkid="Artwork.artwork_id"
+              style="border-radius: 15px;position: absolute;width: 100%;;height:100%;top:0;left: 0"
+              fit="cover"
+          ></el-image>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -22,10 +34,14 @@ module.exports={
   data(){
     return {
       user:'',
-      artworkId:this.$route.params.id
+      artworkId:this.$route.params.id,
+      blockWidth:300
     }
   },
   methods:{
+    handleClick(){
+
+    },
     follow(){
       var _this = this;
       if(this.user.hasFollow==null)return;
@@ -55,6 +71,9 @@ module.exports={
   },
   mounted(){
     var _this = this;
+    this.$nextTick(() => { //使用nextTick为了保证dom元素都已经渲染完毕
+      _this.blockWidth=_this.$refs.myflex.clientWidth;
+    });
     axios({
       method:'get',
       url:'/artist/'+this.artworkId
@@ -62,6 +81,9 @@ module.exports={
       var data = response.data;
       _this.user = Object.assign({},_this.user,data);
     });
+    window.onresize = ()=>{
+      _this.blockWidth=_this.$refs.myflex.clientWidth;
+    };
   }
 }
 </script>

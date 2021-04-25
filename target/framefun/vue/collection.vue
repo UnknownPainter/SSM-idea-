@@ -71,7 +71,6 @@ module.exports ={
     collectHandler(e){
       var _this = this;
       var index = e.currentTarget.dataset.artworkindex;
-      console.log(index)
       if(this.artworks[index].isDeleted!=false){
         axios({
           method:'post',

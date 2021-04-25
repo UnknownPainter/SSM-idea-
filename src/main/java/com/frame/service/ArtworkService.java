@@ -13,5 +13,4 @@ public interface ArtworkService {
     public List<ArtworkForUser> getHomeArtwork(int userId,int page);
     public boolean deleteArtwork(int id,int userId);
     public List<Artwork> getUserArtwork(int page,int userId);
-    public int getUserArtworkCount(int userId);
 }
