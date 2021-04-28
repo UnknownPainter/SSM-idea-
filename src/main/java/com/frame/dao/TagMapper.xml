@@ -6,8 +6,16 @@
     <insert id="createTag" useGeneratedKeys="true">
         INSERT INTO tag(tag_name, artwork_id) VALUES (#{1},#{0})
     </insert>
-    <select id="getArtworkIdByTag" resultType="int">
-        SELECT artwork_id from tag where tag_name=#{0} limit #{1},20
+    <select id="getArtworkIdByTag" resultType="com.frame.po.ArtworkForUser">
+        SELECT artwork.* , IF(collection_id>0,true,false) as hasCollect
+        from
+             (
+                 SELECT * from tag where tag_id &lt;=
+                                      (SELECT tag_id where tag_name=#{0} order by tag_id desc limit #{1},1)
+                 order by tag_id desc limit 20
+             ) B left join
+             artwork on artwork.artwork_id=B.artwork_id
+            left join collection on collection.user_id=#{2} and collection.artwork_id=B.artwork_id;
     </select>
     <select id="getTagOfArtwork" resultType="String">
         SELECT tag_name from tag where artwork_id=#{0}

@@ -17,7 +17,7 @@
         <div :style="'width: '+(blockWidth<300?'100%':'calc(50% - 8px)')+';padding: '+(blockWidth<300?'100%':'calc(50% - 8px)')+' 0 0;height: 0;position: relative;margin-top: 12px'"
              v-for="(Artwork,index) in user.sampleArtworks" :key="Artwork.artwork_id">
           <el-image
-              @click="handleClick"
+              @click="handleClick(Artwork.artwork_id)"
               :src="Artwork.artwork_location"
               :data-artworkid="Artwork.artwork_id"
               style="border-radius: 15px;position: absolute;width: 100%;;height:100%;top:0;left: 0"
@@ -39,8 +39,9 @@ module.exports={
     }
   },
   methods:{
-    handleClick(){
-
+    handleClick(id){
+      var i = id;
+      this.$router.push({path:`/artworks/${i}`});
     },
     follow(){
       var _this = this;

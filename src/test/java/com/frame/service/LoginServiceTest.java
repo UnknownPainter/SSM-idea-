@@ -57,8 +57,8 @@ public class LoginServiceTest {
     public void register() throws Exception
     {
 
-        Artist artist=userMapper.getUserByArtworkId(46,5);
-        System.out.println(artist.isHasFollow());
+        List<ArtworkForUser> list = tagMapper.getArtworkIdByTag("fgo",0,5);
+        System.out.println(list.get(0).isHasCollect());
 
     }
 

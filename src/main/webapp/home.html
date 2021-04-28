@@ -26,12 +26,12 @@
         <el-col :span="24-colSpan" class="aside-area">
 
             <transition name="el-zoom-in-center">
-                <router-view name="aside"></router-view>
+                <router-view name="aside" :key="$router.currentRoute.fullPath"></router-view>
             </transition>
         </el-col>
         <el-col :span="colSpan" class="main-area" v-loading="loadingMain">
             <transition name="el-zoom-in-center">
-                <router-view name="home"></router-view>
+                <router-view name="home" :key="$router.currentRoute.fullPath"></router-view>
             </transition>
         </el-col>
     </el-row>
