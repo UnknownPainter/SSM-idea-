@@ -6,7 +6,7 @@
     <insert id="createTag" useGeneratedKeys="true">
         INSERT INTO tag(tag_name, artwork_id) VALUES (#{1},#{0})
     </insert>
-    <select id="getArtworkIdByTag" resultType="com.frame.po.ArtworkForUser">
+    <select id="getArtworkByTag" resultType="com.frame.po.ArtworkForUser">
         SELECT artwork.* , IF(collection_id>0,true,false) as hasCollect
         from
              (
@@ -25,5 +25,8 @@
     </delete>
     <select id="getTagCount" resultType="int">
         SELECT count(tag_id) from tag where artwork_id=#{0}
+    </select>
+    <select id="getSearchCountOfTag" resultType="int">
+        SELECT count(tag_id) from tag where tag_name=#{0}
     </select>
 </mapper>

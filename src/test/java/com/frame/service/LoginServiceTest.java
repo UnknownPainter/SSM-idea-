@@ -57,8 +57,8 @@ public class LoginServiceTest {
     public void register() throws Exception
     {
 
-        List<ArtworkForUser> list = tagMapper.getArtworkIdByTag("fgo",0,5);
-        System.out.println(list.get(0).isHasCollect());
+//        List<ArtworkForUser> list = tagMapper.getArtworkIdByTag("fgo",0,5);
+//        System.out.println(list.get(0).isHasCollect());
 
     }
 

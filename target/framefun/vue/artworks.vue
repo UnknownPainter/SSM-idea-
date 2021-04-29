@@ -193,7 +193,7 @@ module.exports={
       });
     },
     tagSearch(tag){
-      alert(tag);
+      this.$router.push({path:`/tag-search/${tag}/0`});
     },
     handleClose(tag) {
       var _this = this;

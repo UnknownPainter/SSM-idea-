@@ -3,9 +3,12 @@ package com.frame.service;
 import com.frame.dao.ArtworkMapper;
 import com.frame.dao.TagMapper;
 import com.frame.po.Artwork;
+import com.frame.po.ArtworkForUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class TagServiceImpl implements TagService{
@@ -13,6 +16,8 @@ public class TagServiceImpl implements TagService{
     private TagMapper tagMapper;
     @Autowired
     private ArtworkMapper artworkMapper;
+
+    private static final int PAGE_COUNT = 20;
 
     @Override
     @Transactional
@@ -40,5 +45,10 @@ public class TagServiceImpl implements TagService{
         }
         tagMapper.deleteTag(artworkId,tagName);
         return true;
+    }
+
+    @Override
+    public List<ArtworkForUser> getArtworkByTag(String tagName, int page, int userId) {
+        return tagMapper.getArtworkByTag(tagName,page*PAGE_COUNT,userId);
     }
 }

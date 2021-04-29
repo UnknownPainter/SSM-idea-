@@ -53,6 +53,12 @@ const routes =[
         components: {
             home:httpVueLoader('./vue/user.vue?'+Math.random()),
         }
+    },
+    {
+        path:'/tag-search/:tagname/:page',
+        components: {
+            home:httpVueLoader('./vue/tagSearch.vue?'+Math.random()),
+        }
     }
 ];
 const router = new VueRouter({
