@@ -51,4 +51,9 @@ public class TagServiceImpl implements TagService{
     public List<ArtworkForUser> getArtworkByTag(String tagName, int page, int userId) {
         return tagMapper.getArtworkByTag(tagName,page*PAGE_COUNT,userId);
     }
+
+    @Override
+    public int getSearchCountOfTag(String name) {
+        return tagMapper.getSearchCountOfTag(name);
+    }
 }

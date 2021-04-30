@@ -26,4 +26,7 @@
     <select id="getTagCount" resultType="int">
         SELECT count(tag_id) from tag where artwork_id=#{0}
     </select>
+    <select id="getSearchCountOfTag" resultType="int">
+        SELECT count(tag_id) from tag where tag_name=#{0}
+    </select>
 </mapper>

@@ -40,4 +40,12 @@ public class TagController {
         });
         return deferredResult;
     }
+    @RequestMapping(value = "/tag/artwork/{tagName}/count",method = RequestMethod.GET)
+    public DeferredResult<Integer> getArtworkByTag(@PathVariable("tagName")String tagName){
+        final DeferredResult<Integer> deferredResult = new DeferredResult<>();
+        threadPool.execute(()->{
+            deferredResult.setResult(tagService.getSearchCountOfTag(tagName));
+        });
+        return deferredResult;
+    }
 }

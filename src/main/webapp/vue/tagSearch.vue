@@ -1,6 +1,6 @@
 <template>
   <div class="collection-block">
-    <div style="height: 50px;text-align: left">我的收藏<el-tag style="margin-left: 5px"><i class="el-icon-star-on"></i>{{count}}</el-tag></div>
+    <div style="height: 50px;text-align: left">{{tagName}}<el-tag style="margin-left: 5px">{{count}}</el-tag></div>
     <div class="collection-area" ref="collectionArea" :style="{
       'grid-template-columns': `repeat(${col},1fr)`}">
       <div
@@ -117,25 +117,29 @@ module.exports ={
   },
   created() {
     var _this = this;
-    this.user = this.$router.app.user;
-
     this.currentPage = parseInt(this.$route.params.page)+1;
-    this.pageCount = Math.floor((parseInt(this.user.user_collectionCount)+23)/24);
-    if(this.pageCount==0)this.pageCount=1;
-    this.show= false;
-    this.$nextTick(()=>{
-      _this.show=true;
-    })
-
     axios({
       method: 'get',
-      url: `/tag/artwork/${this.tagName}/`+(_this.currentPage-1)
+      url: `/tag/artwork/${this.tagName}/`+"count"
     }).then(function (response) {
       var data = response.data;
-      for (var i in data) {
-        data[i].error=data[i].artwork_location==null?"作品已被删除":"加载失败";
-        _this.artworks.push(data[i]);
-      }
+      _this.count = data;
+      _this.pageCount = Math.floor((parseInt(data)+23)/24);
+      if(_this.pageCount==0)_this.pageCount=1;
+      _this.show= false;
+      _this.$nextTick(()=>{
+        _this.show=true;
+      })
+      axios({
+        method: 'get',
+        url: `/tag/artwork/${_this.tagName}/`+(_this.currentPage-1)
+      }).then(function (response) {
+        var data = response.data;
+        for (var i in data) {
+          data[i].error=data[i].artwork_location==null?"作品已被删除":"加载失败";
+          _this.artworks.push(data[i]);
+        }
+      });
     });
   },
   mounted(){
