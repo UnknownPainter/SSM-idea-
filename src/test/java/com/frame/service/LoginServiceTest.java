@@ -1,6 +1,5 @@
 package com.frame.service;
 
-import com.frame.component.ArtworkAsyncTask;
 import com.frame.dao.*;
 import com.frame.po.*;
 import org.apache.ibatis.session.SqlSession;
@@ -8,11 +7,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import redis.clients.jedis.Jedis;
 import sun.nio.ch.ThreadPool;
 
 import java.lang.reflect.Array;
@@ -38,9 +39,9 @@ public class LoginServiceTest {
     @Autowired
     private  UserMapper userMapper;
     @Autowired
-    private ArtworkAsyncTask artworkAsyncTask;
-    @Autowired
     FollowMapper followMapper;
+    @Autowired
+    RedisTemplate redisTemplate;
     @Test
     public void login() {
         Comment comment = new Comment();
@@ -60,6 +61,10 @@ public class LoginServiceTest {
 //        List<ArtworkForUser> list = tagMapper.getArtworkIdByTag("fgo",0,5);
 //        System.out.println(list.get(0).isHasCollect());
 
+//        Jedis redis = new Jedis("localhost");
+//        redis.set("a","ee")
+//        artworkMapper.getArtworkById(46);
+        redisTemplate.boundValueOps("dff").set("dddd");
     }
 
 }
