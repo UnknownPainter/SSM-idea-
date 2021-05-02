@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.frame.dao.ArtworkMapper">
+    <cache type="com.frame.utils.RedisCache"></cache>
     <insert id="creatArtwork" parameterType="com.frame.po.Artwork" useGeneratedKeys="true" keyProperty="artwork_id">
         INSERT INTO artwork(artwork_comment,artwork_artistId,artwork_name,artwork_location,artwork_height,artwork_width) VALUES
             (#{artwork_comment},#{artwork_artistId},#{artwork_name},#{artwork_location},#{artwork_height},#{artwork_width})

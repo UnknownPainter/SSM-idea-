@@ -60,8 +60,8 @@
         <property name="enableTransactionSupport" value="true"/>
     </bean>
 
-    <!-- 5.使用中间类解决RedisCache.RedisTemplate的静态注入，从而使MyBatis实现第三方缓存 -->
-<!--    <bean id="redisCacheTransfer" class="com.liuwenwu.util.RedisCacheTransfer">-->
-<!--        <property name="redisTemplate" ref="redisTemplate"/>-->
-<!--    </bean>-->
+
+    <bean id="redisCache" class="com.frame.utils.RedisCache">
+        <property name="redisTemplate" ref="redisTemplate"/>
+    </bean>
 </beans>
