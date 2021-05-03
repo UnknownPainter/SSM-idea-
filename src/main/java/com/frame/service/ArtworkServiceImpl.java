@@ -7,6 +7,7 @@ import com.frame.po.Artwork;
 import com.frame.po.ArtworkForUser;
 import com.frame.po.ArtworkWithLabel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +35,8 @@ public class ArtworkServiceImpl implements ArtworkService{
     private CollectionMapper collectionMapper;
     @Autowired
     private TagMapper tagMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 
     @Transactional
@@ -82,6 +85,7 @@ public class ArtworkServiceImpl implements ArtworkService{
 
     @Override
     public ArtworkWithLabel getArtwork(int artworkId, int userId) {
+        redisTemplate.boundHashOps("artwork").increment(String.valueOf(artworkId),1);
         ArtworkWithLabel artworkWithLabel = artworkMapper.getArtworkById(artworkId);
         artworkWithLabel.setHasCollect(false);
         artworkWithLabel.setHasPraise(false);
@@ -94,6 +98,9 @@ public class ArtworkServiceImpl implements ArtworkService{
             }
         }
         artworkWithLabel.setLabel(tagMapper.getTagOfArtwork(artworkId));
+        for(String tag : artworkWithLabel.getLabel()){
+            redisTemplate.boundHashOps("tag").increment(tag,1);
+        }
         return artworkWithLabel;
     }
 
