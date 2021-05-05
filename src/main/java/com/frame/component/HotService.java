@@ -24,8 +24,27 @@ public class HotService {
                 return o2.getValue() - o1.getValue();
             }
         });
-        for(int i=0;i<10;i++){
-            redisTemplate.boundHashOps("hotArtwork").put(String.valueOf(i),list.get(i).getKey());
+        redisTemplate.delete("hotArtwork");
+        for(int i=0;i<10&&i<list.size();i++){
+            redisTemplate.boundListOps("hotArtwork").rightPush(list.get(i).getKey());
         }
+        redisTemplate.delete("artwork");
     }
+    @Scheduled(cron = "30 0 * * * *")
+    void updateHotTag() {
+        Map map = redisTemplate.opsForHash().entries("tag");
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o2.getValue() - o1.getValue();
+            }
+        });
+        redisTemplate.delete("hotTag");
+        for(int i=0;i<10&&i<list.size();i++){
+            redisTemplate.boundListOps("hotTag").rightPush(list.get(i).getKey());
+        }
+        redisTemplate.delete("tag");
+    }
+
 }

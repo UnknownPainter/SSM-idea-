@@ -14,10 +14,20 @@
           <img src="./image/Frame.png" height="61">
         </a>
       </el-menu-item>
-      <el-menu-item index="3">消息中心</el-menu-item>
+      <el-menu-item index="3">热榜</el-menu-item>
       <el-menu-item class="noStyle">
-        <el-input v-model="searchContent" placeholder="Search..."></el-input>
-        <i class="el-icon-search"></i>
+        <el-autocomplete
+            v-model="searchContent"
+            placeholder="Search..."
+            :fetch-suggestions="getHotArtwork"
+            @select="selectSearch"
+            @keyup.enter.native="search"
+        >
+          <template slot-scope="{ item }">
+            {{item.value}}
+          </template>
+        </el-autocomplete>
+        <i class="el-icon-search" @click="search"></i>
       </el-menu-item>
     </el-menu>
     <el-drawer
@@ -62,6 +72,7 @@
 </template>
 
 <script>
+
 module.exports = {
   data() {
     return {
@@ -70,10 +81,38 @@ module.exports = {
       username:'未登录',
       searchContent:'',
       isScroll:false,
-      user:''
+      user:'',
+      searchList:[]
     };
   },
   methods:{
+    search(){
+      var tag = this.searchContent;
+      this.$router.push({path:`/tag-search/${tag}/0`});
+    },
+    selectSearch(item){this.searchContent = item.value;},
+    createFilter(queryString) {
+      return (i)=>{return (i.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)};
+    },
+    getHotArtwork(str,cb){
+      var _this = this;
+      axios({
+        method: 'get',
+        url: '/hot/tag'
+      }).then(function (response) {
+        var data = response.data;
+        _this.searchList=[];
+        for(var i in data){
+          var item={};
+          item.value = data[i];
+          item.idx = i+1;
+          _this.searchList.push(item);
+        }
+        var results = str ?_this.searchList.filter(_this.createFilter(str)) : _this.searchList;
+        // 调用 callback 返回建议列表的数据
+        cb(results);
+      });
+    },
     start: function (){
       axios.get("/hello").then(function (response) {
         console.log(response);

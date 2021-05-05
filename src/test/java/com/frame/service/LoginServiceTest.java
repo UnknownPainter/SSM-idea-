@@ -64,7 +64,9 @@ public class LoginServiceTest {
 //        Jedis redis = new Jedis("localhost");
 //        redis.set("a","ee")
 //        artworkMapper.getArtworkById(46);
-        redisTemplate.boundValueOps("dff").set("dddd");
+        redisTemplate.boundListOps("hotTag").rightPush("封面");
+        redisTemplate.boundListOps("hotTag").rightPush("fgo");
+        redisTemplate.boundListOps("hotTag").rightPush("葛饰北斋");
     }
 
 }
