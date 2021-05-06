@@ -166,10 +166,33 @@ module.exports ={
 
   },
   mounted(){
+    var _this = this;
     this.$router.app.colSpan=24;
     this.$nextTick(()=>{
       this.workWidth = (this.$refs.myworkArea.clientWidth*0.9)/this.col;
+      if(this.workWidth<180){
+        this.col=4;
+        this.workWidth = (this.$refs.myworkArea.clientWidth*0.9)/this.col;
+        if(this.workWidth<130){
+          this.col=2;
+          this.workWidth = (this.$refs.myworkArea.clientWidth*0.9)/this.col;
+        }
+      }
     });
+    window.onresize = ()=>{
+      _this.$nextTick(()=>{
+        _this.col=6;
+        _this.workWidth = (_this.$refs.myworkArea.clientWidth*0.9)/_this.col;
+        if(_this.workWidth<180){
+          _this.col=4;
+          _this.workWidth = (_this.$refs.myworkArea.clientWidth*0.9)/_this.col;
+          if(_this.workWidth<130){
+            _this.col=2;
+            _this.workWidth = (_this.$refs.myworkArea.clientWidth*0.9)/_this.col;
+          }
+        }
+      });
+    };
 
   }
 }

@@ -14,7 +14,7 @@ public class HotService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     void updateHotArtwork() {
         Map map = redisTemplate.opsForHash().entries("artwork");
         List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
@@ -30,7 +30,7 @@ public class HotService {
         }
         redisTemplate.delete("artwork");
     }
-    @Scheduled(cron = "30 0 * * * *")
+    @Scheduled(cron = "30 0 0 * * *")
     void updateHotTag() {
         Map map = redisTemplate.opsForHash().entries("tag");
         List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());

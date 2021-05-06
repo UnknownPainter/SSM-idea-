@@ -24,7 +24,9 @@
             @keyup.enter.native="search"
         >
           <template slot-scope="{ item }">
-            {{item.value}}
+            <span v-if="item.idx<=3" style="float: left;color: #F56C6C">{{item.idx}}</span>
+            <span v-else style="float: left;color: #909399">{{item.idx}}</span>
+            <span style="float:left;padding-left: 16px">{{item.value}}</span>
           </template>
         </el-autocomplete>
         <i class="el-icon-search" @click="search"></i>
@@ -105,7 +107,7 @@ module.exports = {
         for(var i in data){
           var item={};
           item.value = data[i];
-          item.idx = i+1;
+          item.idx = parseInt(i)+1;
           _this.searchList.push(item);
         }
         var results = str ?_this.searchList.filter(_this.createFilter(str)) : _this.searchList;
