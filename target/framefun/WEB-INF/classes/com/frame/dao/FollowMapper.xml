@@ -9,4 +9,16 @@
     <delete id="deleteFollow">
         DELETE from follow where follow_followerId=#{0} and follow_followingId=#{1}
     </delete>
+    <select id="getFollowArtwork" resultType="com.frame.po.ArtworkForUser">
+        SELECT artwork.* , IF(collection_id>0,true,false) as hasCollect
+        from
+            (
+                SELECT follow_followingId from follow where follow_followerId=#{0}
+            ) B
+            left join
+            artwork on artwork.artwork_artistId=B.follow_followingId
+            left join
+            collection on collection.user_id=#{0} and collection.artwork_id=artwork.artwork_id
+        order by artwork_id desc limit #{1},24
+    </select>
 </mapper>

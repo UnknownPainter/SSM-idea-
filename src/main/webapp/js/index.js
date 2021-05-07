@@ -59,6 +59,12 @@ const routes =[
         components: {
             home:httpVueLoader('./vue/tagSearch.vue?'+Math.random()),
         }
+    },
+    {
+        path:'/follow/artwork',
+        components: {
+            home:httpVueLoader('./vue/followArtwork.vue?'+Math.random()),
+        }
     }
 ];
 const router = new VueRouter({

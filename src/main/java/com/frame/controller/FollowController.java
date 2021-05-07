@@ -1,5 +1,7 @@
 package com.frame.controller;
 
+import com.frame.po.Artwork;
+import com.frame.po.ArtworkForUser;
 import com.frame.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @ResponseBody
@@ -33,6 +36,14 @@ public class FollowController {
         final DeferredResult<Boolean> deferredResult = new DeferredResult<>();
         threadPool.execute(()->{
             deferredResult.setResult(followService.deleteFollow((int)session.getAttribute("userId"),followingId));
+        });
+        return deferredResult;
+    }
+    @RequestMapping(value = "/follow/artwork/{page}",method = RequestMethod.GET)
+    public DeferredResult<List<ArtworkForUser>> getFollowArtwork(@PathVariable("page")int page, HttpSession session){
+        final DeferredResult<List<ArtworkForUser>> deferredResult = new DeferredResult<>();
+        threadPool.execute(()->{
+            deferredResult.setResult(followService.getFollowArtwork((int)session.getAttribute("userId"),page));
         });
         return deferredResult;
     }

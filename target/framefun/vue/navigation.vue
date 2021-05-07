@@ -15,6 +15,7 @@
         </a>
       </el-menu-item>
       <el-menu-item index="3">热榜</el-menu-item>
+      <el-menu-item index="4" @click="goToFollow">关注</el-menu-item>
       <el-menu-item class="noStyle">
         <el-autocomplete
             v-model="searchContent"
@@ -42,10 +43,10 @@
     >
       <div class="drawer-table">
         <el-menu>
-          <el-menu-item class="noStyle" style="height: 84px;padding: 10px">
-            <i class="el-icon-user-solid" v-show="!user.user_avatar"></i>
-            <el-avatar :size="64" v-show="user.user_avatar">
-              <el-image :src="user.user_avatar" fit="cover" style="height: 100%"></el-image>
+          <el-menu-item class="noStyle" style="height: 84px;padding: 10px" >
+            <el-avatar :size="64" style="text-align: center">
+              <i class="el-icon-user-solid" v-show="!user.user_avatar" style="margin: 0 !important;font-size: 24px !important;"></i>
+              <el-image v-show="user.user_avatar" :src="user.user_avatar" fit="cover" style="height: 100%"></el-image>
             </el-avatar>
             <span slot="title">{{user.user_name?user.user_name:username}}</span>
           </el-menu-item>
@@ -123,6 +124,9 @@ module.exports = {
     popDrawer: function (){
       this.$data.drawer=true;
       document.querySelector('body').setAttribute('style', 'overflow:hidden;');
+    },
+    goToFollow(){
+      this.$router.push({path:'/follow/artwork'});
     },
     goToUpload: function (){
       this.$router.push({path:'/upload'});

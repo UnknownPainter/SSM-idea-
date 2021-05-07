@@ -8,7 +8,7 @@
     </div>
     <el-divider></el-divider>
     <div>
-      <div style="font-size: 18px">关注者：{{user.user_following}}</div>
+      <div style="font-size: 18px">关注者：{{user.user_followers}}</div>
       <div style="padding: 12px 0 0 0" @click="follow">
         <el-button style="width: 100%" v-if="user.hasFollow!=true" type="primary" round>+关注</el-button>
         <el-button style="width: 100%" v-if="user.hasFollow==true" type="info" round>已关注</el-button>
@@ -54,6 +54,9 @@ module.exports={
           var data = response.data;
           if(data==true){
             _this.$set(_this.user,"hasFollow",true);
+            var user=_this.user;
+            user.user_followers++;
+            _this.user=user;
           }
         });
       }
@@ -65,6 +68,9 @@ module.exports={
           var data = response.data;
           if(data==true){
             _this.$set(_this.user,"hasFollow",false);
+            var user=_this.user;
+            user.user_followers--;
+            _this.user=user;
           }
         });
       }
