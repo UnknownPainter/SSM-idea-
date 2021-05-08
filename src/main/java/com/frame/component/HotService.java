@@ -1,5 +1,9 @@
 package com.frame.component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.frame.dao.ArtworkMapper;
+import com.frame.po.Artwork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.SortParameters;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -13,9 +17,11 @@ import java.util.*;
 public class HotService {
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    ArtworkMapper artworkMapper;
 
     @Scheduled(cron = "0 0 0 * * *")
-    void updateHotArtwork() {
+    public void updateHotArtwork() {
         Map map = redisTemplate.opsForHash().entries("artwork");
         List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
@@ -26,12 +32,13 @@ public class HotService {
         });
         redisTemplate.delete("hotArtwork");
         for(int i=0;i<10&&i<list.size();i++){
-            redisTemplate.boundListOps("hotArtwork").rightPush(list.get(i).getKey());
+            Artwork artwork = artworkMapper.getArtworkById(Integer.parseInt(list.get(i).getKey()));
+            redisTemplate.boundListOps("hotArtwork").rightPush(artwork);
         }
         redisTemplate.delete("artwork");
     }
     @Scheduled(cron = "30 0 0 * * *")
-    void updateHotTag() {
+    public void updateHotTag() {
         Map map = redisTemplate.opsForHash().entries("tag");
         List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {

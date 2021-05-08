@@ -1,8 +1,9 @@
 package com.frame.po;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Comment {
+public class Comment implements Serializable {
     private int comment_id;
     private int comment_artworkId;
     private String comment_content;

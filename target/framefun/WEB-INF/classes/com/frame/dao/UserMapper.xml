@@ -54,4 +54,12 @@
     <update id="updateCollectionCountOfUser">
         UPDATE user set user_collectionCount=user_collectionCount+#{1} where user_id=#{0}
     </update>
+    <update id="updateCommentOfUser">
+        UPDATE user SET user_comment=#{1} WHERE user_id=#{0}
+    </update>
+    <select id="getUserById" resultType="com.frame.po.Artist">
+        select B.* ,IF(follow_id>0,true,false) as hasFollow
+        from (select * from user where user_id=#{1}) B
+        left join follow on follow_followerId=#{0} and follow_followingId=B.user_id
+    </select>
 </mapper>

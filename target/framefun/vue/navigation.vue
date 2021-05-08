@@ -14,7 +14,7 @@
           <img src="./image/Frame.png" height="61">
         </a>
       </el-menu-item>
-      <el-menu-item index="3">热榜</el-menu-item>
+      <el-menu-item index="3" @click="goToHotArtwork">热榜</el-menu-item>
       <el-menu-item index="4" @click="goToFollow">关注</el-menu-item>
       <el-menu-item class="noStyle">
         <el-autocomplete
@@ -124,6 +124,9 @@ module.exports = {
     popDrawer: function (){
       this.$data.drawer=true;
       document.querySelector('body').setAttribute('style', 'overflow:hidden;');
+    },
+    goToHotArtwork(){
+      this.$router.push({path:'/hot/artwork'});
     },
     goToFollow(){
       this.$router.push({path:'/follow/artwork'});

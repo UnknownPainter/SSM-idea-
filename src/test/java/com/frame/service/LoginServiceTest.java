@@ -1,5 +1,9 @@
 package com.frame.service;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.frame.component.HotService;
 import com.frame.dao.*;
 import com.frame.po.*;
 import org.apache.ibatis.session.SqlSession;
@@ -9,6 +13,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -64,9 +69,44 @@ public class LoginServiceTest {
 //        Jedis redis = new Jedis("localhost");
 //        redis.set("a","ee")
 //        artworkMapper.getArtworkById(46);
-        redisTemplate.boundListOps("hotTag").rightPush("封面");
-        redisTemplate.boundListOps("hotTag").rightPush("fgo");
-        redisTemplate.boundListOps("hotTag").rightPush("葛饰北斋");
+//        redisTemplate.boundListOps("hotTag").rightPush("封面");
+//        redisTemplate.boundListOps("hotTag").rightPush("fgo");
+//        redisTemplate.boundListOps("hotTag").rightPush("葛饰北斋");
+
+    }
+    @Test
+    public void updateHotArtwork() {
+        Map map = redisTemplate.opsForHash().entries("artwork");
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o2.getValue() - o1.getValue();
+            }
+        });
+        redisTemplate.delete("hotArtwork");
+        for(int i=0;i<10&&i<list.size();i++){
+            Artwork artwork = artworkMapper.getArtworkById(Integer.parseInt(list.get(i).getKey()));
+            redisTemplate.boundListOps("hotArtwork").rightPush(artwork);
+        }
+
+        redisTemplate.delete("artwork");
+    }
+    @Test
+    public void updateHotTag() {
+        Map map = redisTemplate.opsForHash().entries("tag");
+        List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o2.getValue() - o1.getValue();
+            }
+        });
+        redisTemplate.delete("hotTag");
+        for(int i=0;i<10&&i<list.size();i++){
+            redisTemplate.boundListOps("hotTag").rightPush(list.get(i).getKey());
+        }
+        redisTemplate.delete("tag");
     }
 
 }

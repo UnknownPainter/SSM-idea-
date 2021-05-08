@@ -1,5 +1,6 @@
 package com.frame.controller;
 
+import com.frame.po.Artwork;
 import com.frame.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -20,12 +21,19 @@ public class SearchController {
     private SearchService searchService;
 
     @RequestMapping(value = "/hot/tag",method = RequestMethod.GET)
-    DeferredResult<List<String>> getHotTag(){
+    public DeferredResult<List<String>> getHotTag(){
         final DeferredResult<List<String>> deferredResult = new DeferredResult<>();
         threadPool.execute(()->{
             deferredResult.setResult(searchService.getHotTag());
         });
         return deferredResult;
     }
-
+    @RequestMapping(value = "/hot/artwork",method = RequestMethod.GET)
+    public DeferredResult<List<Artwork>> getHotArtwork(){
+        final DeferredResult<List<Artwork>> deferredResult = new DeferredResult<>();
+        threadPool.execute(()->{
+            deferredResult.setResult(searchService.getHotArtwork());
+        });
+        return deferredResult;
+    }
 }

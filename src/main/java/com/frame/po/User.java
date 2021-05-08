@@ -13,6 +13,15 @@ public class User implements Serializable {
     private int user_followers;
     private int user_collectionCount;
     private int user_artworkCount;
+    private String user_comment;
+
+    public String getUser_comment() {
+        return user_comment;
+    }
+
+    public void setUser_comment(String user_comment) {
+        this.user_comment = user_comment;
+    }
 
     public int getUser_collectionCount() {
         return user_collectionCount;

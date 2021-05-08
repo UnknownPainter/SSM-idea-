@@ -1,5 +1,6 @@
 package com.frame.controller;
 
+import com.frame.po.Artist;
 import com.frame.po.User;
 import com.frame.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,19 @@ public class UserController {
         else{
             return false;
         }
+    }
+    @RequestMapping(value = "/session",method = RequestMethod.DELETE)
+    public boolean logout(HttpSession session,HttpServletResponse response){
+        session.removeAttribute("userId");
+        Cookie cookie = new Cookie("username",null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        cookie = new Cookie("password",null);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return true;
     }
 
     @RequestMapping(value = "/session",method = RequestMethod.GET)
@@ -90,9 +104,13 @@ public class UserController {
     public String updateAvatar(HttpServletRequest request) throws Exception{
         return userService.updateAvatar(request);
     }
+    @RequestMapping(value = "/user/info/comment",method = RequestMethod.POST)
+    public boolean updateComment(HttpSession session,String comment) throws Exception{
+        return userService.updateComment((int)session.getAttribute("userId"),comment);
+    }
 
     @RequestMapping(value = "/artist/{id}",method = RequestMethod.GET)
-    public User getArtist(@PathVariable("id")int ArtworkId, HttpSession session){
+    public Artist getArtistByArtwork(@PathVariable("id")int ArtworkId, HttpSession session){
         Object userId = session.getAttribute("userId");
         if(userId!=null){
             return userService.getUserByArtworkId(ArtworkId,(int)userId);
@@ -100,6 +118,15 @@ public class UserController {
         else{
             return userService.getUserByArtworkId(ArtworkId,-1);
         }
-
+    }
+    @RequestMapping(value = "/artist/{id}/info",method = RequestMethod.GET)
+    public Artist getArtistById(@PathVariable("id")int artistId, HttpSession session){
+        Object userId = session.getAttribute("userId");
+        if(userId!=null){
+            return userService.getUserById((int)userId,artistId);
+        }
+        else{
+            return userService.getUserById(-1,artistId);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.frame.po;
 
-public class Tag {
+import java.io.Serializable;
+
+public class Tag implements Serializable {
     private int tag_id;
     private String tag_name;
     private int artwork_id;

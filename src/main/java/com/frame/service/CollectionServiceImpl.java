@@ -4,6 +4,7 @@ import com.frame.dao.ArtworkMapper;
 import com.frame.dao.CollectionMapper;
 import com.frame.dao.UserMapper;
 import com.frame.po.Artwork;
+import com.frame.po.ArtworkForUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +44,7 @@ public class CollectionServiceImpl implements CollectionService{
 
 
     @Override
-    public List<Artwork> getCollectionByPage(int page,int userId) {
-        return collectionMapper.getCollectionByPage(userId,page*COUNT_PER_PAGE);
+    public List<ArtworkForUser> getCollectionByPage(int page, int userId, int artistId) {
+        return collectionMapper.getCollectionByPage(artistId,page*COUNT_PER_PAGE,COUNT_PER_PAGE,userId);
     }
 }

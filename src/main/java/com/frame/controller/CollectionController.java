@@ -2,6 +2,7 @@ package com.frame.controller;
 
 
 import com.frame.po.Artwork;
+import com.frame.po.ArtworkForUser;
 import com.frame.service.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,8 +33,14 @@ public class CollectionController {
         return collectionService.deleteCollection(artworkId,userId);
     }
     @RequestMapping(value = "/collections/{page}",method = RequestMethod.GET)
-    public List<Artwork> getCollections(@PathVariable("page")int page, HttpSession session){
-        return collectionService.getCollectionByPage(page,(int)session.getAttribute("userId"));
+    public List<ArtworkForUser> getCollections(@PathVariable("page")int page, HttpSession session){
+        return collectionService.getCollectionByPage(page,0,(int)session.getAttribute("userId"));
     }
-    
+    @RequestMapping(value = "/artist/{id}/collections/{page}",method = RequestMethod.GET)
+    public List<ArtworkForUser> getArtistCollections(@PathVariable("page")int page, @PathVariable("id")int artistId,HttpSession session){
+        Object obj = session.getAttribute("userId");
+        int userId = obj==null?-1:(int)obj;
+        return collectionService.getCollectionByPage(page,userId,artistId);
+    }
+
 }

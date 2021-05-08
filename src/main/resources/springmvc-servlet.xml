@@ -61,7 +61,7 @@
             <mvc:exclude-mapping path="/session/**"/>
             <mvc:exclude-mapping path="/user/*"/>
             <mvc:exclude-mapping path="/user"/>
-            <mvc:exclude-mapping path="/artist/*"/>
+            <mvc:exclude-mapping path="/artist/**"/>
             <mvc:exclude-mapping path="/artworks/home/*"/>
             <mvc:exclude-mapping path="/artworks/*"/>
             <mvc:exclude-mapping path="/comment/*/timeorder/*"/>

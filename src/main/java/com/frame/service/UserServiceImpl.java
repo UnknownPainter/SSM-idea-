@@ -84,4 +84,15 @@ public class UserServiceImpl implements UserService {
     public Artist getUserByArtworkId(int artworkId,int userId) {
         return userMapper.getUserByArtworkId(artworkId,userId);
     }
+
+    @Override
+    public boolean updateComment(int userId, String comment) {
+        userMapper.updateCommentOfUser(userId,comment);
+        return true;
+    }
+
+    @Override
+    public Artist getUserById(int userId, int artistId) {
+        return userMapper.getUserById(userId,artistId);
+    }
 }

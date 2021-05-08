@@ -133,8 +133,8 @@ public class ArtworkServiceImpl implements ArtworkService{
     }
 
     @Override
-    public List<Artwork> getUserArtwork(int page, int userId) {
-        return artworkMapper.getUserArtwork(userId,page*PAGE_COUNT);
+    public List<ArtworkForUser> getUserArtwork(int page, int userId,int artistId) {
+        return artworkMapper.getUserArtwork(artistId,page*PAGE_COUNT,PAGE_COUNT,userId);
     }
 
     @Override

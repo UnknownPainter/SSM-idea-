@@ -22,6 +22,31 @@
         <div style="color: #8c939d;font-size: 16px;margin-top: 8px">id:{{user.user_id}}</div>
       </div>
     </div>
+    <div style="text-align: left;margin-top: 40px">
+      <div style="text-align: center;display: inline-block">
+        <div style="color: #8c939d">粉丝数</div>
+        <el-link :underline="false" style="padding: 8px">{{user.user_followers}}</el-link>
+      </div>
+      <el-divider direction="vertical"></el-divider>
+      <div style="text-align: center;display: inline-block">
+        <div style="color: #8c939d">关注数</div>
+        <el-link :underline="false" style="padding: 8px">{{user.user_following}}</el-link>
+      </div>
+      <el-divider direction="vertical"></el-divider>
+      <div style="text-align: center;display: inline-block">
+        <div style="color: #8c939d">收藏数</div>
+        <el-link :underline="false" style="padding: 8px">{{user.user_collectionCount}}</el-link>
+      </div>
+      <el-divider direction="vertical"></el-divider>
+      <div style="text-align: center;display: inline-block">
+        <div style="color: #8c939d">作品数</div>
+        <el-link :underline="false" style="padding: 8px">{{user.user_artworkCount}}</el-link>
+      </div>
+    </div>
+    <div style="text-align: left;margin-top: 50px">
+      <div v-if="!edit" style="color: #8c939d" @click="editComment"><div>{{comment}}<i class="el-icon-edit"></i></div></div>
+      <div v-else><el-input v-model="comment" :placeholder="comment" @blur="updateComment"></el-input></div>
+    </div>
     <el-button type="danger" style="margin-top: 100px" @click="logout">退出登录</el-button>
   </div>
 </template>
@@ -32,12 +57,37 @@ module.exports= {
     return {
       user:'',
       hover:false,
-      url:''
+      url:'',
+      comment:'用户还没有留下简介',
+      edit:false
     }
   },
   methods:{
-    logout(){
+    editComment(){
+      this.edit=!this.edit;
+    },
+    updateComment(){
+      var _this = this;
+      axios({
+        headers:{
+          'Content-Type':'application/x-www-form-urlencoded'
+        },
+        method:'post',
+        url:'/user/info/comment',
+        data:"comment="+this.$data.comment
 
+      }).then(function (response) {
+        _this.edit=false
+      });
+    },
+    logout(){
+      var _this = this;
+      axios({
+        method:'delete',
+        url:'/session'
+      }).then(function (response) {
+        window.location.href="/login.html";
+      });
     },
     successHandler(res){
       this.url = res;
@@ -58,6 +108,7 @@ module.exports= {
       var data = response.data;
       _this.user = data;
       _this.url = data.user_avatar;
+      _this.comment = data.user_comment==null?_this.comment:data.user_comment;
     });
   }
 }
@@ -82,5 +133,6 @@ module.exports= {
   display: inline-block;
   text-align: left;
 }
+
 
 </style>

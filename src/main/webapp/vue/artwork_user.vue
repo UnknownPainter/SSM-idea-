@@ -1,6 +1,6 @@
 <template>
   <div class="artwork-user-block">
-    <div class="user-avatar">
+    <div class="user-avatar" @click="goToUser">
       <el-avatar :size="64" style="float: left">
         <el-image  v-if="user" :src="user.user_avatar" fit="cover" style="height: 100%"></el-image>
       </el-avatar>
@@ -8,7 +8,7 @@
     </div>
     <el-divider></el-divider>
     <div>
-      <div style="font-size: 18px">关注者：{{user.user_followers}}</div>
+      <div style="font-size: 18px">粉丝数：{{user.user_followers}}</div>
       <div style="padding: 12px 0 0 0" @click="follow">
         <el-button style="width: 100%" v-if="user.hasFollow!=true" type="primary" round>+关注</el-button>
         <el-button style="width: 100%" v-if="user.hasFollow==true" type="info" round>已关注</el-button>
@@ -39,6 +39,9 @@ module.exports={
     }
   },
   methods:{
+    goToUser(){
+      this.$router.push({path:`/artist/${this.user.user_id}`});
+    },
     handleClick(id){
       var i = id;
       this.$router.push({path:`/artworks/${i}`});

@@ -72,7 +72,7 @@
         <transition-group tag="span" name="comment-list">
           <div v-for="(comment,index) in comments" :key="comment.comment_id" class="a-comment">
             <div class="my-divider"></div>
-            <div style="display: inline-block;height: 64.8px;float: left">
+            <div @click="goToUser(index)" style="display: inline-block;height: 64.8px;float: left;cursor: pointer">
               <el-avatar :size="48">
                 <el-image :src="comment.user_avatar" fit="cover" style="height: 100%" v-show="comment.user_avatar"></el-image>
                 <i class="el-icon-user-solid" v-show="!comment.user_avatar"></i>
@@ -80,7 +80,7 @@
             </div>
               <div style="margin-left: 58px">
                 <div style="vertical-align: center">
-                  <div style="color: #6d757a;font-size: 12px;"><b>{{comment.user_name}}</b></div>
+                  <div @click="goToUser(index)" style="cursor: pointer;color: #6d757a;font-size: 12px;"><b>{{comment.user_name}}</b></div>
                   <div style="padding-top: 8px">{{comment.comment_content}}</div>
                 </div>
                 <div style="text-align: left;padding-top: 8px;padding-bottom: 8px">
@@ -109,7 +109,7 @@
                     </el-form-item>
                   </el-form>
                   <div v-for="(Areply,index2) in comment.reply" :key="'reply'+Areply.comment_id" class="a-comment">
-                    <div style="display: inline-block;height: 64.8px;float: left;padding: 8px 0 8px 0">
+                    <div @click="goToUser(index)" style="cursor: pointer;display: inline-block;height: 64.8px;float: left;padding: 8px 0 8px 0">
                       <el-avatar :size="24">
                         <el-image :src="Areply.user_avatar" fit="cover" style="height: 100%" v-show="Areply.user_avatar"></el-image>
                         <i class="el-icon-user-solid" v-show="!Areply.user_avatar"></i>
@@ -117,7 +117,7 @@
                     </div>
                     <div style="margin-left: 34px">
                       <div style="vertical-align: center">
-                        <div style="color: #6d757a;font-size: 12px;"><b>{{Areply.user_name}}</b></div>
+                        <div @click="goToUser(index)" style="cursor: pointer;color: #6d757a;font-size: 12px;"><b>{{Areply.user_name}}</b></div>
                         <div style="padding-top: 8px">{{Areply.comment_content}}</div>
                       </div>
                       <div style="text-align: left;padding-top: 8px">
@@ -168,6 +168,9 @@ module.exports={
     }
   },
   methods:{
+    goToUser(e){
+      this.$router.push({path:`/artist/${this.comments[e].user_id}`});
+    },
     pageChange(e){
       var _this = this;
       axios({
@@ -179,7 +182,8 @@ module.exports={
         for(var i in data){
           if(data[i].comment_toId==0){
             _this.comments.push(data[i]);
-            _this.comments[i].reply=[];
+            _this.comments[i].reply=[1];
+            _this.comments[i].splice(0,1);
           }
           else{
             for(var j in _this.comments){
@@ -296,7 +300,12 @@ module.exports={
           comm.user_avatar = _this.user.user_avatar;
           comm.user_id = _this.user.user_id;
           comm.user_name = _this.user.user_name;
-          _this.comments.unshift(comm);
+          console.log(_this.comments[index]);
+          if(_this.comments[index].reply==null)_this.comments[index].reply=[];
+          var re = _this.comments[index];
+          re.isReplying=false;
+          re.reply.unshift(comm);
+          _this.$set(_this.comments,index,re);
         }
       });
     },
@@ -345,7 +354,8 @@ module.exports={
       for(var i in data){
         if(data[i].comment_toId==0){
           _this.comments.push(data[i]);
-          _this.comments[i].reply=[];
+          _this.comments[i].reply=[1];
+          _this.comments[i].reply.splice(0,1);
         }
         else{
           for(var j in _this.comments){

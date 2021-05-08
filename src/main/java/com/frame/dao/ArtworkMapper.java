@@ -13,6 +13,6 @@ public interface ArtworkMapper {
     public void updateArtworkLocationById(String location,int id);
     public void creatArtwork(Artwork artwork);
     public void deleteArtwork(int id,int userId);
-    public List<Artwork> getUserArtwork(int userId,int page);
+    public List<ArtworkForUser> getUserArtwork(int artistId,int page,int limit,int userId);
     public void updateArtworkCollectCount(int artworkId,int count);
 }

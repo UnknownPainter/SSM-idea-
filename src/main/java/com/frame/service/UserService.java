@@ -14,4 +14,6 @@ public interface UserService {
     boolean getName(String username);
     String updateAvatar(HttpServletRequest request) throws Exception;
     Artist getUserByArtworkId(int artworkId,int userId);
+    boolean updateComment(int userId,String comment);
+    Artist getUserById(int userId,int artistId);
 }
