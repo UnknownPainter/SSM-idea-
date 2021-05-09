@@ -28,4 +28,7 @@
     <update id="updateArtworkCollectCount">
         UPDATE artwork set artwork_collectCount=artwork_collectCount+#{1} where artwork_id=#{0}
     </update>
+    <update id="updateArtworkCommentCount">
+        UPDATE artwork set artwork_commentCount=artwork_commentCount+#{1} where artwork_id=#{0}
+    </update>
 </mapper>

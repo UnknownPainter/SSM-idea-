@@ -21,4 +21,16 @@
             collection on collection.user_id=#{0} and collection.artwork_id=artwork.artwork_id
         order by artwork_id desc limit #{1},24
     </select>
+    <select id="getAllFollower" resultType="com.frame.po.Artist">
+        SELECT user.*,IF(follow.follow_id>0,true,false) as hasFollow from
+            (SELECT follow_followerId from follow where follow_followingId=#{0} order by follow_id desc limit #{2},24) B
+            left join user on user_id=B.follow_followerId
+            left join follow on user.user_id=follow.follow_followingId and follow.follow_followerId=#{1}
+    </select>
+    <select id="getAllFollowing" resultType="com.frame.po.Artist">
+        SELECT user.*,IF(follow.follow_id>0,true,false) as hasFollow from
+            (SELECT follow_followingId from follow where follow_followerId=#{0} order by follow_id desc limit #{2},24) B
+                left join user on user_id=B.follow_followingId
+                left join follow on user.user_id=follow.follow_followingId and follow.follow_followerId=#{1}
+    </select>
 </mapper>

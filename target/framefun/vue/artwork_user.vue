@@ -9,8 +9,10 @@
     </div>
     <el-divider></el-divider>
     <div>
-      <div style="font-size: 18px">粉丝数：{{user.user_followers}}</div>
-      <div style="padding: 12px 0 0 0" @click="follow">
+      <div style="font-size: 18px;display: inline-block">粉丝数：<el-link @click="goToFollower" :underline="false" style="font-size: 18px">{{user.user_followers}}</el-link></div>
+      <el-divider v-if="blockWidth>=300" direction="vertical"></el-divider>
+      <div style="font-size: 18px;display: inline-block">作品数：<el-link @click="goToArtwork" :underline="false" style="font-size: 18px">{{user.user_artworkCount}}</el-link></div>
+      <div style="padding: 24px 0 24px 0" @click="follow">
         <el-button style="width: 100%" v-if="user.hasFollow!=true" type="primary" round>+关注</el-button>
         <el-button style="width: 100%" v-if="user.hasFollow==true" type="info" round>已关注</el-button>
       </div>
@@ -40,6 +42,12 @@ module.exports={
     }
   },
   methods:{
+    goToFollower(){
+    this.$router.push({path:`/follow/follower/${this.user.user_id}/0`});
+    },
+    goToArtwork(){
+    this.$router.push({path:`/artist/artwork/${this.user.user_id}/0`});
+    },
     goToUser(){
       this.$router.push({path:`/artist/${this.user.user_id}`});
     },

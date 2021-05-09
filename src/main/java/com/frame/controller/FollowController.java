@@ -1,5 +1,6 @@
 package com.frame.controller;
 
+import com.frame.po.Artist;
 import com.frame.po.Artwork;
 import com.frame.po.ArtworkForUser;
 import com.frame.service.FollowService;
@@ -44,6 +45,26 @@ public class FollowController {
         final DeferredResult<List<ArtworkForUser>> deferredResult = new DeferredResult<>();
         threadPool.execute(()->{
             deferredResult.setResult(followService.getFollowArtwork((int)session.getAttribute("userId"),page));
+        });
+        return deferredResult;
+    }
+    @RequestMapping(value = "/follow/following/{id}/{page}",method = RequestMethod.GET)
+    public DeferredResult<List<Artist>> getFollowing(@PathVariable("page")int page, @PathVariable("id")int id, HttpSession session){
+        final DeferredResult<List<Artist>> deferredResult = new DeferredResult<>();
+        Object obj = session.getAttribute("userId");
+        int userId = obj==null?-1:(int)obj;
+        threadPool.execute(()->{
+            deferredResult.setResult(followService.getAllFollowing(userId,id,page));
+        });
+        return deferredResult;
+    }
+    @RequestMapping(value = "/follow/follower/{id}/{page}",method = RequestMethod.GET)
+    public DeferredResult<List<Artist>> getFollower(@PathVariable("page")int page, @PathVariable("id")int id, HttpSession session){
+        final DeferredResult<List<Artist>> deferredResult = new DeferredResult<>();
+        Object obj = session.getAttribute("userId");
+        int userId = obj==null?-1:(int)obj;
+        threadPool.execute(()->{
+            deferredResult.setResult(followService.getAllFollower(userId,id,page));
         });
         return deferredResult;
     }

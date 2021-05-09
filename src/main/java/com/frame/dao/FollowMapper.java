@@ -10,6 +10,6 @@ public interface FollowMapper {
     public void addFollow(int followerId,int followingId);
     public void deleteFollow(int followerId,int followingId);
     public List<ArtworkForUser> getFollowArtwork(int userId, int page);
-//    public List<Artist> getAllFollower();
-//    public List<Artist> getAllFollowing();
+    public List<Artist> getAllFollower(int artistId,int userId,int page);
+    public List<Artist> getAllFollowing(int artistId,int userId,int page);
 }

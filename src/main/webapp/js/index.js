@@ -89,6 +89,18 @@ const routes =[
         components: {
             home:httpVueLoader('./vue/othersArtwork.vue?'+Math.random()),
         }
+    },
+    {
+        path:'/follow/following/:id/:page',
+        components: {
+            home:httpVueLoader('./vue/followingList.vue?'+Math.random()),
+        }
+    },
+    {
+        path:'/follow/follower/:id/:page',
+        components: {
+            home:httpVueLoader('./vue/followerList.vue?'+Math.random()),
+        }
     }
 ];
 const router = new VueRouter({

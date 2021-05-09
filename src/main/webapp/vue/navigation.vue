@@ -63,7 +63,15 @@
             <i class="el-icon-cloudy"></i>
             <span slot="title">我的作品</span>
           </el-menu-item>
-          <el-menu-item index="5" @click="goToUser">
+          <el-menu-item index="5" @click="goToFollowing">
+            <i class="el-icon-s-custom"></i>
+            <span slot="title">我的关注</span>
+          </el-menu-item>
+          <el-menu-item index="6" @click="goToFollower">
+            <i class="el-icon-orange"></i>
+            <span slot="title">我的粉丝</span>
+          </el-menu-item>
+          <el-menu-item index="7" @click="goToUser">
             <i class="el-icon-setting"></i>
             <span slot="title">我的资料</span>
           </el-menu-item>
@@ -130,6 +138,12 @@ module.exports = {
     },
     goToFollow(){
       this.$router.push({path:'/follow/artwork'});
+    },
+    goToFollowing(){
+      this.$router.push({path:`/follow/following/${this.user.user_id}/0`});
+    },
+    goToFollower(){
+      this.$router.push({path:`/follow/follower/${this.user.user_id}/0`});
     },
     goToUpload: function (){
       this.$router.push({path:'/upload'});

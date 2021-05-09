@@ -183,7 +183,7 @@ module.exports={
           if(data[i].comment_toId==0){
             _this.comments.push(data[i]);
             _this.comments[i].reply=[1];
-            _this.comments[i].splice(0,1);
+            _this.comments[i].reply.splice(0,1);
           }
           else{
             for(var j in _this.comments){

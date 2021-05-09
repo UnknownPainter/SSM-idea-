@@ -17,22 +17,22 @@
     <div style="text-align: left;margin-top: 40px">
       <div style="text-align: center;display: inline-block">
         <div style="color: #8c939d">粉丝数</div>
-        <el-link :underline="false" style="padding: 8px">{{user.user_followers}}</el-link>
+        <el-link @click="goToFollower" :underline="false" style="padding: 8px">{{user.user_followers}}</el-link>
       </div>
       <el-divider direction="vertical"></el-divider>
       <div style="text-align: center;display: inline-block">
         <div style="color: #8c939d">关注数</div>
-        <el-link :underline="false" style="padding: 8px">{{user.user_following}}</el-link>
+        <el-link @click="goToFollowing" :underline="false" style="padding: 8px">{{user.user_following}}</el-link>
       </div>
       <el-divider direction="vertical"></el-divider>
       <div style="text-align: center;display: inline-block">
         <div style="color: #8c939d">收藏数</div>
-        <el-link :underline="false" style="padding: 8px">{{user.user_collectionCount}}</el-link>
+        <el-link @click="moreCollection" :underline="false" style="padding: 8px">{{user.user_collectionCount}}</el-link>
       </div>
       <el-divider direction="vertical"></el-divider>
       <div style="text-align: center;display: inline-block">
         <div style="color: #8c939d">作品数</div>
-        <el-link :underline="false" style="padding: 8px">{{user.user_artworkCount}}</el-link>
+        <el-link @click="moreArtwork" :underline="false" style="padding: 8px">{{user.user_artworkCount}}</el-link>
       </div>
     </div>
     <div style="text-align: left;margin-top: 50px">
@@ -95,6 +95,12 @@ module.exports= {
     }
   },
   methods:{
+    goToFollower(){
+      this.$router.push({path:`/follow/follower/${this.user.user_id}/0`});
+    },
+    goToFollowing(){
+      this.$router.push({path:`/follow/following/${this.user.user_id}/0`});
+    },
     moreCollection(){
       this.$router.push({path:`/artist/collection/${this.userId}/0`});
     },

@@ -1,5 +1,6 @@
 package com.frame.service;
 
+import com.frame.dao.ArtworkMapper;
 import com.frame.dao.CommentMapper;
 import com.frame.po.Comment;
 import com.frame.po.CommentWithUserInfo;
@@ -18,6 +19,8 @@ public class CommentServiceImpl implements CommentService{
 
     @Autowired
     private CommentMapper commentMapper;
+    @Autowired
+    private ArtworkMapper artworkMapper;
 
     private static final int PAGE_COUNT = 20;
 
@@ -29,12 +32,15 @@ public class CommentServiceImpl implements CommentService{
         comment.setComment_artworkId(artworkId);
         comment.setComment_userId(userId);
         comment.setComment_toId(commentId);
+        comment.setComment_createTime(new Date());
         commentMapper.createReplyOfComment(comment);
         commentMapper.updateCommentReplyCount(commentId,1);
+        artworkMapper.updateArtworkCommentCount(artworkId,1);
         return comment;
     }
 
     @Override
+    @Transactional
     public Comment createComment(int artworkId, String content, int userId) {
         Comment comment = new Comment();
         comment.setComment_content(content);
@@ -42,6 +48,7 @@ public class CommentServiceImpl implements CommentService{
         comment.setComment_userId(userId);
         comment.setComment_createTime(new Date());
         commentMapper.createComment(comment);
+        artworkMapper.updateArtworkCommentCount(artworkId,1);
         return comment;
     }
 
