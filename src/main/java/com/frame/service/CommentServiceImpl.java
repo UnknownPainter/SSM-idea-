@@ -48,6 +48,7 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public List<CommentWithUserInfo> getCommentByTimeOrder(int artworkId, int page) {
         List<CommentWithUserInfo> commentList = commentMapper.getCommentByTimeOrder(artworkId,page*PAGE_COUNT);
+        if(commentList==null)return null;
         List<CommentWithUserInfo> tempList = new ArrayList<>();
         for(CommentWithUserInfo comment: commentList){
             if(comment.getComment_replyCount()!=0){

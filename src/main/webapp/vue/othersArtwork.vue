@@ -42,7 +42,7 @@
       <div  style="color: #8c939d;margin-top: 30px" ><div>{{comment}}</div></div>
     </div>
     <el-divider></el-divider>
-    <div style="height: 50px;text-align: left"><div style="color:#606266;display: inline-block"><b>Ta的收藏</b></div><el-tag style="margin-left: 5px"><i class="el-icon-star-on"></i>{{count}}</el-tag></div>
+    <div style="height: 50px;text-align: left"><div style="color:#606266;display: inline-block"><b>Ta的作品</b></div><el-tag style="margin-left: 5px"><i class="el-icon-star-on"></i>{{count}}</el-tag></div>
     <div class="collection-area" ref="collectionArea" :style="{
       'grid-template-columns': `repeat(${col},1fr)`}">
       <div
@@ -193,8 +193,8 @@ module.exports ={
       _this.url = data.user_avatar;
       _this.comment = data.user_comment==null?_this.comment:data.user_comment;
 
-      _this.count = parseInt(_this.user.user_collectionCount);
-      _this.pageCount = Math.floor((parseInt(_this.user.user_collectionCount)+23)/24);
+      _this.count = parseInt(_this.user.user_artworkCount);
+      _this.pageCount = Math.floor((parseInt(_this.user.user_artworkCount)+23)/24);
       if(_this.pageCount==0)_this.pageCount=1;
       _this.show= false;
       _this.$nextTick(()=>{
@@ -203,7 +203,7 @@ module.exports ={
     });
     axios({
       method:'get',
-      url:'/artist/'+_this.userId+'/collections/'+(this.currentPage-1)
+      url:'/artist/'+_this.userId+'/artworks/'+(this.currentPage-1)
     }).then(function (response) {
       var data = response.data;
       for(var i in data){

@@ -17,12 +17,12 @@ public class LoginIntercepter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String uri = request.getRequestURI();
-        System.out.println(uri);
         if(request.getSession().getAttribute("userId")!=null){
             return true;
         }
         else{
             Cookie cookies[] = request.getCookies();
+            if(cookies==null)return false;
             String username="";String password="";
             for(Cookie cookie:cookies){
                 if("username".equals(cookie.getName())){

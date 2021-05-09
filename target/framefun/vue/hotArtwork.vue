@@ -50,6 +50,7 @@ module.exports={
 
   },
   mounted(){
+    window.scrollTo(0,0);
     var _this = this;
     this.$router.app.colSpan=24;
     axios({

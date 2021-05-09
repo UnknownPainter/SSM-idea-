@@ -87,6 +87,7 @@ public class ArtworkServiceImpl implements ArtworkService{
     public ArtworkWithLabel getArtwork(int artworkId, int userId) {
         redisTemplate.boundHashOps("artwork").increment(String.valueOf(artworkId),1);
         ArtworkWithLabel artworkWithLabel = artworkMapper.getArtworkById(artworkId);
+        if(artworkWithLabel==null)return null;
         artworkWithLabel.setHasCollect(false);
         artworkWithLabel.setHasPraise(false);
         if(userId==-1){

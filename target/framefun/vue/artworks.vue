@@ -332,6 +332,7 @@ module.exports={
     }
   },
   mounted(){
+    window.scrollTo(0,0);
     this.$router.app.colSpan=18;
     var _this = this;
     axios({

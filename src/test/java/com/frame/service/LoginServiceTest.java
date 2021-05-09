@@ -18,9 +18,15 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import redis.clients.jedis.Jedis;
 import sun.nio.ch.ThreadPool;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -107,6 +113,40 @@ public class LoginServiceTest {
             redisTemplate.boundListOps("hotTag").rightPush(list.get(i).getKey());
         }
         redisTemplate.delete("tag");
+    }
+
+    @Test
+    public void dataBaseInsert()
+    {
+//        List<ArtworkForUser> artworks = artworkMapper.getUserArtwork(5,0,20,5);
+//        for(int i=0;i<100000;i++){
+//            int r = (int)(Math.random()*20);
+//
+//            Artwork artwork = new Artwork();
+//
+//            artwork.setArtwork_comment("留言1");
+//            artwork.setArtwork_artistId(12+(int)(Math.random()*9900));
+//            artwork.setArtwork_name("测试作品"+i);
+//            artwork.setArtwork_location(artworks.get(r).getArtwork_location());
+//            artwork.setArtwork_height(artworks.get(r).getArtwork_height());
+//            artwork.setArtwork_width(artworks.get(r).getArtwork_width());
+//            artworkMapper.creatArtwork(artwork);
+//
+//        }
+//        for(int i=0;i<10000;i++){
+//            User user = new User();
+//            user.setUser_name("用户"+i);
+//            user.setUser_password("123456");
+//            userMapper.createUser(user);
+//        }
+        for(int i=0;i<300000;i++){
+            Comment comment = new Comment();
+            comment.setComment_content("评论测试数据"+i);
+            comment.setComment_artworkId(50+(int)(Math.random()*9900));
+            comment.setComment_userId(12+(int)(Math.random()*9900));
+            comment.setComment_createTime(new Date());
+            commentMapper.createComment(comment);
+        }
     }
 
 }

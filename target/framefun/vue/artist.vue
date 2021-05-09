@@ -42,19 +42,18 @@
     <el-divider></el-divider>
     <div>
       <div style="text-align: left;position: relative">
-        <div style="color: #8c939d;display: inline-block;padding-right: 8px">{{user.user_name}}</div>
-        <div style="display: inline-block">的作品</div>
+        <div style="color:#606266;display: inline-block;padding-right: 8px"><b>Ta的作品</b></div>
         <div style="display: inline-block"><el-tag size="small">{{user.user_artworkCount}}</el-tag></div>
-        <div style="padding-left: 18px;display: inline-block;color: #8c939d;cursor: pointer;position: absolute;right: 0">查看更多<i class="el-icon-caret-right"></i></div>
+        <div @click="moreArtwork" style="padding-left: 18px;display: inline-block;color: #8c939d;cursor: pointer;position: absolute;right: 0">查看更多<i class="el-icon-caret-right"></i></div>
       </div>
       <div v-if="artworks.length==0" style="color: #8c939d;margin-bottom: 60px;margin-top: 30px"><b>用户还没有分享任何作品</b></div>
-      <el-carousel v-if="artworks.length!=0" :loop="false" :autoplay="false" type="card" height="300px" style="margin-top: 30px">
+      <el-carousel v-if="artworks.length!=0" :loop="false" :autoplay="false" type="card" height="250px" style="margin-top: 30px">
         <el-carousel-item  v-for="(artwork,index) in artworks" :key="artwork.artwork_id">
           <el-image
               @click="handleClick(artwork.artwork_id)"
               :src="artwork.artwork_location"
               :data-artworkid="artwork.artwork_id"
-              style="width: 500px"
+              style="width: 400px"
               fit="cover"
           ></el-image>
         </el-carousel-item>
@@ -63,19 +62,18 @@
     <el-divider></el-divider>
     <div>
       <div style="text-align: left;position: relative">
-        <div style="color: #8c939d;display: inline-block;padding-right: 8px">{{user.user_name}}</div>
-        <div style="display: inline-block">的收藏</div>
+        <div style="color:#606266;display: inline-block;padding-right: 8px"><b>Ta的收藏</b></div>
         <div style="display: inline-block"><el-tag size="small">{{user.user_collectionCount}}</el-tag></div>
-        <div style="padding-left: 18px;display: inline-block;color: #8c939d;cursor: pointer;position:absolute;right: 0 ">查看更多<i class="el-icon-caret-right"></i></div>
+        <div @click="moreCollection" style="padding-left: 18px;display: inline-block;color: #8c939d;cursor: pointer;position:absolute;right: 0 ">查看更多<i class="el-icon-caret-right"></i></div>
       </div>
       <div v-if="collections.length==0" style="color: #8c939d;margin-bottom: 60px;margin-top: 30px"><b>用户还没有收藏任何作品</b></div>
-      <el-carousel v-if="collections.length!=0" :loop="false" :autoplay="false" type="card" height="300px" style="margin-top: 30px">
+      <el-carousel v-if="collections.length!=0" :loop="false" :autoplay="false" type="card" height="250px" style="margin-top: 30px">
         <el-carousel-item v-for="(artwork,index) in collections" :key="artwork.artwork_id+'f'">
           <el-image
               @click="handleClick(artwork.artwork_id)"
               :src="artwork.artwork_location"
               :data-artworkid="artwork.artwork_id"
-              style="width: 500px"
+              style="width: 400px"
               fit="cover"
           ></el-image>
         </el-carousel-item>
@@ -97,6 +95,12 @@ module.exports= {
     }
   },
   methods:{
+    moreCollection(){
+      this.$router.push({path:`/artist/collection/${this.userId}/0`});
+    },
+    moreArtwork(){
+      this.$router.push({path:`/artist/artwork/${this.userId}/0`});
+    },
     follow(){
       var _this = this;
       if(this.user.hasFollow==null)return;
@@ -138,6 +142,7 @@ module.exports= {
     },
   },
   mounted(){
+    window.scrollTo(0,0);
     var _this = this;
     axios({
       method:'get',

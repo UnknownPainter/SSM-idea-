@@ -1,8 +1,9 @@
 <template>
   <div class="artwork-user-block">
-    <div class="user-avatar" @click="goToUser">
+    <div class="user-avatar" @click="goToUser" style="cursor: pointer">
       <el-avatar :size="64" style="float: left">
-        <el-image  v-if="user" :src="user.user_avatar" fit="cover" style="height: 100%"></el-image>
+        <i class="el-icon-user-solid" v-if="!user.user_avatar"></i>
+        <el-image  v-if="user.user_avatar" :src="user.user_avatar" fit="cover" style="height: 100%"></el-image>
       </el-avatar>
       <div style="float: left;font-size: 20px;margin-left: 30px;padding-top: 22px">{{user.user_name}}</div>
     </div>
@@ -109,6 +110,7 @@ module.exports={
   margin-bottom: 50px;
   border-radius: 15px;
   text-align: center;
+
 }
 .user-avatar{
   width: 100%;

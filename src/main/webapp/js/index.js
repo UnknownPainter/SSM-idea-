@@ -77,6 +77,18 @@ const routes =[
         components: {
             home:httpVueLoader('./vue/artist.vue?'+Math.random()),
         }
+    },
+    {
+        path:'/artist/collection/:id/:page',
+        components: {
+            home:httpVueLoader('./vue/othersCollection.vue?'+Math.random()),
+        }
+    },
+    {
+        path:'/artist/artwork/:id/:page',
+        components: {
+            home:httpVueLoader('./vue/othersArtwork.vue?'+Math.random()),
+        }
     }
 ];
 const router = new VueRouter({
