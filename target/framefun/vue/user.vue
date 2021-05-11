@@ -1,9 +1,9 @@
 <template>
   <div class="user-block">
-    <div class="avatar-block">
+    <div class="avatar-block" v-if="flag">
       <el-avatar :size="100" style="font-size:50px;float: left" @mouseover.native="avatarover" @mouseout.native="avatarout">
         <i class="el-icon-user-solid" v-show="!hover&&!url"></i>
-        <el-image v-show="!hover&&url" :src="url" fit="cover" style="height: 100%"></el-image>
+        <el-image v-show="(!hover)&&url" :src="url" fit="cover" style="height: 100%"></el-image>
         <div v-show="hover" style="font-size: 18px;">
           <el-upload
               :multiple="false"
@@ -24,8 +24,8 @@
     </div>
     <div style="text-align: left;margin-top: 40px">
       <div style="text-align: center;display: inline-block">
-        <div @click="goToFollower" style="color: #8c939d">粉丝数</div>
-        <el-link :underline="false" style="padding: 8px">{{user.user_followers}}</el-link>
+        <div style="color: #8c939d">粉丝数</div>
+        <el-link @click="goToFollower" :underline="false" style="padding: 8px">{{user.user_followers}}</el-link>
       </div>
       <el-divider direction="vertical"></el-divider>
       <div style="text-align: center;display: inline-block">
@@ -59,7 +59,8 @@ module.exports= {
       hover:false,
       url:'',
       comment:'用户还没有留下简介',
-      edit:false
+      edit:false,
+      flag:true
     }
   },
   methods:{
@@ -70,10 +71,10 @@ module.exports= {
       this.$router.push({path:`/follow/following/${this.user.user_id}/0`});
     },
     moreCollection(){
-      this.$router.push({path:`/artist/collection/${this.userId}/0`});
+      this.$router.push({path:`/artist/collection/${this.user.user_id}/0`});
     },
     moreArtwork(){
-      this.$router.push({path:`/artist/artwork/${this.userId}/0`});
+      this.$router.push({path:`/artist/artwork/${this.user.user_id}/0`});
     },
     editComment(){
       this.edit=!this.edit;
@@ -102,7 +103,8 @@ module.exports= {
       });
     },
     successHandler(res){
-      this.url = res;
+      window.location.reload();
+
     },
     avatarover(){
       this.hover=true;

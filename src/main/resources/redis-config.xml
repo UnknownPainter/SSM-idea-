@@ -64,4 +64,7 @@
     <bean id="redisCache" class="com.frame.utils.RedisCache">
         <property name="redisTemplate" ref="redisTemplate"/>
     </bean>
+    <bean id="redisUtils" class="com.frame.utils.RedisUtils">
+        <property name="redisTemplate" ref="redisTemplate"/>
+    </bean>
 </beans>

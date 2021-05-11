@@ -5,7 +5,9 @@ import com.frame.dao.CommentMapper;
 import com.frame.po.Comment;
 import com.frame.po.CommentWithUserInfo;
 import com.frame.utils.CallbackForController;
+import com.frame.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,10 @@ public class CommentServiceImpl implements CommentService{
     private CommentMapper commentMapper;
     @Autowired
     private ArtworkMapper artworkMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisUtils redisUtils;
 
     private static final int PAGE_COUNT = 20;
 
@@ -36,6 +42,7 @@ public class CommentServiceImpl implements CommentService{
         commentMapper.createReplyOfComment(comment);
         commentMapper.updateCommentReplyCount(commentId,1);
         artworkMapper.updateArtworkCommentCount(artworkId,1);
+        redisUtils.removeObject("childComment:"+commentId);
         return comment;
     }
 
@@ -49,17 +56,31 @@ public class CommentServiceImpl implements CommentService{
         comment.setComment_createTime(new Date());
         commentMapper.createComment(comment);
         artworkMapper.updateArtworkCommentCount(artworkId,1);
+        redisUtils.removeObject("comment:"+artworkId);
         return comment;
     }
 
     @Override
     public List<CommentWithUserInfo> getCommentByTimeOrder(int artworkId, int page) {
-        List<CommentWithUserInfo> commentList = commentMapper.getCommentByTimeOrder(artworkId,page*PAGE_COUNT);
-        if(commentList==null)return null;
+        String pageStr = String.valueOf(page);
+        List<CommentWithUserInfo> commentList = (List<CommentWithUserInfo>)redisUtils.getObject("comment:"+artworkId,pageStr);
+        if(null==commentList){
+            commentList = commentMapper.getCommentByTimeOrder(artworkId,page*PAGE_COUNT);
+            if(commentList==null)return null;
+            redisUtils.putObject("comment:"+artworkId,""+pageStr,commentList);
+        }
+//        List<CommentWithUserInfo> commentList = commentMapper.getCommentByTimeOrder(artworkId,page*PAGE_COUNT);
+//        if(commentList==null)return null;
         List<CommentWithUserInfo> tempList = new ArrayList<>();
+        List<CommentWithUserInfo> child=null;
         for(CommentWithUserInfo comment: commentList){
             if(comment.getComment_replyCount()!=0){
-                tempList.addAll(commentMapper.getTwoChildComment(comment.getComment_id()));
+                child = (List<CommentWithUserInfo>)redisUtils.getObject("childComment:"+comment.getComment_id(),"two");
+                if(null!=child)continue;
+                child = commentMapper.getTwoChildComment(comment.getComment_id());
+                if(null==child)continue;
+                redisUtils.putObject("childComment:"+comment.getComment_id(),"two",child);
+                tempList.addAll(child);
             }
         }
         commentList.addAll(tempList);

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.frame.component.HotService;
 import com.frame.dao.*;
 import com.frame.po.*;
+import com.frame.utils.RedisUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,6 +54,8 @@ public class LoginServiceTest {
     FollowMapper followMapper;
     @Autowired
     RedisTemplate redisTemplate;
+    @Autowired
+    RedisUtils redisUtils;
     @Test
     public void login() {
         Comment comment = new Comment();
@@ -78,6 +81,12 @@ public class LoginServiceTest {
 //        redisTemplate.boundListOps("hotTag").rightPush("封面");
 //        redisTemplate.boundListOps("hotTag").rightPush("fgo");
 //        redisTemplate.boundListOps("hotTag").rightPush("葛饰北斋");
+        User user = new User();
+        user.setUser_name("王子辰");
+        redisUtils.getObject("test","5");
+        redisUtils.putObject("test","5",user);
+        User s = (User) redisUtils.getObject("test","5");
+        System.out.println(s.getUser_name());
 
     }
     @Test
@@ -116,6 +125,7 @@ public class LoginServiceTest {
     }
 
     @Test
+    @Transactional
     public void dataBaseInsert()
     {
 //        List<ArtworkForUser> artworks = artworkMapper.getUserArtwork(5,0,20,5);
@@ -139,13 +149,20 @@ public class LoginServiceTest {
 //            user.setUser_password("123456");
 //            userMapper.createUser(user);
 //        }
-        for(int i=0;i<300000;i++){
-            Comment comment = new Comment();
-            comment.setComment_content("评论测试数据"+i);
-            comment.setComment_artworkId(50+(int)(Math.random()*9900));
-            comment.setComment_userId(12+(int)(Math.random()*9900));
-            comment.setComment_createTime(new Date());
-            commentMapper.createComment(comment);
+//        for(int i=0;i<300000;i++){
+//            Comment comment = new Comment();
+//            comment.setComment_content("评论测试数据"+i);
+//            comment.setComment_artworkId(50+(int)(Math.random()*9900));
+//            comment.setComment_userId(12+(int)(Math.random()*9900));
+//            comment.setComment_createTime(new Date());
+//            commentMapper.createComment(comment);
+//        }
+        for(int i=0;i<80000;i++){
+            int userId = 12+(int)(Math.random()*9900);
+            int artworkId = 50+(int)(Math.random()*9900);
+            collectionMapper.createCollection(artworkId,userId);
+            artworkMapper.updateArtworkCollectCount(artworkId,1);
+            userMapper.updateCollectionCountOfUser(userId,1);
         }
     }
 
