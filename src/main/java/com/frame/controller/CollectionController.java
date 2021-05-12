@@ -42,5 +42,4 @@ public class CollectionController {
         int userId = obj==null?-1:(int)obj;
         return collectionService.getCollectionByPage(page,userId,artistId);
     }
-
 }

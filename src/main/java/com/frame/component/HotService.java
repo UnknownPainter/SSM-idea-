@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.frame.dao.ArtworkMapper;
 import com.frame.po.Artwork;
+import com.frame.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.SortParameters;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,6 +18,8 @@ import java.util.*;
 public class HotService {
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private RedisUtils redisUtils;
     @Autowired
     ArtworkMapper artworkMapper;
 
@@ -52,6 +55,10 @@ public class HotService {
             redisTemplate.boundListOps("hotTag").rightPush(list.get(i).getKey());
         }
         redisTemplate.delete("tag");
+    }
+    @Scheduled(cron = "0 0 0 * * *")
+    public void dayClear(){
+        redisUtils.clear();
     }
 
 }

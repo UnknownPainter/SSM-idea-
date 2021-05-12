@@ -13,7 +13,7 @@
     <script src="js/vue-router.js"></script>
 </head>
 <body>
-    <div id="loginApp">
+    <div id="loginApp" style="background-image: url('./image/bg.jpg');">
         <transition name="el-zoom-in-center">
             <router-view name="loginpage"></router-view>
         </transition>
@@ -27,9 +27,9 @@
     import {router} from './js/index.js'
     const app = new Vue({
         router,
-        // mounted:function(){
-        //     router.push({path:'/login'});
-        // }
+        mounted:function(){
+
+        }
 
     }).$mount('#loginApp')
 </script>

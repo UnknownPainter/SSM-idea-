@@ -28,6 +28,13 @@ module.exports = {
       if(!value){
         return callback(new Error('用户名不能为空'));
       }
+      if(value.length>15){
+        return callback(new Error('用户名过长（15字符以内）'));
+      }
+      let regAccount = /[#$^&*\s\\/\"\'+]+/g
+      if (regAccount.test(value)) {
+        return callback(new Error('用户名包含非法字符'));
+      }
       callback();
     };
     var passvali = (rule,value,callback) => {
@@ -91,7 +98,7 @@ module.exports = {
   margin:auto; width:400px; height:450px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.8);
   margin-top: 150px;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.8);
   border-radius: 10px;
 }
 </style>

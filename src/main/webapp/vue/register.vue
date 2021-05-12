@@ -25,8 +25,16 @@
 module.exports = {
   data() {
     var nameVali = (rule,value,callback) => {
+      var regAccount = /[#$^&*\s\\/\"\'+]+/g
       if(!value){
         return callback(new Error("用户名不能为空"));
+      }
+      else if(regAccount.test(value)){
+
+        return callback(new Error('用户名包含非法字符'));
+      }
+      else if(value.length>15){
+        return callback(new Error('用户名过长（15字符以内）'));
       }
       else{
         axios({
@@ -49,6 +57,9 @@ module.exports = {
       if(!value){
         return callback(new Error('密码不能为空'));
       }
+      else if(value.length>20){
+        return callback(new Error('密码过长（20字符以内）'));
+      }
       callback();
     };
     return {
@@ -59,7 +70,7 @@ module.exports = {
         nameError: ''
       },
       rules:{
-        name:[{ validator:nameVali, trigger: 'blur' }],
+        name:[{ validator: nameVali, trigger: 'blur' }],
         password:[{ validator: passvali, trigger: 'blur' }]
       }
     };
@@ -106,7 +117,7 @@ module.exports = {
   margin:auto; width:400px; height:450px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.8);
   margin-top: 150px;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.8);
   border-radius: 10px;
 }
 </style>
