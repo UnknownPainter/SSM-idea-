@@ -81,13 +81,7 @@ public class LoginServiceTest {
 //        redisTemplate.boundListOps("hotTag").rightPush("封面");
 //        redisTemplate.boundListOps("hotTag").rightPush("fgo");
 //        redisTemplate.boundListOps("hotTag").rightPush("葛饰北斋");
-        User user = new User();
-        user.setUser_name("王子辰");
-        redisUtils.getObject("test","5");
-        redisUtils.putObject("test","5",user);
-        User s = (User) redisUtils.getObject("test","5");
-        System.out.println(s.getUser_name());
-
+        List<CommentWithUserInfo> comment = commentMapper.getChildComment(300078,0);
     }
     @Test
     public void updateHotArtwork() {

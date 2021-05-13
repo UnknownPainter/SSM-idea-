@@ -65,6 +65,7 @@
             <mvc:exclude-mapping path="/artworks/home/*"/>
             <mvc:exclude-mapping path="/artworks/*"/>
             <mvc:exclude-mapping path="/comment/*/timeorder/*"/>
+            <mvc:exclude-mapping path="/comment/child/**"/>
             <mvc:exclude-mapping path="/tag/artwork/*/*"/>
             <mvc:exclude-mapping path="/hot/*"/>
             <mvc:exclude-mapping path="/follow/following/**"/>

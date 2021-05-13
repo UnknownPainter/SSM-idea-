@@ -76,7 +76,10 @@ public class CommentServiceImpl implements CommentService{
         for(CommentWithUserInfo comment: commentList){
             if(comment.getComment_replyCount()!=0){
                 child = (List<CommentWithUserInfo>)redisUtils.getObject("childComment:"+comment.getComment_id(),"two");
-                if(null!=child)continue;
+                if(null!=child) {
+                    tempList.addAll(child);
+                    continue;
+                }
                 child = commentMapper.getTwoChildComment(comment.getComment_id());
                 if(null==child)continue;
                 redisUtils.putObject("childComment:"+comment.getComment_id(),"two",child);
@@ -87,4 +90,8 @@ public class CommentServiceImpl implements CommentService{
         return commentList;
     }
 
+    @Override
+    public List<CommentWithUserInfo> getChildComment(int commentId, int page) {
+        return commentMapper.getChildComment(commentId,page*PAGE_COUNT);
+    }
 }

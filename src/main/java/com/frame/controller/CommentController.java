@@ -50,4 +50,12 @@ public class CommentController {
         });
         return deferredResult;
     }
+    @RequestMapping(value = "/comment/child/{commentId}/{page}",method = RequestMethod.GET)
+    public DeferredResult<List<CommentWithUserInfo>> getCommentChild(@PathVariable("commentId")int commentId, @PathVariable("page")int page){
+        final DeferredResult<List<CommentWithUserInfo>> deferredResult = new DeferredResult<>();
+        threadPool.execute(()->{
+            deferredResult.setResult(commentService.getChildComment(commentId,page));
+        });
+        return deferredResult;
+    }
 }

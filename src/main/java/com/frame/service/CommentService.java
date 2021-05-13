@@ -10,4 +10,5 @@ public interface CommentService {
     List<CommentWithUserInfo> getCommentByTimeOrder(int artworkId, int page);
     Comment createComment(int artworkId,String content,int userId);
     Comment createReplyOfComment(int commentId, int artworkId, String content, int userId);
+    List<CommentWithUserInfo> getChildComment(int commentId,int page);
 }

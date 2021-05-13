@@ -41,4 +41,17 @@
                                      and comment_toId=#{0} order by comment_id desc limit 0,2) B
             on user_id = B.comment_userId
     </select>
+    <select id="getChildComment" resultType="com.frame.po.CommentWithUserInfo">
+        SELECT
+            B.*,
+            user_id,
+            user_name,
+            user_avatar
+        from
+            user right join
+            (SELECT * from comment_child WHERE
+                    comment_id &lt;= (SELECT comment_id from comment_child where comment_toId=#{0} order by comment_id desc limit #{1},1)
+                                           and comment_toId=#{0} order by comment_id desc limit 20) B
+            on user_id = B.comment_userId
+    </select>
 </mapper>

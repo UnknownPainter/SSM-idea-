@@ -72,7 +72,7 @@
         <transition-group tag="span" name="comment-list">
           <div v-for="(comment,index) in comments" :key="comment.comment_id" class="a-comment">
             <div class="my-divider"></div>
-            <div @click="goToUser(index)" style="display: inline-block;height: 64.8px;float: left;cursor: pointer">
+            <div @click="goToUser(comment.user_id)" style="display: inline-block;height: 64.8px;float: left;cursor: pointer">
               <el-avatar :size="48">
                 <el-image :src="comment.user_avatar" fit="cover" style="height: 100%" v-show="comment.user_avatar"></el-image>
                 <i class="el-icon-user-solid" v-show="!comment.user_avatar"></i>
@@ -80,12 +80,15 @@
             </div>
               <div style="margin-left: 58px">
                 <div style="vertical-align: center">
-                  <div @click="goToUser(index)" style="cursor: pointer;color: #6d757a;font-size: 12px;"><b>{{comment.user_name}}</b></div>
+                  <div @click="goToUser(comment.user_id  )" style="cursor: pointer;color: #6d757a;font-size: 12px;"><b>{{comment.user_name}}</b></div>
                   <div style="padding-top: 8px">{{comment.comment_content}}</div>
                 </div>
                 <div style="text-align: left;padding-top: 8px;padding-bottom: 8px">
                   <div class="comment-other" style="cursor: text">{{comment.comment_createTime}}</div>
                   <div class="comment-other" @click="reply(index)">回复</div>
+                  <div class="comment-other" @click="popReply(index)">
+                    查看更多({{comment.comment_replyCount}})
+                  </div>
                 </div>
                 <transition-group tag="span" name="comment-list">
                   <el-form :model="form" class="form-block" v-if="comment.isReplying" key="form">
@@ -109,7 +112,7 @@
                     </el-form-item>
                   </el-form>
                   <div v-for="(Areply,index2) in comment.reply" :key="'reply'+Areply.comment_id" class="a-comment">
-                    <div @click="goToUser(index)" style="cursor: pointer;display: inline-block;height: 64.8px;float: left;padding: 8px 0 8px 0">
+                    <div @click="goToUser(Areply.user_id)" style="cursor: pointer;display: inline-block;height: 64.8px;float: left;padding: 8px 0 8px 0">
                       <el-avatar :size="24">
                         <el-image :src="Areply.user_avatar" fit="cover" style="height: 100%" v-show="Areply.user_avatar"></el-image>
                         <i class="el-icon-user-solid" v-show="!Areply.user_avatar"></i>
@@ -117,7 +120,7 @@
                     </div>
                     <div style="margin-left: 34px">
                       <div style="vertical-align: center">
-                        <div @click="goToUser(index)" style="cursor: pointer;color: #6d757a;font-size: 12px;"><b>{{Areply.user_name}}</b></div>
+                        <div @click="goToUser(Areply.user_id)" style="cursor: pointer;color: #6d757a;font-size: 12px;"><b>{{Areply.user_name}}</b></div>
                         <div style="padding-top: 8px">{{Areply.comment_content}}</div>
                       </div>
                       <div style="text-align: left;padding-top: 8px">
@@ -142,6 +145,35 @@
         </transition-group>
       </div>
     </div>
+    <el-dialog title="评论回复" :visible.sync="showReply" ref="myDialog">
+      <div v-for="(aReply,index) in moreReply" class="a-comment" :key="'more-'+index">
+        <div class="my-divider"></div>
+        <div @click="goToUser(aReply.user_id)" style="cursor: pointer;display: inline-block;height: 64.8px;float: left;padding: 8px 0 8px 0">
+          <el-avatar :size="48">
+            <el-image :src="aReply.user_avatar" fit="cover" style="height: 100%" v-show="aReply.user_avatar"></el-image>
+            <i class="el-icon-user-solid" v-show="!aReply.user_avatar"></i>
+          </el-avatar>
+        </div>
+        <div style="margin-left: 60px">
+          <div style="vertical-align: center">
+            <div @click="goToUser(aReply.user_id)" style="cursor: pointer;color: #6d757a;font-size: 12px;"><b>{{aReply.user_name}}</b></div>
+            <div style="padding-top: 8px">{{aReply.comment_content}}</div>
+          </div>
+          <div style="text-align: left;padding-top: 8px">
+            <div class="comment-other" style="cursor: text">{{aReply.comment_createTime}}</div>
+          </div>
+        </div>
+      </div>
+      <el-pagination
+        key="page2"
+        :page-count="nowCount"
+        class="page"
+        background
+        layout="prev, pager, next"
+        @current-change="replyChange"
+      >
+      </el-pagination>
+    </el-dialog>
   </div>
 </template>
 
@@ -164,12 +196,41 @@ module.exports={
       inputVisible: false,
       inputValue: '',
       pageCount:0,
-      show:false
+      show:false,
+      showReply:false,
+      moreReply:[],
+      nowCount:'',
+      nowComment:''
     }
   },
   methods:{
+    replyChange(e){
+
+      var _this = this;
+      axios({
+        method:'get',
+        url:'/comment/child/'+this.nowComment+'/'+(e-1),
+      }).then(function (response) {
+        _this.moreReply = response.data;
+        _this.$refs.myDialog.$el.scrollTop=0
+      });
+    },
+    popReply(e){
+      var _this = this;
+      this.nowComment=this.comments[e].comment_id
+      this.nowCount=Math.floor((this.comments[e].comment_replyCount+19)/20);
+      if(this.nowCount==0)this.nowCount=1;
+      axios({
+        method:'get',
+        url:'/comment/child/'+this.comments[e].comment_id+'/0',
+      }).then(function (response) {
+        _this.moreReply = response.data;
+        _this.showReply=true;
+
+      });
+    },
     goToUser(e){
-      this.$router.push({path:`/artist/${this.comments[e].user_id}`});
+      this.$router.push({path:`/artist/${e}`});
     },
     pageChange(e){
       var _this = this;
