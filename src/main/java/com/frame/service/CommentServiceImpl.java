@@ -43,6 +43,7 @@ public class CommentServiceImpl implements CommentService{
         commentMapper.updateCommentReplyCount(commentId,1);
         artworkMapper.updateArtworkCommentCount(artworkId,1);
         redisUtils.removeObject("childComment:"+commentId);
+        redisUtils.removeObject("comment:"+artworkId);
         return comment;
     }
 
