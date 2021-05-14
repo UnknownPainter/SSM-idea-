@@ -215,7 +215,7 @@ module.exports={
         _this.$refs.myDialog.$el.scrollTop=0
       });
     },
-    popReply(e){ 
+    popReply(e){
       var _this = this;
       this.nowComment=this.comments[e].comment_id
       this.nowCount=Math.floor((this.comments[e].comment_replyCount+19)/20);
