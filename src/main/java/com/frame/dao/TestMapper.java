@@ -9,4 +9,5 @@ public interface TestMapper {
     List<ArtworkForUser> getCollectionWithoutJoin(int artistId, int page, int limit);
     int requestIfHasCollected(int userId,int artworkId);
     List<Integer> getUserCollection(int userId);
+    void updateUser(int userId,int i);
 }

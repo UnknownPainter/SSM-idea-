@@ -3,6 +3,7 @@ package com.frame.service;
 import com.frame.dao.ArtworkMapper;
 import com.frame.dao.CollectionMapper;
 import com.frame.dao.TagMapper;
+import com.frame.dao.UserMapper;
 import com.frame.po.Artwork;
 import com.frame.po.ArtworkForUser;
 import com.frame.po.ArtworkWithLabel;
@@ -37,6 +38,8 @@ public class ArtworkServiceImpl implements ArtworkService{
     private TagMapper tagMapper;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private UserMapper userMapper;
 
 
     @Transactional
@@ -77,6 +80,7 @@ public class ArtworkServiceImpl implements ArtworkService{
         }
 
         artworkMapper.updateArtworkLocationById(MAP_PATH+"/"+artwork.getArtwork_artistId()+"/"+artwork.getArtwork_id()+fileType,artwork.getArtwork_id());
+        userMapper.updateArtworkCountOfUser(artwork.getArtwork_artistId(),1);
         for(String label:labels){
             tagMapper.createTag(artwork.getArtwork_id(),label);
         }
@@ -151,6 +155,7 @@ public class ArtworkServiceImpl implements ArtworkService{
                 artworkMapper.deleteArtwork(id,userId);
             }
         }
+        userMapper.updateArtworkCountOfUser(artwork.getArtwork_artistId(),-1);
         return true;
     }
 }

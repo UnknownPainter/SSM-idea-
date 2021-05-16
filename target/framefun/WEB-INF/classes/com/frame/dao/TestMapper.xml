@@ -49,4 +49,7 @@
     <select useCache="false" id="getUserCollection" resultType="Integer">
         SELECT artwork_id from collection where user_id=#{0}
     </select>
+    <update id="updateUser">
+        update user set user_collectionCount=user_collectionCount+#{1} where user_id=#{0}
+    </update>
 </mapper>
