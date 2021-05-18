@@ -63,7 +63,8 @@ module.exports ={
       currentPage:0,
       show:false,
       count:'',
-      col:'6'
+      col:'6',
+      group:0
     }
   },
   methods:{
@@ -97,30 +98,17 @@ module.exports ={
     },
     pageChange(e){
       var _this = this;
-      this.$router.push({path:`/tag/artwork/${this.tagName}/${e-1}`});
-      axios({
-        method: 'get',
-        url: '/collections/'+(e-1)
-      }).then(function (response) {
-        var data = response.data;
-        _this.artworks = [];
-        for (var i in data) {
-          _this.artworks.push(data[i]);
-        }
-        _this.show = false;
-        _this.$nextTick(()=>{
-          _this.currentPage = parseInt(e);
-          _this.show = true;
-        });
-      });
+      this.$router.push({path:`/tag/artwork/${this.tagName}/${this.group}/${e-1}`});
+
     }
   },
   created() {
     var _this = this;
     this.currentPage = parseInt(this.$route.params.page)+1;
+    this.group=parseInt(this.$route.params.group);
     axios({
       method: 'get',
-      url: `/tag/artwork/${this.tagName}/`+"count"
+      url: `/tag/artwork/${this.group}/${this.tagName}/`+"count"
     }).then(function (response) {
       var data = response.data;
       _this.count = data;
@@ -132,7 +120,7 @@ module.exports ={
       })
       axios({
         method: 'get',
-        url: `/tag/artwork/${_this.tagName}/`+(_this.currentPage-1)
+        url: `/tag/artwork/${_this.group}/${_this.tagName}/`+(_this.currentPage-1)
       }).then(function (response) {
         var data = response.data;
         for (var i in data) {

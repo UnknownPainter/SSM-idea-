@@ -55,7 +55,7 @@ const routes =[
         }
     },
     {
-        path:'/tag-search/:tagname/:page',
+        path:'/tag-search/:tagname/:group/:page',
         components: {
             home:httpVueLoader('./vue/tagSearch.vue?'+Math.random()),
         }

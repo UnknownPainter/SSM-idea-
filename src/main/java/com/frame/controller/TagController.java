@@ -28,23 +28,23 @@ public class TagController {
     public boolean deleteTag(@PathVariable("artworkId")int artworkId, @PathVariable("tagName")String tagName, HttpSession session){
         return tagService.deleteTag(artworkId,tagName,(int)session.getAttribute("userId"));
     }
-    @RequestMapping(value = "/tag/artwork/{tagName}/{page}",method = RequestMethod.GET)
-    public DeferredResult<List<ArtworkForUser>> getArtworkByTag(@PathVariable("tagName")String tagName,@PathVariable("page")int page ,HttpSession session){
+    @RequestMapping(value = "/tag/artwork/{group}/{tagName}/{page}",method = RequestMethod.GET)
+    public DeferredResult<List<ArtworkForUser>> getArtworkByTag(@PathVariable("tagName")String tagName,@PathVariable("page")int page,@PathVariable("group")int group ,HttpSession session){
         final DeferredResult<List<ArtworkForUser>> deferredResult = new DeferredResult<>();
         threadPool.execute(()->{
             Object userId = session.getAttribute("userId");
             if(userId==null)
-                deferredResult.setResult(tagService.getArtworkByTag(tagName,page,-1,1));
+                deferredResult.setResult(tagService.getArtworkByTag(tagName,page,-1,group));
             else
-                deferredResult.setResult(tagService.getArtworkByTag(tagName,page,(int)userId,1));
+                deferredResult.setResult(tagService.getArtworkByTag(tagName,page,(int)userId,group));
         });
         return deferredResult;
     }
-    @RequestMapping(value = "/tag/artwork/{tagName}/count",method = RequestMethod.GET)
-    public DeferredResult<Integer> getArtworkByTag(@PathVariable("tagName")String tagName){
+    @RequestMapping(value = "/tag/artwork/{group}/{tagName}/count",method = RequestMethod.GET)
+    public DeferredResult<Integer> getArtworkByTag(@PathVariable("tagName")String tagName,@PathVariable("group")int group){
         final DeferredResult<Integer> deferredResult = new DeferredResult<>();
         threadPool.execute(()->{
-            deferredResult.setResult(tagService.getSearchCountOfTag(tagName,1));
+            deferredResult.setResult(tagService.getSearchCountOfTag(tagName,group));
         });
         return deferredResult;
     }

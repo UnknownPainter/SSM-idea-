@@ -299,7 +299,7 @@ module.exports={
       });
     },
     tagSearch(tag){
-      this.$router.push({path:`/tag-search/${tag}/0`});
+      this.$router.push({path:`/tag-search/${tag}/0/0`});
     },
     handleClose(tag) {
       var _this = this;

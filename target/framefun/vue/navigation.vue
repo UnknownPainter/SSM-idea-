@@ -23,7 +23,15 @@
             :fetch-suggestions="getHotArtwork"
             @select="selectSearch"
             @keyup.enter.native="search"
+            style="width: 200px"
         >
+          <el-select v-model="group" slot="prepend" placeholder="请选择" style="width: 30px !important;">
+            <el-option label="全部" value="0"></el-option>
+            <el-option label="原画" value="1"></el-option>
+            <el-option label="分镜稿" value="2"></el-option>
+            <el-option label="人设图" value="3"></el-option>
+            <el-option label="其他" value="4"></el-option>
+          </el-select>
           <template slot-scope="{ item }">
             <span v-if="item.idx<=3" style="float: left;color: #F56C6C">{{item.idx}}</span>
             <span v-else style="float: left;color: #909399">{{item.idx}}</span>
@@ -93,13 +101,14 @@ module.exports = {
       searchContent:'',
       isScroll:false,
       user:'',
-      searchList:[]
+      searchList:[],
+      group:'0'
     };
   },
   methods:{
     search(){
       var tag = this.searchContent;
-      this.$router.push({path:`/tag-search/${tag}/0`});
+      this.$router.push({path:`/tag-search/${tag}/${this.group}/0`});
     },
     selectSearch(item){this.searchContent = item.value;},
     createFilter(queryString) {
