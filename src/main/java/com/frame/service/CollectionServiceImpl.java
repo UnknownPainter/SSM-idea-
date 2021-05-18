@@ -5,7 +5,9 @@ import com.frame.dao.CollectionMapper;
 import com.frame.dao.UserMapper;
 import com.frame.po.Artwork;
 import com.frame.po.ArtworkForUser;
+import com.frame.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,14 +24,18 @@ public class CollectionServiceImpl implements CollectionService{
     private ArtworkMapper artworkMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     @Transactional
     public boolean createCollection(int artworkId, int userId) {
 
         collectionMapper.createCollection(artworkId,userId);
-        artworkMapper.updateArtworkCollectCount(artworkId,1);
-        userMapper.updateCollectionCountOfUser(userId,1);
+        redisTemplate.boundHashOps("artworkCollectCount").increment(String.valueOf(artworkId),1);
+        redisTemplate.boundHashOps("userCollectCount").increment(String.valueOf(userId),1);
+//        artworkMapper.updateArtworkCollectCount(artworkId,1);
+//        userMapper.updateCollectionCountOfUser(userId,1);
         return true;
     }
 

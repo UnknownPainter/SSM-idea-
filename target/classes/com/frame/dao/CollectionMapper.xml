@@ -20,7 +20,6 @@
                artwork.artwork_name,
                artwork.artwork_collectCount,
                artwork.artwork_comment,
-               artwork.artwork_praiseCount,
                artwork.artwork_artistId,
                IF(collection.collection_id>0,true,false) as hasCollect
         from

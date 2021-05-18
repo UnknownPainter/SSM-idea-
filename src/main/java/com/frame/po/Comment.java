@@ -8,7 +8,6 @@ public class Comment implements Serializable {
     private int comment_artworkId;
     private String comment_content;
     private Date comment_createTime;
-    private int comment_praiseCount;
     private int comment_toId;
     private int comment_replyCount;
     private int comment_userId;
@@ -61,13 +60,6 @@ public class Comment implements Serializable {
         this.comment_createTime = comment_createTime;
     }
 
-    public int getComment_praiseCount() {
-        return comment_praiseCount;
-    }
-
-    public void setComment_praiseCount(int comment_praiseCount) {
-        this.comment_praiseCount = comment_praiseCount;
-    }
 
     public int getComment_toId() {
         return comment_toId;

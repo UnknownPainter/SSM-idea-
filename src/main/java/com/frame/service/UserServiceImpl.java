@@ -4,6 +4,7 @@ import com.frame.dao.UserMapper;
 import com.frame.po.Artist;
 import com.frame.po.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -19,6 +20,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
     public void setUserMapper(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
@@ -38,6 +41,9 @@ public class UserServiceImpl implements UserService {
     public User login(String username, String password) {
         User user = userMapper.getUserByName(username);
         if (user!=null&&password.equals(user.getUser_password())){
+            Integer count = (Integer) redisTemplate.boundHashOps("userCollectCount").get(String.valueOf(user.getUser_id()));
+            if(count==null) return user;
+            user.setUser_collectionCount(count+user.getUser_collectionCount());
             return user;
         }
         return null;
@@ -93,6 +99,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Artist getUserById(int userId, int artistId) {
-        return userMapper.getUserById(userId,artistId);
+        Artist user = userMapper.getUserById(userId,artistId);
+        Integer count = (Integer) redisTemplate.boundHashOps("userCollectCount").get(String.valueOf(user.getUser_id()));
+        if(count==null) return user;
+        user.setUser_collectionCount(count+user.getUser_collectionCount());
+        return user;
     }
 }

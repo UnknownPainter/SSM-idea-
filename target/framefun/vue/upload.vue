@@ -54,6 +54,14 @@
         <el-form-item label="作品名称">
           <el-input v-model="form.name" style="width: 400px"></el-input>
         </el-form-item>
+        <el-form-item label="作品类型">
+          <el-select v-model="form.group" placeholder="作品类型" style="width: 400px">
+            <el-option label="原画" value="1"></el-option>
+            <el-option label="分镜稿" value="2"></el-option>
+            <el-option label="人设图" value="3"></el-option>
+            <el-option label="其他" value="4"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-input type="textarea" v-model="form.comment" placeholder="写一些介绍吧" style="width: 400px"></el-input>
         </el-form-item>
@@ -79,6 +87,7 @@ module.exports={
         name:'',
         comment:'',
         labels: '',
+        group:''
       },
       labelArray:[],
       dialogVisible: false,

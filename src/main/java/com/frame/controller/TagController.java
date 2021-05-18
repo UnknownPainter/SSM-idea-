@@ -34,9 +34,9 @@ public class TagController {
         threadPool.execute(()->{
             Object userId = session.getAttribute("userId");
             if(userId==null)
-                deferredResult.setResult(tagService.getArtworkByTag(tagName,page,-1));
+                deferredResult.setResult(tagService.getArtworkByTag(tagName,page,-1,1));
             else
-                deferredResult.setResult(tagService.getArtworkByTag(tagName,page,(int)userId));
+                deferredResult.setResult(tagService.getArtworkByTag(tagName,page,(int)userId,1));
         });
         return deferredResult;
     }
@@ -44,7 +44,7 @@ public class TagController {
     public DeferredResult<Integer> getArtworkByTag(@PathVariable("tagName")String tagName){
         final DeferredResult<Integer> deferredResult = new DeferredResult<>();
         threadPool.execute(()->{
-            deferredResult.setResult(tagService.getSearchCountOfTag(tagName));
+            deferredResult.setResult(tagService.getSearchCountOfTag(tagName,1));
         });
         return deferredResult;
     }

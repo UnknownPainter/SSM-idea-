@@ -5,8 +5,8 @@
 <mapper namespace="com.frame.dao.ArtworkMapper">
 <!--    <cache type="com.frame.utils.RedisCache"></cache>-->
     <insert id="creatArtwork" parameterType="com.frame.po.Artwork" useGeneratedKeys="true" keyProperty="artwork_id">
-        INSERT INTO artwork(artwork_comment,artwork_artistId,artwork_name,artwork_location,artwork_height,artwork_width) VALUES
-            (#{artwork_comment},#{artwork_artistId},#{artwork_name},#{artwork_location},#{artwork_height},#{artwork_width})
+        INSERT INTO artwork(artwork_comment,artwork_artistId,artwork_name,artwork_location,artwork_height,artwork_width,artwork_group) VALUES
+            (#{artwork_comment},#{artwork_artistId},#{artwork_name},#{artwork_location},#{artwork_height},#{artwork_width},#{artwork_group})
     </insert>
     <update id="updateArtworkLocationById">
         UPDATE artwork SET artwork_location=#{0} where artwork_id=#{1}

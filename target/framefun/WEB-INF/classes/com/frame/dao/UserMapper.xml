@@ -16,7 +16,6 @@
             <id property="artwork_id" column="artwork_id"/>
             <result property="artwork_name" column="artwork_artistId"/>
             <result property="artwork_location" column="artwork_location"/>
-            <result property="artwork_praiseCount" column="artwork_praiseCount"/>
             <result property="artwork_collectCount" column="artwork_collectCount"/>
             <result property="artwork_createTime" column="artwork_createTime"/>
         </collection>

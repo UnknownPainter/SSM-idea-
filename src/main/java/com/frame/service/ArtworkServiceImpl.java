@@ -64,6 +64,7 @@ public class ArtworkServiceImpl implements ArtworkService{
         artwork.setArtwork_location("");
         artwork.setArtwork_height(image.getHeight());
         artwork.setArtwork_width(image.getWidth());
+        artwork.setArtwork_group(Integer.valueOf(request.getParameter("group")));
 
         artworkMapper.creatArtwork(artwork);
 

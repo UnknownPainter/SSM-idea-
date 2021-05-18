@@ -10,9 +10,27 @@
       ></el-image>
     </div>
     <div class="info-block">
-      <div style="font-size: 20px;line-height: 1.7;">{{artwork.artwork_name}}</div>
-      <div style="color: #8c939d;font-size: 12px;margin-top:8px">
-        <div style="display: inline-block">{{artwork.artwork_createTime}}</div>
+      <div style="font-size: 20px;line-height: 1.7;position: relative">
+        <div style="display: inline-block">{{artwork.artwork_name}}</div>
+        <div style="display:inline-block;position: absolute;right: 0" @click="collectHandler" class="a-love-div">
+          <svg viewBox="0 0 32 32" width="32" height="32" :class={'love-svg':!artwork.hasCollect,'love-svg-a':artwork.hasCollect}>
+            <path d="
+M21,5.5 C24.8659932,5.5 28,8.63400675 28,12.5 C28,18.2694439 24.2975093,23.1517313 17.2206059,27.1100183
+C16.4622493,27.5342993 15.5379984,27.5343235 14.779626,27.110148 C7.70250208,23.1517462 4,18.2694529 4,12.5
+C4,8.63400691 7.13400681,5.5 11,5.5 C12.829814,5.5 14.6210123,6.4144028 16,7.8282366
+C17.3789877,6.4144028 19.170186,5.5 21,5.5 Z">
+            </path>
+            <path d="M16,11.3317089 C15.0857201,9.28334665 13.0491506,7.5 11,7.5
+C8.23857625,7.5 6,9.73857647 6,12.5 C6,17.4386065 9.2519779,21.7268174 15.7559337,25.3646328
+C15.9076021,25.4494645 16.092439,25.4494644 16.2441073,25.3646326 C22.7480325,21.7268037 26,17.4385986 26,12.5
+C26,9.73857625 23.7614237,7.5 21,7.5 C18.9508494,7.5 16.9142799,9.28334665 16,11.3317089 Z" :class={'love-patha':!artwork.hasCollect,'love-pathb':artwork.hasCollect}>
+            </path>
+          </svg>
+        </div>
+      </div>
+      <div style="color: #8c939d;font-size: 12px;margin-top:8px;">
+        <div style="padding-bottom: 12px">作品类别:{{groupList[artwork.artwork_group-1]}}</div>
+        <div style="padding-bottom: 12px">{{artwork.artwork_createTime}}</div>
       </div>
       <div style="color: #8c939d;font-size: 14px;line-height: 1.7;margin-top: 8px">{{artwork.artwork_comment==""?"上传者没有留下评论":artwork.artwork_comment}}</div>
       <div>
@@ -200,10 +218,33 @@ module.exports={
       showReply:false,
       moreReply:[],
       nowCount:'',
-      nowComment:''
-    }
+      nowComment:'',
+      groupList:["原画","分镜稿","人设图","其他"]
+    };
   },
   methods:{
+    collectHandler(){
+      var _this=this;
+      var id = this.artwork.artwork_id;
+      if(this.artwork.hasCollect==false){
+        axios({
+          method:'post',
+          url:'/collections/'+id,
+        }).then(function (response) {
+          var data = response.data;
+          _this.artwork.hasCollect=true;
+        });
+      }
+      else{
+        axios({
+          method:'delete',
+          url:'/collections/'+id,
+        }).then(function (response) {
+          var data = response.data;
+          _this.artwork.hasCollect=false;
+        });
+      }
+    },
     replyChange(e){
 
       var _this = this;
@@ -509,6 +550,33 @@ module.exports={
 .comment-other{
   display:inline-block;font-size: 12px;color: #909399;cursor: pointer;text-align: center;
   margin-right: 8px;
+}
+.love-svg{
+  box-sizing: border-box;
+  line-height: 0;
+  font-size: 0px;
+  vertical-align: top;
+  color: rgb(31, 31, 31);
+  fill: currentcolor;
+  transition: color 0.2s ease 0s, fill 0.2s ease 0s;
+}
+.love-svg-a{
+  box-sizing: border-box;
+  line-height: 0;
+  font-size: 0px;
+  vertical-align: top;
+  color: rgb(255,64,96);
+  fill: currentcolor;
+  transition: color 0.2s ease 0s, fill 0.2s ease 0s;
+}
+
+.love-patha{
+  fill: rgb(255,255,255);
+  transition: color 0.2s ease 0s, fill 0.2s ease 0s;
+}
+.love-pathb{
+  fill: rgb(255,64,96);
+  transition: color 0.2s ease 0s, fill 0.2s ease 0s;
 }
 
 </style>

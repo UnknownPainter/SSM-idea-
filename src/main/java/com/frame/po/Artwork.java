@@ -11,14 +11,22 @@ public class Artwork implements Serializable {
     private String artwork_name;
     private int artwork_artistId;
     private String artwork_location;
-    private int artwork_praiseCount;
     private int artwork_collectCount;
     private int artwork_width;
     private int artwork_height;
     private Date artwork_createTime;
     private int artwork_commentCount;
+    private int artwork_group;
 
     public  Artwork(){}
+
+    public int getArtwork_group() {
+        return artwork_group;
+    }
+
+    public void setArtwork_group(int artwork_group) {
+        this.artwork_group = artwork_group;
+    }
 
     public int getArtwork_commentCount() {
         return artwork_commentCount;
@@ -51,14 +59,6 @@ public class Artwork implements Serializable {
 
     public void setArtwork_height(int artwork_height) {
         this.artwork_height = artwork_height;
-    }
-
-    public int getArtwork_praiseCount() {
-        return artwork_praiseCount;
-    }
-
-    public void setArtwork_praiseCount(int artwork_praiseCount) {
-        this.artwork_praiseCount = artwork_praiseCount;
     }
 
     public int getArtwork_collectCount() {

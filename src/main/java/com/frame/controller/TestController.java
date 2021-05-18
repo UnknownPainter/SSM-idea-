@@ -5,6 +5,8 @@ import com.frame.dao.CollectionMapper;
 import com.frame.dao.TestMapper;
 import com.frame.dao.UserMapper;
 import com.frame.po.ArtworkForUser;
+import com.frame.po.ArtworkWithLabel;
+import com.frame.service.ArtworkService;
 import com.frame.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -32,6 +34,8 @@ public class TestController {
     @Autowired
     ArtworkMapper artworkMapper;
     @Autowired
+    ArtworkService artworkService;
+    @Autowired
     UserMapper userMapper;
     @Autowired
     RedisTemplate redisTemplate;
@@ -43,15 +47,16 @@ public class TestController {
         redisTemplate.boundHashOps("userCollectCount").increment("11",1);
     }
     @RequestMapping("/test/testArtwork")
-    public List<ArtworkForUser> test1(){
-        return testMapper.getCollectionByPage(5,0,24,5);
+    public ArtworkWithLabel test1(){
+
+        return artworkService.getArtwork(46,1);
     }
 
     @RequestMapping("/test/testArtwork3")
-    public DeferredResult<List<ArtworkForUser>> test3(){
-        final DeferredResult<List<ArtworkForUser>> deferredResult = new DeferredResult<>();
+    public DeferredResult<ArtworkForUser> test3(){
+        final DeferredResult<ArtworkForUser> deferredResult = new DeferredResult<>();
         threadPool.execute(()->{
-            deferredResult.setResult(testMapper.getCollectionByPage(5,0,24,5));
+            deferredResult.setResult(artworkService.getArtwork(46,1));
         });
         return deferredResult;
     }
