@@ -9,7 +9,7 @@ import java.util.List;
 public interface ArtworkMapper {
     public ArtworkWithLabel getArtworkById(int id);
     public ArtworkForUser getArtworkByName();
-    public List<ArtworkForUser> getDefaultArtwork(int page);
+    public List<ArtworkForUser> getDefaultArtwork(int page,int group);
     public void updateArtworkLocationById(String location,int id);
     public void creatArtwork(Artwork artwork);
     public void deleteArtwork(int id,int userId);

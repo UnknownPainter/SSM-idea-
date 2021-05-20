@@ -12,7 +12,11 @@
         UPDATE artwork SET artwork_location=#{0} where artwork_id=#{1}
     </update>
     <select id="getDefaultArtwork" resultType="com.frame.po.ArtworkForUser">
-        SELECT * FROM artwork order by artwork_id desc limit #{0},15;
+        SELECT * FROM artwork
+        <if test="param2!=0">
+            where artwork_group=#{1}
+        </if>
+        order by artwork_id desc limit #{0},15;
     </select>
     <select id="getArtworkById" resultType="com.frame.po.ArtworkWithLabel">
         SELECT * FROM artwork where artwork_id=#{artworkId}

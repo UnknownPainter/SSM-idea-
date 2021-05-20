@@ -111,8 +111,8 @@ public class ArtworkServiceImpl implements ArtworkService{
     }
 
     @Override
-    public List<ArtworkForUser> getHomeArtwork(int userId,int page) {
-        List<ArtworkForUser> list = artworkMapper.getDefaultArtwork(page*15);
+    public List<ArtworkForUser> getHomeArtwork(int userId,int page,int group) {
+        List<ArtworkForUser> list = artworkMapper.getDefaultArtwork(page*15,group);
         if(userId==-1){
             for(ArtworkForUser artworkForUser:list){
                 artworkForUser.setHasPraise(false);

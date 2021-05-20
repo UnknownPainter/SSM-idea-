@@ -10,7 +10,7 @@ import java.util.List;
 public interface ArtworkService {
     public void createArtwork(List<String> labels,HttpServletRequest request);
     public ArtworkWithLabel getArtwork(int artworkId, int userId);
-    public List<ArtworkForUser> getHomeArtwork(int userId,int page);
+    public List<ArtworkForUser> getHomeArtwork(int userId,int page,int group);
     public boolean deleteArtwork(int id,int userId);
     public List<ArtworkForUser> getUserArtwork(int page,int userId,int artistId);
 }

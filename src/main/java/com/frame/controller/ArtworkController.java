@@ -55,14 +55,14 @@ public class ArtworkController {
         }
     }
 
-    @RequestMapping(value = "/artworks/home/{page}",method = RequestMethod.GET)
-    public List<ArtworkForUser> getHomeArtwork(@PathVariable("page") int page,HttpServletRequest request){
+    @RequestMapping(value = "/artworks/home/{group}/{page}",method = RequestMethod.GET)
+    public List<ArtworkForUser> getHomeArtwork(@PathVariable("page") int page,@PathVariable("group")int group, HttpServletRequest request){
         Object userId = request.getSession().getAttribute("userId");
         if(userId!=null){
-            return artworkService.getHomeArtwork((int)userId,page);
+            return artworkService.getHomeArtwork((int)userId,page,group);
         }
         else{
-            return artworkService.getHomeArtwork(-1,page);
+            return artworkService.getHomeArtwork(-1,page,group);
         }
     }
     @RequestMapping(value = "/user/artworks/{page}",method = RequestMethod.GET)
