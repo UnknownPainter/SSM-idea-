@@ -1,12 +1,19 @@
 <template>
   <div>
-    <div class="info-block">
-      <el-link @click="selectGroup(0)" type="info" :underline="false" style="padding-right: 12px">ALL</el-link>
-      <el-link @click="selectGroup(1)" type="info" :underline="false" style="padding-right: 12px">原画</el-link>
-      <el-link @click="selectGroup(2)" type="info" :underline="false" style="padding-right: 12px">分镜</el-link>
-      <el-link @click="selectGroup(3)" type="info" :underline="false" style="padding-right: 12px">人设</el-link>
-      <el-link @click="selectGroup(4)" type="info" :underline="false" style="padding-right: 12px">其他</el-link>
-    </div>
+    <el-menu style="margin: 20px;" :default-active="idx" class="el-menu-demo" mode="horizontal">
+      <el-menu-item index="1" @click="selectGroup(0)">ALL</el-menu-item>
+      <el-menu-item index="2" @click="selectGroup(1)">原画</el-menu-item>
+      <el-menu-item index="3" @click="selectGroup(2)">分镜</el-menu-item>
+      <el-menu-item index="4" @click="selectGroup(3)">人设</el-menu-item>
+      <el-menu-item index="5" @click="selectGroup(4)">其他</el-menu-item>
+    </el-menu>
+<!--    <div class="info-block">-->
+<!--      <el-link  type="info" :underline="false" style="padding-right: 12px">ALL</el-link>-->
+<!--      <el-link @click="selectGroup(1)" type="info" :underline="false" style="padding-right: 12px">原画</el-link>-->
+<!--      <el-link @click="selectGroup(2)" type="info" :underline="false" style="padding-right: 12px">分镜</el-link>-->
+<!--      <el-link @click="selectGroup(3)" type="info" :underline="false" style="padding-right: 12px">人设</el-link>-->
+<!--      <el-link @click="selectGroup(4)" type="info" :underline="false" style="padding-right: 12px">其他</el-link>-->
+<!--    </div>-->
     <div ref="home" class="water-fall-block">
       <div
           class="artwork-block"
@@ -55,7 +62,8 @@ module.exports={
       colNum:5,
       colHeight:[0,0,0,0,0],
       page:'',
-      group:0
+      group:this.$route.params.group,
+      idx:''
     }
   },
   methods:{
@@ -71,8 +79,10 @@ module.exports={
         var data = response.data;
         for(var i in data){
           _this.setArtwork(data[i]);
+          _this.page=1;
         }
       });
+      this.load();
     },
     setArtwork(artwork){
       var minHeight=-1;
@@ -147,6 +157,8 @@ module.exports={
     }
   },
   mounted(){
+    window.scrollTo(0,0);
+    this.idx=(parseInt(this.group)+1)+'';
     this.page = 1;
     var _this = this;
     this.load();
@@ -221,16 +233,5 @@ module.exports={
   box-shadow: 0 1px 3px rgba(0,0,0,.02), 0 16px 32px -4px rgba(0,0,0,.17);
   transform: translateY(-1px);
   overflow: hidden;
-}
-.info-block{
-  padding: 12px 20px 12px 20px;
-  margin: 20px;
-  height: auto;
-  background: #FFFFFF;
-  text-align: left;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-  margin-bottom: 18px;
-  margin-top: 0;
-  border-radius: 5px;
 }
 </style>

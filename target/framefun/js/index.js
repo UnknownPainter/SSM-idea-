@@ -3,7 +3,13 @@ const routes =[
         path: '/',
         components:{
             loginpage:httpVueLoader('./vue/login.vue?'+Math.random()),
-            home:httpVueLoader('./vue/home.vue?'+Math.random()),
+            home:httpVueLoader('./vue/main.vue?'+Math.random()),
+        }
+    },
+    {
+        path: '/home/:group',
+        components:{
+            home:httpVueLoader('./vue/home.vue?'+Math.random())
         }
     },
     {
