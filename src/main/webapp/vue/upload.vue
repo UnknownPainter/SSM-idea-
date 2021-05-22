@@ -51,10 +51,10 @@
         <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
       </div>
       <el-form :model="form" label-width="80px" class="form-block">
-        <el-form-item label="作品名称">
+        <el-form-item label="作画名称">
           <el-input v-model="form.name" style="width: 400px"></el-input>
         </el-form-item>
-        <el-form-item label="作品类型">
+        <el-form-item label="作画类型">
           <el-select v-model="form.group" placeholder="作品类型" style="width: 400px">
             <el-option label="原画" value="1"></el-option>
             <el-option label="分镜稿" value="2"></el-option>
