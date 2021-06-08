@@ -150,6 +150,7 @@ module.exports={
           method:'delete',
           url:'/collections/'+this.ArtWorks[index].artwork_id,
         }).then(function (response) {
+          
           var data = response.data;
           _this.ArtWorks[index].hasCollect=false;
         });

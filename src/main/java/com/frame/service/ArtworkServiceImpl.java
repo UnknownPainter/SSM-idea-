@@ -4,6 +4,7 @@ import com.frame.dao.ArtworkMapper;
 import com.frame.dao.CollectionMapper;
 import com.frame.dao.TagMapper;
 import com.frame.dao.UserMapper;
+import com.frame.po.Artist;
 import com.frame.po.Artwork;
 import com.frame.po.ArtworkForUser;
 import com.frame.po.ArtworkWithLabel;
@@ -158,5 +159,14 @@ public class ArtworkServiceImpl implements ArtworkService{
         }
         userMapper.updateArtworkCountOfUser(artwork.getArtwork_artistId(),-1);
         return true;
+    }
+
+    @Override
+    public boolean adminDelete(int id, int userId, int artistId) {
+        Artist artist = userMapper.getUserById(-1,userId);
+        if(artist.getUser_role()==2){
+            return deleteArtwork(id,artistId);
+        }
+        return false;
     }
 }

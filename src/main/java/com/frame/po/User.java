@@ -14,6 +14,15 @@ public class User implements Serializable {
     private int user_collectionCount;
     private int user_artworkCount;
     private String user_comment;
+    private int user_role;
+
+    public int getUser_role() {
+        return user_role;
+    }
+
+    public void setUser_role(int user_role) {
+        this.user_role = user_role;
+    }
 
     public String getUser_comment() {
         return user_comment;

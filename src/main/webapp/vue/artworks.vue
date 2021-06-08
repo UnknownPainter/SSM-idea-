@@ -9,6 +9,11 @@
           :preview-src-list="imageList"
       ></el-image>
     </div>
+    <div v-if="user.user_role==2" class="info-block">
+      <el-popconfirm title="确定删除此作画？" @confirm="deleteArtwork">
+        <el-button slot="reference" style="width: 120px" type="primary" round>删除此作画</el-button>
+      </el-popconfirm>
+    </div>
     <div class="info-block">
       <div style="font-size: 20px;line-height: 1.7;position: relative">
         <div style="display: inline-block">{{artwork.artwork_name}}</div>
@@ -32,7 +37,6 @@ C26,9.73857625 23.7614237,7.5 21,7.5 C18.9508494,7.5 16.9142799,9.28334665 16,11
         <div style="padding-bottom: 12px">作品类别:{{groupList[artwork.artwork_group-1]}}</div>
         <div style="padding-bottom: 12px">{{artwork.artwork_createTime}}</div>
       </div>
-      <div style="color: #8c939d;font-size: 14px;line-height: 1.7;margin-top: 8px">{{artwork.artwork_comment==""?"上传者没有留下评论":artwork.artwork_comment}}</div>
       <div>
         <el-tag
             style="margin: 8px 8px 0 0;cursor: pointer"
@@ -58,6 +62,9 @@ C26,9.73857625 23.7614237,7.5 21,7.5 C18.9508494,7.5 16.9142799,9.28334665 16,11
         <el-button v-if="(!inputVisible)&&(artwork.artwork_artistId==user.user_id)"  size="small" @click="showInput">+ 添加标签</el-button>
       </div>
     </div>
+    <div class="info-block">
+      <div style="font-size: 16px;line-height: 1.7;margin-top: 8px">{{artwork.artwork_comment==""?"上传者没有留下介绍":artwork.artwork_comment}}</div>
+    </div>
     <div class="comment-block">
       <el-form :model="form" class="form-block">
         <el-form-item>
@@ -73,7 +80,7 @@ C26,9.73857625 23.7614237,7.5 21,7.5 C18.9508494,7.5 16.9142799,9.28334665 16,11
                 <el-button type="primary" @click="uploadComment" style="height:64.8px;">发送！</el-button>
               </div>
               <div style="margin-right: 94px">
-                <el-input type="textarea" style="font-size: 12px;" v-model="form.comment" :rows="3" placeholder="发表一条评论吧" style="margin: auto;width: 100%"></el-input>
+                <el-input type="textarea" style="font-size: 12px;" v-model="form.comment" :rows="3" placeholder="分享你的见解" style="margin: auto;width: 100%"></el-input>
               </div>
             </div>
 
@@ -84,7 +91,7 @@ C26,9.73857625 23.7614237,7.5 21,7.5 C18.9508494,7.5 16.9142799,9.28334665 16,11
         <div style="text-align: center;color: #6d757a;" v-if="comments.length==0">
           <el-divider></el-divider>
           <div style="padding: 50px;font-size: 18px">
-            还没有人发表过评论
+            还没有人发言
           </div>
         </div>
         <transition-group tag="span" name="comment-list">
@@ -223,6 +230,20 @@ module.exports={
     };
   },
   methods:{
+    deleteArtwork(){
+      var _this=this;
+      axios({
+        method:'delete',
+        url:'/admin/delete/'+this.artwork.artwork_artistId+'/'+this.artwork.artwork_id,
+      }).then(function (response) {
+        if(response.data==true){
+          _this.$message({
+            message: '删除成功',
+            type: 'success'
+          });
+        }
+      });
+    },
     collectHandler(){
       var _this=this;
       var id = this.artwork.artwork_id;

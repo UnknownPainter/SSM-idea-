@@ -81,4 +81,8 @@ public class ArtworkController {
         artworkService.deleteArtwork(artworkId,(int)session.getAttribute("userId"));
         return true;
     }
+    @RequestMapping(value = "/admin/delete/{artistId}/{id}",method = RequestMethod.DELETE)
+    public boolean adminDelete(@PathVariable("id")int id, @PathVariable("artistId")int artistId, HttpSession session){
+        return artworkService.adminDelete(id,(int)session.getAttribute("userId"),artistId);
+    }
 }

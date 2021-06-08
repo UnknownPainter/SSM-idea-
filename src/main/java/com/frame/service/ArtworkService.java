@@ -13,4 +13,5 @@ public interface ArtworkService {
     public List<ArtworkForUser> getHomeArtwork(int userId,int page,int group);
     public boolean deleteArtwork(int id,int userId);
     public List<ArtworkForUser> getUserArtwork(int page,int userId,int artistId);
+    public boolean adminDelete(int id,int userId,int artistId);
 }

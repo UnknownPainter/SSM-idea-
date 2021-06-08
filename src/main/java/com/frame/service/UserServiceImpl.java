@@ -105,4 +105,14 @@ public class UserServiceImpl implements UserService {
         user.setUser_collectionCount(count+user.getUser_collectionCount());
         return user;
     }
+
+    @Override
+    public boolean alterRole(int userId, int artistId, int role) {
+        Artist artist = userMapper.getUserById(-1,userId);
+        if(artist.getUser_role()==2){
+            userMapper.updateUserRole(artistId,role);
+            return true;
+        }
+        return false;
+    }
 }

@@ -14,4 +14,5 @@ public interface UserMapper {
     public void updateArtworkCountOfUser(int userId,int count);
     public void updateCollectionCountOfUser(int userId,int count);
     public void updateCommentOfUser(int userId,String comment);
+    public void updateUserRole(int userId,int role);
 }

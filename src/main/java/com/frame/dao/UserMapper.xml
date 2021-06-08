@@ -11,6 +11,7 @@
         <result property="user_followers" column="user_followers"/>
         <result property="hasFollow" column="hasFollow"/>
         <result property="user_artworkCount" column="user_artworkCount"/>
+        <result property="user_role" column="user_role"/>
         <result property="user_collectionCount" column="user_collectionCount"/>
         <collection property="sampleArtworks" ofType="com.frame.po.Artwork">
             <id property="artwork_id" column="artwork_id"/>
@@ -61,4 +62,7 @@
         from (select * from user where user_id=#{1}) B
         left join follow on follow_followerId=#{0} and follow_followingId=B.user_id
     </select>
+    <update id="updateUserRole">
+        UPDATE user set user_role=#{1} where user_id=#{0}
+    </update>
 </mapper>

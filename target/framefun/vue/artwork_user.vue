@@ -1,11 +1,18 @@
 <template>
   <div class="artwork-user-block">
-    <div class="user-avatar" @click="goToUser" style="cursor: pointer">
-      <el-avatar :size="64" style="float: left">
+    <div class="user-avatar" style="cursor: pointer">
+      <el-avatar  @click="goToUser" :size="64" style="float: left">
         <i class="el-icon-user-solid" v-if="!user.user_avatar"></i>
         <el-image  v-if="user.user_avatar" :src="user.user_avatar" fit="cover" style="height: 100%"></el-image>
       </el-avatar>
-      <div style="float: left;font-size: 20px;margin-left: 30px;padding-top: 22px">{{user.user_name}}</div>
+      <div  @click="goToUser" style="float: left;font-size: 20px;margin-left: 30px;padding-top: 22px">{{user.user_name}}</div>
+      <el-popover style="float:left;padding-top: 22px;padding-left: 4px" v-if="user.user_role==1" trigger="hover" content="作画专业人员认证">
+        <i slot="reference" style="color: #3a8ee6" class="el-icon-orange"></i>
+      </el-popover>
+    </div>
+    <div style="padding-top: 20px" v-if="nowuser.user_role==2" @click="admin">
+      <el-button style="width: 100px" v-if="user.user_role==0" type="primary" round>添加认证</el-button>
+      <el-button style="width: 100px" v-if="user.user_role==1" type="info" round>取消认证</el-button>
     </div>
     <el-divider></el-divider>
     <div>
@@ -38,7 +45,8 @@ module.exports={
     return {
       user:'',
       artworkId:this.$route.params.id,
-      blockWidth:300
+      blockWidth:300,
+      nowuser:''
     }
   },
   methods:{
@@ -86,10 +94,40 @@ module.exports={
           }
         });
       }
+    },
+    admin(){
+      var _this = this;
+      if(this.user.user_role==0){
+        axios({
+          method:'post',
+          url:'/admin/role/'+this.user.user_id
+        }).then(function (response) {
+          var data = response.data;
+          if(data==true){
+            _this.$set(_this.user,"user_role",1);
+          }
+        });
+      }
+      else{
+        axios({
+          method:'delete',
+          url:'/admin/role/'+this.user.user_id
+        }).then(function (response) {
+          var data = response.data;
+          if(data==true){
+            _this.$set(_this.user,"user_role",0);
+          }
+        });
+      }
     }
   },
   mounted(){
     var _this = this;
+    this.nowuser = this.$router.app.user;
+    this.$root.$on('user',(a)=>{
+      _this.nowuser = '';
+      _this.nowuser = a;
+    });
     this.$nextTick(() => { //使用nextTick为了保证dom元素都已经渲染完毕
       _this.blockWidth=_this.$refs.myflex.clientWidth;
     });

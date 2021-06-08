@@ -16,4 +16,5 @@ public interface UserService {
     Artist getUserByArtworkId(int artworkId,int userId);
     boolean updateComment(int userId,String comment);
     Artist getUserById(int userId,int artistId);
+    boolean alterRole(int userId,int artistId,int role);
 }

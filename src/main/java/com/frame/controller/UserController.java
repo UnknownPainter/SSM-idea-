@@ -129,4 +129,12 @@ public class UserController {
             return userService.getUserById(-1,artistId);
         }
     }
+    @RequestMapping(value = "/admin/role/{id}",method = RequestMethod.POST)
+    public boolean addRole(@PathVariable("id")int artistId, HttpSession session){
+        return userService.alterRole((int)session.getAttribute("userId"),artistId,1);
+    }
+    @RequestMapping(value = "/admin/role/{id}",method = RequestMethod.DELETE)
+    public boolean deleteRole(@PathVariable("id")int artistId, HttpSession session){
+        return userService.alterRole((int)session.getAttribute("userId"),artistId,0);
+    }
 }
