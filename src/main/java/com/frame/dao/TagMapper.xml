@@ -11,7 +11,7 @@
         from
              (
                  SELECT * from tag where tag_id &lt;=
-                                      (SELECT tag_id where tag_name=#{0} order by tag_id desc limit #{1},1)
+                                      (SELECT tag_id where tag_name like concat('%',#{0},'%') order by tag_id desc limit #{1},1)
                  order by tag_id desc limit 20
              ) B left join
              artwork on artwork.artwork_id=B.artwork_id
@@ -27,6 +27,6 @@
         SELECT count(tag_id) from tag where artwork_id=#{0}
     </select>
     <select id="getSearchCountOfTag" resultType="int">
-        SELECT count(tag_id) from tag where tag_name=#{0}
+        SELECT count(tag_id) from tag where tag_name like concat('%',#{0},'%')
     </select>
 </mapper>

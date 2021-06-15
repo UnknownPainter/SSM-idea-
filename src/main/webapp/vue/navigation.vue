@@ -44,7 +44,7 @@
     >
       <div class="drawer-table">
         <el-menu>
-          <el-menu-item class="noStyle" style="height: 84px;padding: 10px" >
+          <el-menu-item class="noStyle" @click="goLogin" style="height: 84px;padding: 10px" >
             <el-avatar :size="64" style="text-align: center">
               <i class="el-icon-user-solid" v-show="!user.user_avatar" style="margin: 0 !important;font-size: 24px !important;"></i>
               <el-image v-show="user.user_avatar" :src="user.user_avatar" fit="cover" style="height: 100%"></el-image>
@@ -159,6 +159,13 @@ module.exports = {
     goToUser(){
       this.$router.push({path:'/user'});
     },
+    goLogin(){
+      if(!this.user){
+        window.location.href="/login.html";
+      }
+
+    }
+    ,
     isScrolling: function (){
       let t = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;   // 目前监听的是整个body的滚动条距离
       if(t>0){

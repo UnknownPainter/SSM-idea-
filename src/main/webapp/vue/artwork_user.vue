@@ -6,7 +6,7 @@
         <el-image  v-if="user.user_avatar" :src="user.user_avatar" fit="cover" style="height: 100%"></el-image>
       </el-avatar>
       <div  @click="goToUser" style="float: left;font-size: 20px;margin-left: 30px;padding-top: 22px">{{user.user_name}}</div>
-      <el-popover style="float:left;padding-top: 22px;padding-left: 4px" v-if="user.user_role==1" trigger="hover" content="作画专业人员认证">
+      <el-popover placement="top" style="float:left;padding-top: 22px;padding-left: 4px" v-if="user.user_role==1" trigger="hover" content="作画专业人员认证">
         <i slot="reference" style="color: #3a8ee6" class="el-icon-orange"></i>
       </el-popover>
     </div>
